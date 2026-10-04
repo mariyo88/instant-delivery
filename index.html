@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="sr" dir="ltr">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <!-- ===============================================-->
+    <!--    Document Title-->
+    <!-- ===============================================-->
+    <title>FirstCode | Asistent za nalepnice</title>
+
+
+    <!-- ===============================================-->
+    <!--    Favicons-->
+    <!-- ===============================================-->
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/img/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicons/favicon-16x16.png">
+    <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicons/favicon.ico">
+    <link rel="manifest" href="assets/img/favicons/manifest.json">
+    <meta name="msapplication-TileImage" content="assets/img/favicons/mstile-150x150.png">
+    <meta name="theme-color" content="#ffffff">
+
+
+    <!-- ===============================================-->
+    <!--    Stylesheets-->
+    <!-- ===============================================-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400;500;600;700&amp;family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,300&amp;display=swap" rel="stylesheet">
+    <link href="assets/css/theme.css" rel="stylesheet" />
+    <link href="assets/css/user.css" rel="stylesheet" />
+    <style>
+      .agent-home.is-chatting .agent-suggestions { display: none; }
+
+      .agent-composer {
+        display: flex;
+        align-items: flex-end;
+        gap: 0.75rem;
+        width: 100%;
+        max-width: 36rem;
+        padding: 0.7rem 0.7rem 0.7rem 1.15rem;
+        border: 1px solid rgba(111, 66, 193, 0.18);
+        border-radius: 1.75rem;
+        background: #fff;
+        box-shadow: 0 0.5rem 1.75rem rgba(44, 23, 94, 0.12);
+      }
+
+      .agent-composer textarea {
+        flex: 1;
+        min-width: 0;
+        max-height: 9rem;
+        margin: 0;
+        padding: 0.55rem 0;
+        border: 0;
+        outline: none;
+        resize: none;
+        background: transparent;
+        color: #5e5873;
+        font: 400 0.95rem/1.5rem "Poppins", sans-serif;
+      }
+
+      .agent-composer textarea::placeholder { color: #b0a8c4; }
+
+      .agent-send {
+        flex: 0 0 auto;
+        width: 2.85rem;
+        height: 2.85rem;
+        border: 0;
+        border-radius: 50%;
+        background: #6f42c1;
+        color: #fff;
+        cursor: pointer;
+        transition: background 0.2s ease, opacity 0.2s ease;
+      }
+
+      .agent-send:hover:not(:disabled) { background: #5a34a4; }
+      .agent-send:disabled { opacity: 0.5; cursor: default; }
+
+      .agent-suggestions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+        max-width: 36rem;
+        margin-top: 1rem;
+      }
+
+      .agent-suggestions button {
+        display: inline-flex;
+        align-items: center;
+        border: 1px solid rgba(111, 66, 193, 0.28);
+        border-radius: 1.5rem;
+        background: #fff;
+        color: #6f42c1;
+        padding: 0.4rem 0.9rem;
+        font: 600 0.8rem/1.35rem "Poppins", sans-serif;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .agent-suggestions button:hover {
+        background: #6f42c1;
+        color: #fff;
+      }
+
+      .agent-chat {
+        display: none;
+        flex-direction: column;
+        gap: 0.8rem;
+        max-width: 36rem;
+        max-height: 18rem;
+        margin-top: 1.25rem;
+        padding: 1rem;
+        overflow-y: auto;
+        border-radius: 1rem;
+        background: rgba(111, 66, 193, 0.06);
+        border: 1px solid rgba(111, 66, 193, 0.12);
+      }
+
+      .agent-chat.is-visible { display: flex; }
+
+      .chat-row { display: flex; }
+      .chat-row.user { justify-content: flex-end; }
+      .chat-row.assistant { justify-content: flex-start; }
+
+      .chat-bubble {
+        max-width: min(88%, 26rem);
+        padding: 0.8rem 1rem;
+        border-radius: 1rem;
+        word-break: break-word;
+        font: 400 0.9rem/1.45rem "Poppins", sans-serif;
+      }
+
+      .chat-text {
+        white-space: pre-wrap;
+      }
+
+      .chat-row.user .chat-bubble {
+        background: #6f42c1;
+        color: #fff;
+        border-bottom-right-radius: 0.35rem;
+      }
+
+      .chat-row.assistant .chat-bubble {
+        background: #fff;
+        color: #5e5873;
+        border: 1px solid rgba(111, 66, 193, 0.12);
+        border-bottom-left-radius: 0.35rem;
+      }
+
+      .chat-bubble.is-error { color: #d9534f; font-weight: 600; font-size: 0.82rem; }
+
+      .chat-actions {
+        display: none;
+        align-items: center;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+        margin-top: 0.7rem;
+        width: 100%;
+      }
+
+      .chat-actions.is-visible { display: flex; }
+
+      .chat-row.user .chat-actions .msg-btn {
+        display: inline-grid;
+        place-items: center;
+        width: 1.9rem;
+        height: 1.9rem;
+        padding: 0;
+        border: 1px solid rgba(255, 255, 255, 0.45);
+        border-radius: 50%;
+        background: transparent;
+        color: rgba(255, 255, 255, 0.92);
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .chat-row.user .chat-actions .msg-btn:hover {
+        background: #fff;
+        color: #6f42c1;
+        border-color: #fff;
+      }
+
+      .chat-row.user .chat-actions .msg-btn i {
+        font-size: 0.78rem;
+      }
+
+      .chat-loading {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        color: rgba(255, 255, 255, 0.72);
+        font-size: 0.75rem;
+        font-weight: 500;
+      }
+
+      .chat-loading-dots {
+        display: inline-flex;
+        gap: 0.2rem;
+      }
+
+      .chat-loading-dots span {
+        width: 0.28rem;
+        height: 0.28rem;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.7);
+        animation: chat-dot 1s infinite ease-in-out;
+      }
+
+      .chat-loading-dots span:nth-child(2) { animation-delay: 0.15s; }
+      .chat-loading-dots span:nth-child(3) { animation-delay: 0.3s; }
+
+      @keyframes chat-dot {
+        0%, 80%, 100% { opacity: 0.25; transform: translateY(0); }
+        40% { opacity: 1; transform: translateY(-1px); }
+      }
+
+      @media (max-width: 767.98px) {
+        .agent-home {
+          padding-top: 5.5rem !important;
+          padding-bottom: 2.5rem !important;
+        }
+
+        .agent-home .container {
+          padding-left: 1rem;
+          padding-right: 1rem;
+        }
+
+        .agent-home h1 {
+          font-size: 1.75rem !important;
+          line-height: 1.25 !important;
+          margin-bottom: 0.75rem;
+        }
+
+        .agent-home > .container .fs-1 {
+          font-size: 0.95rem !important;
+          line-height: 1.45 !important;
+          margin-bottom: 0;
+        }
+
+        .agent-composer,
+        .agent-suggestions,
+        .agent-chat {
+          margin-left: auto;
+          margin-right: auto;
+          max-width: 100%;
+        }
+
+        .agent-composer {
+          gap: 0.55rem;
+          margin-top: 1.25rem !important;
+          padding: 0.65rem 0.65rem 0.65rem 1rem;
+          border-radius: 1.35rem;
+          box-shadow: 0 0.35rem 1.1rem rgba(44, 23, 94, 0.1);
+        }
+
+        .agent-composer textarea {
+          font-size: 1rem;
+          line-height: 1.45rem;
+          max-height: 8rem;
+          padding-top: 0.45rem;
+          padding-bottom: 0.45rem;
+        }
+
+        .agent-send {
+          width: 2.75rem;
+          height: 2.75rem;
+        }
+
+        .agent-suggestions {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 0.55rem;
+          margin-top: 0.85rem;
+        }
+
+        .agent-suggestions button {
+          width: 100%;
+          justify-content: center;
+          display: inline-flex;
+          align-items: center;
+          min-height: 2.65rem;
+          padding: 0.55rem 0.7rem;
+          font-size: 0.78rem;
+          line-height: 1.2rem;
+          border-radius: 0.9rem;
+          text-align: center;
+        }
+
+        .agent-suggestions button:last-child {
+          grid-column: 1 / -1;
+        }
+
+        .agent-chat {
+          max-height: min(50vh, 18rem);
+          margin-top: 1rem;
+          padding: 0.85rem;
+        }
+
+        .chat-bubble {
+          max-width: 100%;
+          font-size: 0.92rem;
+          padding: 0.85rem 0.95rem;
+        }
+
+        .chat-row.user .chat-actions .msg-btn {
+          width: 2.2rem;
+          height: 2.2rem;
+        }
+
+        .chat-row.user .chat-actions .msg-btn i {
+          font-size: 0.85rem;
+        }
+
+        .footer-mobile .footer-col-title {
+          margin-top: 0.5rem;
+        }
+      }
+
+      @media (max-width: 420px) {
+        .agent-home h1 {
+          font-size: 1.55rem !important;
+        }
+
+        .agent-suggestions {
+          grid-template-columns: 1fr;
+        }
+
+        .agent-suggestions button:last-child {
+          grid-column: auto;
+        }
+      }
+    </style>
+
+  </head>
+
+
+  <body>
+
+    <!-- ===============================================-->
+    <!--    Main Content-->
+    <!-- ===============================================-->
+    <main class="main" id="top">
+      <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" data-navbar-on-scroll="light">
+        <div class="container"><a class="navbar-brand" href="index.html"><img src="assets/img/icons/Logo.png" height="35" alt="FirstCode logo" /></a>
+        </div>
+      </nav>
+      <section class="py-7 py-lg-10 agent-home" id="home">
+        <div class="bg-holder bg-size" style="background-image:url(assets/img/illustration/2.png);background-position:left top;background-size:contain;">
+        </div>
+        <!--/.bg-holder-->
+
+        <div class="bg-holder d-none d-xxl-block hero-bg" style="background-image:url(assets/img/illustration/1.png);background-position:right top;background-size:contain;">
+        </div>
+        <!--/.bg-holder-->
+
+        <div class="container">
+          <div class="row align-items-center h-100 justify-content-center justify-content-lg-start">
+            <div class="col-12 col-md-10 col-lg-8 col-xxl-6 text-md-start text-center py-4 py-md-6 pt-6 pt-md-8">
+              <h1 class="fs-4 fs-md-5 fs-xxl-4" data-zanim-xs='{"delay":0.3}' data-zanim-trigger="scroll">Zdravo. Spreman da počnemo?</h1>
+              <p class="fs-1" data-zanim-xs='{"delay":0.5}' data-zanim-trigger="scroll">Nalepi poruku o dostavi, a FirstCode će izvući adresu i pripremiti PDF nalepnicu za štampu.</p>
+
+              <form id="composer" class="agent-composer mt-4 mt-md-5 mx-auto mx-md-0" autocomplete="off" data-zanim-xs='{"delay":0.5}' data-zanim-trigger="scroll">
+                <label class="visually-hidden" for="prompt">Nalepi poruku o dostavi</label>
+                <textarea id="prompt" rows="1" placeholder="Nalepi poruku o dostavi" maxlength="5000"></textarea>
+                <button id="send" class="agent-send" type="submit" aria-label="Generiši nalepnicu" disabled>
+                  <i class="fas fa-arrow-up"></i>
+                </button>
+              </form>
+
+              <div id="suggestions" class="agent-suggestions mx-auto mx-md-0" data-zanim-xs='{"delay":0.6}' data-zanim-trigger="scroll">
+                <button type="button" data-text="Molimo dostaviti za Anu Petrović, Knez Mihailova 12, 11000 Beograd. Telefon +381 64 123 4567.">
+                  <i class="fas fa-tag me-1"></i><span class="d-none d-sm-inline">Odštampaj nalepnicu</span><span class="d-inline d-sm-none">Nalepnica</span>
+                </button>
+                <button type="button" data-text="Pouzeće 3500 RSD za Marka Jovića, Bulevar kralja Aleksandra 72, 11000 Beograd. Telefon +381 63 111 2222.">
+                  <i class="fas fa-pen me-1"></i>Pouzeće
+                </button>
+                <button type="button" data-text="Pošalji za John Smith, 221B Baker Street, London NW1 6XE, United Kingdom. Telefon +44 20 7946 0958.">
+                  <i class="fas fa-globe me-1"></i>Inostranstvo
+                </button>
+              </div>
+
+              <div id="chat" class="agent-chat mx-auto mx-md-0" aria-live="polite"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <section class="py-0 bg-1000">
+        <div class="container">
+          <div class="row py-5 py-lg-7">
+            <div class="col-12 col-lg-6 mb-4 order-0"><a class="text-decoration-none" href="#"><img src="assets/img/icons/Logo2.png" height="51" alt="FirstCode" /></a>
+              <p class="text-light mt-4 mb-0">EU: +49 9999 0000</p>
+              <p class="text-light mb-0">US: +00 4444 0000</p>
+              <p class="text-light mt-4 mt-lg-5">info@firstcode.in.rs</p>
+              <div class="d-flex mt-3"><a href="#!"><img class="me-3" src="assets/img/gallery/linkedin-line1.svg" alt="LinkedIn" width="20" height="20" /></a><a href="#!"><img class="me-3" src="assets/img/gallery/facebook-line1.svg" alt="Facebook" width="20" height="20" /></a><a href="#!"><img class="me-3" src="assets/img/gallery/twitter-line1.svg" alt="Twitter" width="20" height="20" /></a><a href="#!"><img class="me-3" src="assets/img/gallery/instagram-line1.svg" alt="Instagram" width="20" height="20" /></a>
+              </div>
+            </div>
+            <div class="col-6 col-sm-4 col-lg-2 mb-3 order-2 order-sm-1">
+              <h5 class="lh-lg fw-bold text-light font-sans-serif footer-col-title">O nama</h5>
+              <ul class="list-unstyled text-light mb-md-4">
+                <li class="lh-lg"><a class="text-500 footer-link text-light" href="#!">Vesti</a></li>
+                <li class="lh-lg"><a class="text-500 footer-link text-light" href="#!">Blog</a></li>
+                <li class="lh-lg"><a class="text-500 footer-link text-light" href="#!">FirstCode API</a></li>
+                <li class="lh-lg"><a class="text-500 footer-link text-light" href="#!">Poklon kartice</a></li>
+                <li class="lh-lg"><a class="text-500 footer-link text-light" href="#!">Karijera</a></li>
+              </ul>
+            </div>
+            <div class="col-6 col-sm-4 col-lg-2 mb-3 order-3 order-sm-2">
+              <h5 class="lh-lg fw-bold text-light font-sans-serif footer-col-title">Ponuda</h5>
+              <ul class="list-unstyled text-light mb-md-4 mb-lg-0">
+                <li class="lh-lg"><a class="text-500 footer-link text-light" href="#!">FirstCode Eats</a></li>
+                <li class="lh-lg"><a class="text-500 footer-link text-light" href="#!">FirstCode Business</a></li>
+                <li class="lh-lg"><a class="text-500 footer-link text-light" href="#!">FirstCode Freight</a></li>
+                <li class="lh-lg"><a class="text-500 footer-link text-light" href="#!">FirstCode Health</a></li>
+              </ul>
+            </div>
+            <div class="col-12 col-sm-4 col-lg-2 mb-3 order-4 order-sm-3">
+              <h5 class="lh-lg fw-bold text-light font-sans-serif footer-col-title">Podrška</h5>
+              <ul class="list-unstyled text-light mb-md-4 mb-lg-0">
+                <li class="lh-lg"><a class="text-500 footer-link text-light" href="#!">Uslovi korišćenja</a></li>
+                <li class="lh-lg"><a class="text-500 footer-link text-light" href="#!">O nama</a></li>
+                <li class="lh-lg"><a class="text-500 footer-link text-light" href="#!">Kontakt</a></li>
+                <li class="lh-lg"><a class="text-500 footer-link text-light" href="#!">Pravila upotrebe</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- ============================================-->
+        <!-- <section> begin ============================-->
+        <section class="py-0 bg-1000">
+
+          <div class="container">
+            <div class="row justify-content-md-between justify-content-evenly py-3">
+              <div class="col-12 col-sm-8 col-md-6 col-lg-auto text-center text-md-start">
+                <p class="fs--1 my-2 fw-bold text-200">&copy; 2026 Drop Message</p>
+              </div>
+              <div class="col-12 col-sm-8 col-md-6">
+                <p class="fs--1 my-2 text-center text-md-end text-200"> Napravljeno sa&nbsp;
+                  <svg class="bi bi-suit-heart-fill" xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="#F95C19" viewBox="0 0 16 16">
+                    <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z"></path>
+                  </svg>&nbsp;od&nbsp;<a class="fw-bold text-info text-200" href="https://firstcode.in.rs/" target="_blank">FirstCode </a>
+                </p>
+              </div>
+            </div>
+          </div>
+          <!-- end of .container-->
+
+        </section>
+        <!-- <section> close ============================-->
+        <!-- ============================================-->
+
+
+      </section>
+    </main>
+    <!-- ===============================================-->
+    <!--    End of Main Content-->
+    <!-- ===============================================-->
+
+
+
+
+    <!-- ===============================================-->
+    <!--    JavaScripts-->
+    <!-- ===============================================-->
+    <script src="vendors/popper/popper.min.js"></script>
+    <script src="vendors/bootstrap/bootstrap.min.js"></script>
+    <script src="vendors/anchorjs/anchor.min.js"></script>
+    <script src="vendors/is/is.min.js"></script>
+    <script src="vendors/fontawesome/all.min.js"></script>
+    <script src="vendors/lodash/lodash.min.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=window.scroll"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.0/gsap.min.js"></script>
+    <script src="vendors/imagesloaded/imagesloaded.pkgd.js"></script>
+    <script src="vendors/gsap/customEase.js"></script>
+    <script src="vendors/gsap/scrollToPlugin.js"></script>
+    <!--script(src=`${CWD}vendors/gsap/drawSVGPlugin.js`)-->
+    <script src="assets/js/theme.js"></script>
+    <script>
+      const API_URL = "https://firstcode-auth-api-473383712022.europe-west1.run.app/api/delivery/extract-and-print?format=PREMIUM_A4_2x3";
+      const home = document.getElementById("home");
+      const form = document.getElementById("composer");
+      const prompt = document.getElementById("prompt");
+      const send = document.getElementById("send");
+      const suggestions = document.getElementById("suggestions");
+      const chat = document.getElementById("chat");
+      const objectUrls = [];
+      let busy = false;
+
+      function syncSendButton() {
+        send.disabled = prompt.value.trim().length === 0 || busy;
+      }
+
+      function resizePrompt() {
+        prompt.style.height = "auto";
+        prompt.style.height = Math.min(prompt.scrollHeight, 144) + "px";
+      }
+
+      function toNameFilename(name) {
+        const cleaned = String(name || "")
+          .trim()
+          .replace(/[\\/:*?"<>|]+/g, "")
+          .replace(/\s+/g, " ");
+        return cleaned ? cleaned + " dostava.pdf" : "dostava.pdf";
+      }
+
+      function filenameFrom(response, sourceText) {
+        const header = response.headers.get("Content-Disposition") || "";
+        const utf8 = /filename\*\s*=\s*UTF-8''([^;]+)/i.exec(header);
+        if (utf8) {
+          try {
+            return decodeURIComponent(utf8[1]).replace(/\s+delivery\.pdf$/i, " dostava.pdf");
+          } catch (e) { /* ignore */ }
+        }
+
+        const match = /filename="?([^";]+)"?/i.exec(header);
+        if (match && match[1] && !/^(delivery(-label)?|dostava)\.pdf$/i.test(match[1])) {
+          return match[1].replace(/\s+delivery\.pdf$/i, " dostava.pdf");
+        }
+
+        const fromText = /(?:deliver to|ship to|dostaviti za|pošalji za|for|za)\s+([A-ZČĆŽŠĐ][\p{L}'-]+(?:\s+[A-ZČĆŽŠĐ][\p{L}'-]+)+)/iu.exec(sourceText || "");
+        if (fromText) {
+          return toNameFilename(fromText[1]);
+        }
+
+        return "dostava.pdf";
+      }
+
+      function addMessage(role, content) {
+        chat.classList.add("is-visible");
+        home.classList.add("is-chatting");
+        const row = document.createElement("div");
+        row.className = "chat-row " + role;
+        const bubble = document.createElement("div");
+        bubble.className = "chat-bubble";
+        if (typeof content === "string") {
+          bubble.textContent = content;
+        } else {
+          bubble.appendChild(content);
+        }
+        row.appendChild(bubble);
+        chat.appendChild(row);
+        chat.scrollTop = chat.scrollHeight;
+        return { row, bubble };
+      }
+
+      function addUserMessage(text) {
+        const textEl = document.createElement("div");
+        textEl.className = "chat-text";
+        textEl.textContent = text;
+
+        const actions = document.createElement("div");
+        actions.className = "chat-actions";
+
+        const { bubble } = addMessage("user", textEl);
+        bubble.appendChild(actions);
+        return { bubble, actions };
+      }
+
+      function editSourceText(text) {
+        prompt.value = text;
+        resizePrompt();
+        syncSendButton();
+        prompt.focus();
+        prompt.setSelectionRange(prompt.value.length, prompt.value.length);
+      }
+
+      function showLoading(actions) {
+        actions.replaceChildren();
+        actions.classList.add("is-visible");
+        const loading = document.createElement("div");
+        loading.className = "chat-loading";
+        loading.innerHTML = '<span class="chat-loading-dots" aria-hidden="true"><span></span><span></span><span></span></span><span>Pripremam PDF</span>';
+        actions.appendChild(loading);
+      }
+
+      function iconButton(tag, icon, label) {
+        const el = document.createElement(tag);
+        el.className = "msg-btn";
+        el.setAttribute("aria-label", label);
+        el.title = label;
+        el.innerHTML = '<i class="fas ' + icon + '" aria-hidden="true"></i>';
+        return el;
+      }
+
+      function fillMessageActions(actions, sourceText, file) {
+        actions.replaceChildren();
+        actions.classList.add("is-visible");
+
+        if (file) {
+          const preview = iconButton("a", "fa-eye", "Pregled");
+          preview.href = file.url;
+          preview.target = "_blank";
+          preview.rel = "noopener";
+
+          const download = iconButton("a", "fa-download", "Preuzmi");
+          download.href = file.url;
+          download.download = file.filename;
+          actions.append(preview, download);
+        }
+
+        const edit = iconButton("button", "fa-pen", "Izmeni");
+        edit.type = "button";
+        edit.addEventListener("click", () => editSourceText(sourceText));
+        actions.appendChild(edit);
+      }
+
+      async function extractAndPrint(text) {
+        const response = await fetch(API_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/pdf",
+            "Accept-Language": "sr"
+          },
+          body: JSON.stringify({ text })
+        });
+
+        const type = response.headers.get("Content-Type") || "";
+        if (!response.ok) {
+          let message = "Nalepnica nije mogla da se kreira.";
+          if (type.includes("json")) {
+            const data = await response.json();
+            message = data.message || data.error || message;
+          }
+          throw new Error(message);
+        }
+
+        const bytes = await response.blob();
+        const pdf = new Blob([bytes], { type: "application/pdf" });
+        const url = URL.createObjectURL(pdf);
+        objectUrls.push(url);
+        return { url, filename: filenameFrom(response, text) };
+      }
+
+      async function submitText(text) {
+        if (busy) return;
+        const value = text.trim();
+        if (!value) return;
+
+        objectUrls.forEach((url) => URL.revokeObjectURL(url));
+        objectUrls.length = 0;
+        chat.replaceChildren();
+
+        const userMessage = addUserMessage(value);
+        showLoading(userMessage.actions);
+
+        prompt.value = "";
+        resizePrompt();
+        syncSendButton();
+
+        if (value.length < 10) {
+          const status = addMessage("assistant", "Tekst mora imati između 10 i 5000 karaktera.");
+          status.bubble.classList.add("is-error");
+          fillMessageActions(userMessage.actions, value);
+          return;
+        }
+
+        busy = true;
+        syncSendButton();
+        try {
+          const file = await extractAndPrint(value);
+          fillMessageActions(userMessage.actions, value, file);
+        } catch (error) {
+          const message = error && error.message === "Failed to fetch"
+            ? "Nije moguće povezati se sa servisom za dostavu. Proveri API adresu ili CORS."
+            : (error.message || "Nalepnica nije mogla da se kreira.");
+          const status = addMessage("assistant", message);
+          status.bubble.classList.add("is-error");
+          fillMessageActions(userMessage.actions, value);
+        } finally {
+          busy = false;
+          syncSendButton();
+          prompt.focus();
+        }
+      }
+
+      prompt.addEventListener("input", () => {
+        resizePrompt();
+        syncSendButton();
+      });
+
+      prompt.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" && !event.shiftKey) {
+          event.preventDefault();
+          form.requestSubmit();
+        }
+      });
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        submitText(prompt.value);
+      });
+
+      suggestions.addEventListener("click", (event) => {
+        const button = event.target.closest("button");
+        if (!button) return;
+        prompt.value = button.dataset.text;
+        resizePrompt();
+        syncSendButton();
+        prompt.focus();
+      });
+
+      syncSendButton();
+    </script>
+
+  </body>
+
+</html>
