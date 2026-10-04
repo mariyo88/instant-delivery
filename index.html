@@ -165,19 +165,26 @@
 
       .chat-actions.is-visible { display: flex; }
 
-      .chat-row.user .chat-actions .msg-btn {
+      .chat-row.user .chat-actions .msg-btn,
+      .delivery-card-actions .msg-btn,
+      .saved-panel-actions .msg-btn {
         display: inline-grid;
         place-items: center;
         width: 1.9rem;
         height: 1.9rem;
         padding: 0;
-        border: 1px solid rgba(255, 255, 255, 0.45);
+        border: 1px solid rgba(111, 66, 193, 0.28);
         border-radius: 50%;
         background: transparent;
-        color: rgba(255, 255, 255, 0.92);
+        color: #6f42c1;
         text-decoration: none;
         cursor: pointer;
         transition: all 0.2s ease;
+      }
+
+      .chat-row.user .chat-actions .msg-btn {
+        border-color: rgba(255, 255, 255, 0.45);
+        color: rgba(255, 255, 255, 0.92);
       }
 
       .chat-row.user .chat-actions .msg-btn:hover {
@@ -186,9 +193,174 @@
         border-color: #fff;
       }
 
-      .chat-row.user .chat-actions .msg-btn i {
+      .delivery-card-actions .msg-btn:hover,
+      .saved-panel-actions .msg-btn:hover {
+        background: #6f42c1;
+        color: #fff;
+        border-color: #6f42c1;
+      }
+
+      .chat-row.user .chat-actions .msg-btn i,
+      .delivery-card-actions .msg-btn i,
+      .saved-panel-actions .msg-btn i {
         font-size: 0.78rem;
       }
+
+      .delivery-card {
+        display: grid;
+        gap: 0.55rem;
+        min-width: min(100%, 18rem);
+      }
+
+      .delivery-card-title {
+        margin: 0;
+        color: #2c175e;
+        font: 700 0.98rem/1.35rem "Poppins", sans-serif;
+      }
+
+      .delivery-card-meta {
+        display: grid;
+        gap: 0.28rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        color: #5e5873;
+        font: 400 0.82rem/1.35rem "Poppins", sans-serif;
+      }
+
+      .delivery-card-meta li {
+        display: grid;
+        grid-template-columns: 1.1rem 1fr;
+        gap: 0.45rem;
+        align-items: start;
+      }
+
+      .delivery-card-meta i {
+        margin-top: 0.18rem;
+        color: #6f42c1;
+        font-size: 0.72rem;
+      }
+
+      .delivery-card-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        margin-top: 0.35rem;
+      }
+
+      .delivery-card-actions .action-btn,
+      .saved-panel-actions .action-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        border: 1px solid rgba(111, 66, 193, 0.28);
+        border-radius: 999px;
+        background: #fff;
+        color: #6f42c1;
+        padding: 0.35rem 0.75rem;
+        font: 600 0.75rem/1.2rem "Poppins", sans-serif;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .delivery-card-actions .action-btn:hover,
+      .saved-panel-actions .action-btn:hover {
+        background: #6f42c1;
+        color: #fff;
+      }
+
+      .delivery-card-actions .action-btn:disabled,
+      .saved-panel-actions .action-btn:disabled {
+        opacity: 0.5;
+        cursor: default;
+      }
+
+      .delivery-card-actions .action-btn.is-saved {
+        background: #6f42c1;
+        color: #fff;
+      }
+
+      .saved-panel {
+        display: none;
+        width: 100%;
+        max-width: 36rem;
+        margin-top: 1rem;
+        padding: 1rem;
+        border-radius: 1rem;
+        background: #fff;
+        border: 1px solid rgba(111, 66, 193, 0.14);
+        box-shadow: 0 0.35rem 1.25rem rgba(44, 23, 94, 0.08);
+        text-align: left;
+      }
+
+      .saved-panel.is-visible { display: block; }
+
+      .saved-panel-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+        margin-bottom: 0.75rem;
+      }
+
+      .saved-panel-header h2 {
+        margin: 0;
+        color: #2c175e;
+        font: 700 0.95rem/1.3rem "Poppins", sans-serif;
+      }
+
+      .saved-panel-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+      }
+
+      .saved-list {
+        display: grid;
+        gap: 0.55rem;
+        max-height: 14rem;
+        overflow-y: auto;
+      }
+
+      .saved-item {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 0.75rem;
+        padding: 0.7rem 0.8rem;
+        border-radius: 0.85rem;
+        background: rgba(111, 66, 193, 0.05);
+        border: 1px solid rgba(111, 66, 193, 0.1);
+      }
+
+      .saved-item-body {
+        min-width: 0;
+      }
+
+      .saved-item-title {
+        margin: 0 0 0.15rem;
+        color: #2c175e;
+        font: 600 0.85rem/1.3rem "Poppins", sans-serif;
+      }
+
+      .saved-item-meta {
+        margin: 0;
+        color: #7a738f;
+        font: 400 0.75rem/1.25rem "Poppins", sans-serif;
+      }
+
+      .saved-item-remove {
+        flex: 0 0 auto;
+        width: 1.75rem;
+        height: 1.75rem;
+        border: 0;
+        border-radius: 50%;
+        background: transparent;
+        color: #b0a8c4;
+        cursor: pointer;
+      }
+
+      .saved-item-remove:hover { color: #d9534f; background: rgba(217, 83, 79, 0.08); }
 
       .chat-loading {
         display: inline-flex;
@@ -245,7 +417,8 @@
 
         .agent-composer,
         .agent-suggestions,
-        .agent-chat {
+        .agent-chat,
+        .saved-panel {
           margin-left: auto;
           margin-right: auto;
           max-width: 100%;
@@ -363,19 +536,19 @@
           <div class="row align-items-center h-100 justify-content-center justify-content-lg-start">
             <div class="col-12 col-md-10 col-lg-8 col-xxl-6 text-md-start text-center py-4 py-md-6 pt-6 pt-md-8">
               <h1 class="fs-4 fs-md-5 fs-xxl-4" data-zanim-xs='{"delay":0.3}' data-zanim-trigger="scroll">Zdravo. Spreman da počnemo?</h1>
-              <p class="fs-1" data-zanim-xs='{"delay":0.5}' data-zanim-trigger="scroll">Nalepi poruku o dostavi, a FirstCode će izvući adresu i pripremiti PDF nalepnicu za štampu.</p>
+              <p class="fs-1" data-zanim-xs='{"delay":0.5}' data-zanim-trigger="scroll">Nalepi poruku o dostavi, a FirstCode će izvući adresu. Sačuvaj je u listu i odštampaj nalepnice grupno.</p>
 
               <form id="composer" class="agent-composer mt-4 mt-md-5 mx-auto mx-md-0" autocomplete="off" data-zanim-xs='{"delay":0.5}' data-zanim-trigger="scroll">
                 <label class="visually-hidden" for="prompt">Nalepi poruku o dostavi</label>
                 <textarea id="prompt" rows="1" placeholder="Nalepi poruku o dostavi" maxlength="5000"></textarea>
-                <button id="send" class="agent-send" type="submit" aria-label="Generiši nalepnicu" disabled>
+                <button id="send" class="agent-send" type="submit" aria-label="Izvuci adresu" disabled>
                   <i class="fas fa-arrow-up"></i>
                 </button>
               </form>
 
               <div id="suggestions" class="agent-suggestions mx-auto mx-md-0" data-zanim-xs='{"delay":0.6}' data-zanim-trigger="scroll">
                 <button type="button" data-text="Molimo dostaviti za Anu Petrović, Knez Mihailova 12, 11000 Beograd. Telefon +381 64 123 4567.">
-                  <i class="fas fa-tag me-1"></i><span class="d-none d-sm-inline">Odštampaj nalepnicu</span><span class="d-inline d-sm-none">Nalepnica</span>
+                  <i class="fas fa-tag me-1"></i><span class="d-none d-sm-inline">Izvuci adresu</span><span class="d-inline d-sm-none">Adresa</span>
                 </button>
                 <button type="button" data-text="Pouzeće 3500 RSD za Marka Jovića, Bulevar kralja Aleksandra 72, 11000 Beograd. Telefon +381 63 111 2222.">
                   <i class="fas fa-pen me-1"></i>Pouzeće
@@ -386,6 +559,21 @@
               </div>
 
               <div id="chat" class="agent-chat mx-auto mx-md-0" aria-live="polite"></div>
+
+              <div id="savedPanel" class="saved-panel mx-auto mx-md-0" data-zanim-xs='{"delay":0.7}' data-zanim-trigger="scroll">
+                <div class="saved-panel-header">
+                  <h2>Lista za štampu <span id="savedCount">(0)</span></h2>
+                  <div class="saved-panel-actions">
+                    <button id="printSaved" class="action-btn" type="button" disabled>
+                      <i class="fas fa-print" aria-hidden="true"></i> Odštampaj
+                    </button>
+                    <button id="clearSaved" class="action-btn" type="button" disabled>
+                      <i class="fas fa-trash" aria-hidden="true"></i> Obriši sve
+                    </button>
+                  </div>
+                </div>
+                <div id="savedList" class="saved-list"></div>
+              </div>
             </div>
           </div>
         </div>
@@ -485,13 +673,23 @@
     <!--script(src=`${CWD}vendors/gsap/drawSVGPlugin.js`)-->
     <script src="assets/js/theme.js"></script>
     <script>
-      const API_URL = "https://firstcode-auth-api-473383712022.europe-west1.run.app/api/delivery/extract-and-print?format=PREMIUM_A4_2x3";
+      const API_BASE = "https://firstcode-auth-api-473383712022.europe-west1.run.app";
+      const EXTRACT_URL = API_BASE + "/api/delivery/extract";
+      const PRINT_URL = API_BASE + "/api/print/delivery-labels";
+      const PRINT_FORMAT = "PREMIUM_A4_2x3";
+      const STORAGE_KEY = "firstcode.instantDeliveries";
+
       const home = document.getElementById("home");
       const form = document.getElementById("composer");
       const prompt = document.getElementById("prompt");
       const send = document.getElementById("send");
       const suggestions = document.getElementById("suggestions");
       const chat = document.getElementById("chat");
+      const savedPanel = document.getElementById("savedPanel");
+      const savedList = document.getElementById("savedList");
+      const savedCount = document.getElementById("savedCount");
+      const printSavedBtn = document.getElementById("printSaved");
+      const clearSavedBtn = document.getElementById("clearSaved");
       const objectUrls = [];
       let busy = false;
 
@@ -504,6 +702,50 @@
         prompt.style.height = Math.min(prompt.scrollHeight, 144) + "px";
       }
 
+      function loadSaved() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          const list = raw ? JSON.parse(raw) : [];
+          return Array.isArray(list) ? list : [];
+        } catch (e) {
+          return [];
+        }
+      }
+
+      function persistSaved(list) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+        renderSavedList();
+      }
+
+      function deliveryKey(delivery) {
+        return [
+          delivery.fullName || "",
+          delivery.streetAddress || "",
+          delivery.city || "",
+          delivery.phoneNumber || "",
+          delivery.codAmount || ""
+        ].join("|").toLowerCase();
+      }
+
+      function isAlreadySaved(delivery) {
+        const key = deliveryKey(delivery);
+        return loadSaved().some((item) => deliveryKey(item.delivery) === key);
+      }
+
+      function toPrintAddress(delivery) {
+        return {
+          name: delivery.fullName || "Bez imena",
+          street: delivery.streetAddress || "-",
+          city: delivery.city || "-",
+          zip: delivery.postalCode || "",
+          phone: delivery.phoneNumber || "-",
+          country: delivery.country || "Serbia",
+          payerType: delivery.payerType || null,
+          codAmount: delivery.codAmount != null ? delivery.codAmount : null,
+          email: delivery.email || null
+        };
+      }
+
       function toNameFilename(name) {
         const cleaned = String(name || "")
           .trim()
@@ -512,26 +754,18 @@
         return cleaned ? cleaned + " dostava.pdf" : "dostava.pdf";
       }
 
-      function filenameFrom(response, sourceText) {
-        const header = response.headers.get("Content-Disposition") || "";
-        const utf8 = /filename\*\s*=\s*UTF-8''([^;]+)/i.exec(header);
-        if (utf8) {
-          try {
-            return decodeURIComponent(utf8[1]).replace(/\s+delivery\.pdf$/i, " dostava.pdf");
-          } catch (e) { /* ignore */ }
-        }
+      function formatMoney(value) {
+        if (value == null || value === "") return "";
+        const num = Number(value);
+        if (Number.isNaN(num)) return String(value);
+        return num.toLocaleString("sr-RS") + " RSD";
+      }
 
-        const match = /filename="?([^";]+)"?/i.exec(header);
-        if (match && match[1] && !/^(delivery(-label)?|dostava)\.pdf$/i.test(match[1])) {
-          return match[1].replace(/\s+delivery\.pdf$/i, " dostava.pdf");
-        }
-
-        const fromText = /(?:deliver to|ship to|dostaviti za|pošalji za|for|za)\s+([A-ZČĆŽŠĐ][\p{L}'-]+(?:\s+[A-ZČĆŽŠĐ][\p{L}'-]+)+)/iu.exec(sourceText || "");
-        if (fromText) {
-          return toNameFilename(fromText[1]);
-        }
-
-        return "dostava.pdf";
+      function formatPayer(value) {
+        if (!value) return "";
+        if (value === "SENDER") return "Pošiljalac";
+        if (value === "RECEIVER") return "Primalac";
+        return value;
       }
 
       function addMessage(role, content) {
@@ -578,7 +812,7 @@
         actions.classList.add("is-visible");
         const loading = document.createElement("div");
         loading.className = "chat-loading";
-        loading.innerHTML = '<span class="chat-loading-dots" aria-hidden="true"><span></span><span></span><span></span></span><span>Pripremam PDF</span>';
+        loading.innerHTML = '<span class="chat-loading-dots" aria-hidden="true"><span></span><span></span><span></span></span><span>Izvlačim adresu</span>';
         actions.appendChild(loading);
       }
 
@@ -591,21 +825,9 @@
         return el;
       }
 
-      function fillMessageActions(actions, sourceText, file) {
+      function fillMessageActions(actions, sourceText) {
         actions.replaceChildren();
         actions.classList.add("is-visible");
-
-        if (file) {
-          const preview = iconButton("a", "fa-eye", "Pregled");
-          preview.href = file.url;
-          preview.target = "_blank";
-          preview.rel = "noopener";
-
-          const download = iconButton("a", "fa-download", "Preuzmi");
-          download.href = file.url;
-          download.download = file.filename;
-          actions.append(preview, download);
-        }
 
         const edit = iconButton("button", "fa-pen", "Izmeni");
         edit.type = "button";
@@ -613,20 +835,180 @@
         actions.appendChild(edit);
       }
 
-      async function extractAndPrint(text) {
-        const response = await fetch(API_URL, {
+      function metaItem(icon, text) {
+        if (!text) return null;
+        const li = document.createElement("li");
+        li.innerHTML = '<i class="fas ' + icon + '" aria-hidden="true"></i><span></span>';
+        li.querySelector("span").textContent = text;
+        return li;
+      }
+
+      function createDeliveryCard(delivery, sourceText) {
+        const card = document.createElement("div");
+        card.className = "delivery-card";
+
+        const title = document.createElement("h3");
+        title.className = "delivery-card-title";
+        title.textContent = delivery.fullName || "Bez imena";
+
+        const meta = document.createElement("ul");
+        meta.className = "delivery-card-meta";
+
+        const addressParts = [delivery.streetAddress, [delivery.postalCode, delivery.city].filter(Boolean).join(" "), delivery.country]
+          .filter(Boolean)
+          .join(", ");
+
+        [
+          metaItem("fa-phone", delivery.phoneNumber),
+          metaItem("fa-envelope", delivery.email),
+          metaItem("fa-map-marker-alt", addressParts),
+          metaItem("fa-money-bill", delivery.codAmount != null ? "Pouzeće: " + formatMoney(delivery.codAmount) : ""),
+          metaItem("fa-user-check", delivery.payerType ? "Plaća: " + formatPayer(delivery.payerType) : "")
+        ].forEach((item) => {
+          if (item) meta.appendChild(item);
+        });
+
+        const actions = document.createElement("div");
+        actions.className = "delivery-card-actions";
+
+        const saveBtn = document.createElement("button");
+        saveBtn.type = "button";
+        saveBtn.className = "action-btn";
+        const saved = isAlreadySaved(delivery);
+        saveBtn.classList.toggle("is-saved", saved);
+        saveBtn.innerHTML = saved
+          ? '<i class="fas fa-check" aria-hidden="true"></i> Sačuvano'
+          : '<i class="fas fa-bookmark" aria-hidden="true"></i> Sačuvaj';
+        saveBtn.disabled = saved;
+        saveBtn.addEventListener("click", () => {
+          saveDelivery(delivery, sourceText);
+          saveBtn.classList.add("is-saved");
+          saveBtn.disabled = true;
+          saveBtn.innerHTML = '<i class="fas fa-check" aria-hidden="true"></i> Sačuvano';
+        });
+
+        const printBtn = document.createElement("button");
+        printBtn.type = "button";
+        printBtn.className = "action-btn";
+        printBtn.innerHTML = '<i class="fas fa-print" aria-hidden="true"></i> Odštampaj';
+        printBtn.addEventListener("click", async () => {
+          printBtn.disabled = true;
+          try {
+            const file = await printDeliveries([delivery], toNameFilename(delivery.fullName));
+            window.open(file.url, "_blank", "noopener");
+          } catch (error) {
+            alert(error.message || "Štampa nije uspela.");
+          } finally {
+            printBtn.disabled = false;
+          }
+        });
+
+        actions.append(saveBtn, printBtn);
+        card.append(title, meta, actions);
+        return card;
+      }
+
+      function saveDelivery(delivery, sourceText) {
+        if (isAlreadySaved(delivery)) {
+          renderSavedList();
+          return;
+        }
+
+        const list = loadSaved();
+        list.unshift({
+          id: (crypto.randomUUID && crypto.randomUUID()) || String(Date.now()) + Math.random(),
+          savedAt: new Date().toISOString(),
+          sourceText: sourceText || "",
+          delivery: delivery
+        });
+        persistSaved(list);
+      }
+
+      function removeSaved(id) {
+        persistSaved(loadSaved().filter((item) => item.id !== id));
+      }
+
+      function renderSavedList() {
+        const list = loadSaved();
+        savedCount.textContent = "(" + list.length + ")";
+        printSavedBtn.disabled = list.length === 0 || busy;
+        clearSavedBtn.disabled = list.length === 0 || busy;
+        savedPanel.classList.toggle("is-visible", list.length > 0);
+        savedList.replaceChildren();
+
+        list.forEach((item) => {
+          const row = document.createElement("div");
+          row.className = "saved-item";
+
+          const body = document.createElement("div");
+          body.className = "saved-item-body";
+
+          const title = document.createElement("p");
+          title.className = "saved-item-title";
+          title.textContent = item.delivery.fullName || "Bez imena";
+
+          const meta = document.createElement("p");
+          meta.className = "saved-item-meta";
+          meta.textContent = [item.delivery.streetAddress, item.delivery.city, item.delivery.phoneNumber]
+            .filter(Boolean)
+            .join(" · ");
+
+          body.append(title, meta);
+
+          const remove = document.createElement("button");
+          remove.type = "button";
+          remove.className = "saved-item-remove";
+          remove.setAttribute("aria-label", "Ukloni");
+          remove.title = "Ukloni";
+          remove.innerHTML = '<i class="fas fa-times" aria-hidden="true"></i>';
+          remove.addEventListener("click", () => removeSaved(item.id));
+
+          row.append(body, remove);
+          savedList.appendChild(row);
+        });
+      }
+
+      async function extractDelivery(text) {
+        const response = await fetch(EXTRACT_URL, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "Accept": "application/pdf",
+            "Accept": "application/json",
             "Accept-Language": "sr"
           },
           body: JSON.stringify({ text })
         });
 
         const type = response.headers.get("Content-Type") || "";
+        const data = type.includes("json") ? await response.json() : null;
+
         if (!response.ok) {
-          let message = "Nalepnica nije mogla da se kreira.";
+          throw new Error((data && (data.message || data.error)) || "Adresa nije mogla da se izvuče.");
+        }
+
+        if (!data || !data.fullName || !data.streetAddress || !data.city) {
+          throw new Error("Servis nije vratio kompletnu adresu dostave.");
+        }
+
+        return data;
+      }
+
+      async function printDeliveries(deliveries, filename) {
+        const response = await fetch(PRINT_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/pdf"
+          },
+          body: JSON.stringify({
+            addresses: deliveries.map(toPrintAddress),
+            format: PRINT_FORMAT
+          })
+        });
+
+        const type = response.headers.get("Content-Type") || "";
+        if (!response.ok) {
+          let message = "Štampa nije uspela.";
           if (type.includes("json")) {
             const data = await response.json();
             message = data.message || data.error || message;
@@ -638,7 +1020,7 @@
         const pdf = new Blob([bytes], { type: "application/pdf" });
         const url = URL.createObjectURL(pdf);
         objectUrls.push(url);
-        return { url, filename: filenameFrom(response, text) };
+        return { url, filename: filename || "dostave.pdf" };
       }
 
       async function submitText(text) {
@@ -666,19 +1048,22 @@
 
         busy = true;
         syncSendButton();
+        renderSavedList();
         try {
-          const file = await extractAndPrint(value);
-          fillMessageActions(userMessage.actions, value, file);
+          const delivery = await extractDelivery(value);
+          fillMessageActions(userMessage.actions, value);
+          addMessage("assistant", createDeliveryCard(delivery, value));
         } catch (error) {
           const message = error && error.message === "Failed to fetch"
             ? "Nije moguće povezati se sa servisom za dostavu. Proveri API adresu ili CORS."
-            : (error.message || "Nalepnica nije mogla da se kreira.");
+            : (error.message || "Adresa nije mogla da se izvuče.");
           const status = addMessage("assistant", message);
           status.bubble.classList.add("is-error");
           fillMessageActions(userMessage.actions, value);
         } finally {
           busy = false;
           syncSendButton();
+          renderSavedList();
           prompt.focus();
         }
       }
@@ -709,7 +1094,41 @@
         prompt.focus();
       });
 
+      printSavedBtn.addEventListener("click", async () => {
+        const list = loadSaved();
+        if (!list.length || busy) return;
+
+        busy = true;
+        syncSendButton();
+        renderSavedList();
+        printSavedBtn.disabled = true;
+        printSavedBtn.innerHTML = '<i class="fas fa-spinner fa-spin" aria-hidden="true"></i> Štampam';
+
+        try {
+          const file = await printDeliveries(
+            list.map((item) => item.delivery),
+            list.length === 1 ? toNameFilename(list[0].delivery.fullName) : "grupne-dostave.pdf"
+          );
+          window.open(file.url, "_blank", "noopener");
+        } catch (error) {
+          alert(error.message || "Grupna štampa nije uspela.");
+        } finally {
+          busy = false;
+          printSavedBtn.innerHTML = '<i class="fas fa-print" aria-hidden="true"></i> Odštampaj';
+          syncSendButton();
+          renderSavedList();
+        }
+      });
+
+      clearSavedBtn.addEventListener("click", () => {
+        if (!loadSaved().length) return;
+        if (confirm("Obrisati celu listu za štampu?")) {
+          persistSaved([]);
+        }
+      });
+
       syncSendButton();
+      renderSavedList();
     </script>
 
   </body>
