@@ -22,7 +22,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicons/favicon.ico">
     <link rel="manifest" href="assets/img/favicons/site.webmanifest">
     <meta name="msapplication-TileImage" content="assets/img/favicons/mstile-150x150.png">
-    <meta name="theme-color" content="#ffffff">
+    <meta name="theme-color" content="#6E46F5">
 
 
     <!-- ===============================================-->
@@ -35,17 +35,21 @@
     <link href="assets/css/user.css" rel="stylesheet" />
     <style>
       :root {
-        --gohub-primary: #de3a2a;
-        --gohub-primary-rgb: 222, 58, 42;
-        --gohub-secondary: #f99634;
-        --gohub-secondary-rgb: 249, 150, 52;
-        --gohub-info: #f99634;
-        --gohub-info-rgb: 249, 150, 52;
-        --gohub-light: #fff1ea;
-        --gohub-light-rgb: 255, 241, 234;
-        --gohub-headings-color: #2a1612;
-        --gohub-body-color: #5c524e;
-        --gohub-body-color-rgb: 92, 82, 78;
+        --gohub-primary: #6E46F5;
+        --gohub-primary-rgb: 110, 70, 245;
+        --gohub-secondary: #4F7DFF;
+        --gohub-secondary-rgb: 79, 125, 255;
+        --gohub-info: #4F7DFF;
+        --gohub-info-rgb: 79, 125, 255;
+        --gohub-light: #F4F2FF;
+        --gohub-light-rgb: 244, 242, 255;
+        --gohub-headings-color: #1B1638;
+        --gohub-body-color: #534E6C;
+        --gohub-body-color-rgb: 83, 78, 108;
+        --gohub-link-color: #6E46F5;
+        --gohub-link-hover-color: #5834D6;
+        --fc-gradient: linear-gradient(135deg, #4F7DFF 0%, #7A45F5 74%);
+        --fc-gradient-hover: linear-gradient(135deg, #3E68E6 0%, #6236D4 74%);
       }
 
       .agent-home {
@@ -72,10 +76,16 @@
         width: 100%;
         max-width: none;
         padding: 0.85rem 0.8rem 0.85rem 1.25rem;
-        border: 1.5px solid rgba(222, 58, 42, 0.28);
+        border: 1.5px solid rgba(110, 70, 245, 0.28);
         border-radius: 1.75rem;
         background: #fff;
-        box-shadow: 0 0.65rem 2rem rgba(42, 22, 18, 0.14);
+        box-shadow: 0 0.65rem 2rem rgba(27, 22, 56, 0.14);
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .agent-composer:focus-within {
+        border-color: rgba(79, 125, 255, 0.65);
+        box-shadow: 0 0.65rem 2rem rgba(27, 22, 56, 0.14), 0 0 0 4px rgba(110, 70, 245, 0.12);
       }
 
       .agent-composer textarea {
@@ -88,11 +98,11 @@
         outline: none;
         resize: none;
         background: transparent;
-        color: #5c524e;
+        color: #534E6C;
         font: 400 0.95rem/1.5rem "Poppins", sans-serif;
       }
 
-      .agent-composer textarea::placeholder { color: #c4b3ab; }
+      .agent-composer textarea::placeholder { color: #B7B2C8; }
 
       .agent-send {
         flex: 0 0 auto;
@@ -100,13 +110,13 @@
         height: 2.85rem;
         border: 0;
         border-radius: 50%;
-        background: linear-gradient(135deg, #f08a2a 0%, #de3a2a 70%);
+        background: var(--fc-gradient);
         color: #fff;
         cursor: pointer;
         transition: background 0.2s ease, opacity 0.2s ease;
       }
 
-      .agent-send:hover:not(:disabled) { background: linear-gradient(135deg, #e06a18 0%, #c42e1c 70%); }
+      .agent-send:hover:not(:disabled) { background: var(--fc-gradient-hover); }
       .agent-send:disabled { opacity: 0.5; cursor: default; }
 
       .agent-suggestions {
@@ -120,10 +130,10 @@
       .agent-suggestions button {
         display: inline-flex;
         align-items: center;
-        border: 1px solid rgba(222, 58, 42, 0.14);
+        border: 1px solid rgba(110, 70, 245, 0.14);
         border-radius: 999px;
-        background: rgba(222, 58, 42, 0.04);
-        color: #c2654e;
+        background: rgba(110, 70, 245, 0.04);
+        color: #6556B8;
         padding: 0.28rem 0.7rem;
         font: 500 0.72rem/1.1rem "Poppins", sans-serif;
         cursor: pointer;
@@ -136,9 +146,9 @@
       }
 
       .agent-suggestions button:hover {
-        background: rgba(222, 58, 42, 0.1);
-        border-color: rgba(222, 58, 42, 0.28);
-        color: #de3a2a;
+        background: rgba(110, 70, 245, 0.1);
+        border-color: rgba(110, 70, 245, 0.28);
+        color: #6E46F5;
       }
 
       .agent-chat {
@@ -150,8 +160,8 @@
         padding: 1rem;
         overflow: visible;
         border-radius: 1rem;
-        background: rgba(222, 58, 42, 0.06);
-        border: 1px solid rgba(222, 58, 42, 0.12);
+        background: rgba(110, 70, 245, 0.06);
+        border: 1px solid rgba(110, 70, 245, 0.12);
         text-align: left;
       }
 
@@ -177,15 +187,15 @@
       }
 
       .chat-row.user .chat-bubble {
-        background: #de3a2a;
+        background: var(--fc-gradient);
         color: #fff;
         border-bottom-right-radius: 0.35rem;
       }
 
       .chat-row.assistant .chat-bubble {
         background: #fff;
-        color: #5c524e;
-        border: 1px solid rgba(222, 58, 42, 0.12);
+        color: #534E6C;
+        border: 1px solid rgba(110, 70, 245, 0.12);
         border-bottom-left-radius: 0.35rem;
       }
 
@@ -212,33 +222,33 @@
         width: 1.9rem;
         height: 1.9rem;
         padding: 0;
-        border: 1px solid rgba(222, 58, 42, 0.28);
+        border: 1px solid rgba(110, 70, 245, 0.28);
         border-radius: 50%;
         background: transparent;
-        color: #de3a2a;
+        color: #6E46F5;
         text-decoration: none;
         cursor: pointer;
         transition: all 0.2s ease;
       }
 
       .chat-row.user .chat-actions .msg-btn {
-        border-color: rgba(222, 58, 42, 0.28);
+        border-color: rgba(110, 70, 245, 0.28);
         background: #fff;
-        color: #de3a2a;
-        box-shadow: 0 0.2rem 0.55rem rgba(42, 22, 18, 0.08);
+        color: #6E46F5;
+        box-shadow: 0 0.2rem 0.55rem rgba(27, 22, 56, 0.08);
       }
 
       .chat-row.user .chat-actions .msg-btn:hover {
-        background: #de3a2a;
+        background: #6E46F5;
         color: #fff;
-        border-color: #de3a2a;
+        border-color: #6E46F5;
       }
 
       .delivery-card-actions .msg-btn:hover,
       .saved-panel-actions .msg-btn:hover {
-        background: #de3a2a;
+        background: #6E46F5;
         color: #fff;
-        border-color: #de3a2a;
+        border-color: #6E46F5;
       }
 
       .chat-row.user .chat-actions .msg-btn i,
@@ -256,7 +266,7 @@
 
       .delivery-card-title {
         margin: 0;
-        color: #2a1612;
+        color: #1B1638;
         font: 700 0.98rem/1.35rem "Poppins", sans-serif;
       }
 
@@ -266,7 +276,7 @@
         margin: 0;
         padding: 0;
         list-style: none;
-        color: #5c524e;
+        color: #534E6C;
         font: 400 0.82rem/1.35rem "Poppins", sans-serif;
       }
 
@@ -279,7 +289,7 @@
 
       .delivery-card-meta i {
         margin-top: 0.18rem;
-        color: #de3a2a;
+        color: #6E46F5;
         font-size: 0.72rem;
       }
 
@@ -296,10 +306,10 @@
         display: inline-flex;
         align-items: center;
         gap: 0.35rem;
-        border: 1px solid rgba(222, 58, 42, 0.28);
+        border: 1px solid rgba(110, 70, 245, 0.28);
         border-radius: 999px;
         background: #fff;
-        color: #de3a2a;
+        color: #6E46F5;
         padding: 0.35rem 0.75rem;
         font: 600 0.75rem/1.2rem "Poppins", sans-serif;
         cursor: pointer;
@@ -309,7 +319,7 @@
       .delivery-card-actions .action-btn:hover,
       .saved-panel-actions .action-btn:hover,
       .edit-modal-actions .action-btn:hover {
-        background: #de3a2a;
+        background: #6E46F5;
         color: #fff;
       }
 
@@ -321,7 +331,7 @@
       }
 
       .delivery-card-actions .action-btn.is-saved {
-        background: #de3a2a;
+        background: var(--fc-gradient);
         color: #fff;
       }
 
@@ -333,15 +343,15 @@
         border-radius: 1.15rem;
         background: rgba(255, 255, 255, 0.92);
         backdrop-filter: blur(10px);
-        border: 1px solid rgba(222, 58, 42, 0.14);
-        box-shadow: 0 0.45rem 1.5rem rgba(42, 22, 18, 0.1);
+        border: 1px solid rgba(110, 70, 245, 0.14);
+        box-shadow: 0 0.45rem 1.5rem rgba(27, 22, 56, 0.1);
         text-align: left;
       }
 
       .print-settings {
         margin-bottom: 0.85rem;
         padding-bottom: 0.85rem;
-        border-bottom: 1px solid rgba(222, 58, 42, 0.12);
+        border-bottom: 1px solid rgba(110, 70, 245, 0.12);
       }
 
       .print-settings-toggle {
@@ -354,7 +364,7 @@
         padding: 0.45rem 0.15rem;
         border: 0;
         background: transparent;
-        color: #de3a2a;
+        color: #6E46F5;
         cursor: pointer;
         text-align: left;
       }
@@ -377,13 +387,13 @@
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        color: #a8928a;
+        color: #8B86A3;
         font: 500 0.75rem/1.2rem "Poppins", sans-serif;
         text-align: right;
       }
 
       .print-settings-chevron {
-        color: #c4b3ab;
+        color: #B7B2C8;
         font-size: 0.7rem;
         transition: transform 0.18s ease;
       }
@@ -412,7 +422,7 @@
 
       .print-settings label,
       .print-settings-label {
-        color: #7d6e68;
+        color: #6F6A86;
         font: 600 0.72rem/1rem "Poppins", sans-serif;
         text-transform: uppercase;
         letter-spacing: 0.03em;
@@ -420,10 +430,10 @@
 
       .print-settings select {
         width: 100%;
-        border: 1px solid rgba(222, 58, 42, 0.22);
+        border: 1px solid rgba(110, 70, 245, 0.22);
         border-radius: 0.75rem;
         background: #fff;
-        color: #2a1612;
+        color: #1B1638;
         padding: 0.45rem 0.65rem;
         font: 500 0.8rem/1.2rem "Poppins", sans-serif;
         outline: none;
@@ -431,8 +441,8 @@
       }
 
       .print-settings select:focus {
-        border-color: #de3a2a;
-        box-shadow: 0 0 0 3px rgba(222, 58, 42, 0.12);
+        border-color: #6E46F5;
+        box-shadow: 0 0 0 3px rgba(110, 70, 245, 0.12);
       }
 
       .lang-toggle {
@@ -440,16 +450,16 @@
         grid-template-columns: 1fr 1fr;
         gap: 0.25rem;
         padding: 0.2rem;
-        border: 1px solid rgba(222, 58, 42, 0.22);
+        border: 1px solid rgba(110, 70, 245, 0.22);
         border-radius: 0.75rem;
-        background: rgba(222, 58, 42, 0.05);
+        background: rgba(110, 70, 245, 0.05);
       }
 
       .lang-toggle button {
         border: 0;
         border-radius: 0.6rem;
         background: transparent;
-        color: #7d6e68;
+        color: #6F6A86;
         padding: 0.4rem 0.5rem;
         font: 700 0.78rem/1.1rem "Poppins", sans-serif;
         cursor: pointer;
@@ -457,13 +467,13 @@
       }
 
       .lang-toggle button.is-active {
-        background: #de3a2a;
+        background: var(--fc-gradient);
         color: #fff;
-        box-shadow: 0 0.2rem 0.55rem rgba(222, 58, 42, 0.28);
+        box-shadow: 0 0.2rem 0.55rem rgba(110, 70, 245, 0.28);
       }
 
       .lang-toggle button:not(.is-active):hover {
-        color: #2a1612;
+        color: #1B1638;
         background: rgba(255, 255, 255, 0.7);
       }
 
@@ -482,7 +492,7 @@
       .saved-empty {
         margin: 0;
         padding: 0.85rem 0.2rem 0.2rem;
-        color: #a8928a;
+        color: #8B86A3;
         font: 400 0.8rem/1.35rem "Poppins", sans-serif;
       }
 
@@ -498,7 +508,7 @@
 
       .saved-panel-header h2 {
         margin: 0;
-        color: #a8928a;
+        color: #8B86A3;
         font: 600 0.72rem/1rem "Poppins", sans-serif;
         text-transform: uppercase;
         letter-spacing: 0.03em;
@@ -511,7 +521,7 @@
       .saved-select-all {
         border: 0;
         background: transparent;
-        color: #de3a2a;
+        color: #6E46F5;
         padding: 0;
         font: 600 0.72rem/1rem "Poppins", sans-serif;
         cursor: pointer;
@@ -559,7 +569,7 @@
       }
 
       .saved-pagination-info {
-        color: #a8928a;
+        color: #8B86A3;
         font: 500 0.72rem/1rem "Poppins", sans-serif;
       }
 
@@ -574,18 +584,18 @@
         place-items: center;
         width: 1.85rem;
         height: 1.85rem;
-        border: 1px solid rgba(222, 58, 42, 0.22);
+        border: 1px solid rgba(110, 70, 245, 0.22);
         border-radius: 50%;
         background: #fff;
-        color: #de3a2a;
+        color: #6E46F5;
         cursor: pointer;
         transition: all 0.18s ease;
       }
 
       .saved-page-btn:hover:not(:disabled) {
-        background: #de3a2a;
+        background: #6E46F5;
         color: #fff;
-        border-color: #de3a2a;
+        border-color: #6E46F5;
       }
 
       .saved-page-btn:disabled {
@@ -640,21 +650,21 @@
         min-height: var(--saved-item-h, 3.65rem);
         padding: 0.55rem 0.45rem 0.55rem 0.8rem;
         border-radius: 0.85rem;
-        background: rgba(222, 58, 42, 0.05);
-        border: 1px solid rgba(222, 58, 42, 0.1);
+        background: rgba(110, 70, 245, 0.05);
+        border: 1px solid rgba(110, 70, 245, 0.1);
         cursor: pointer;
         transition: background 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
         user-select: none;
       }
 
       .saved-item:hover {
-        background: rgba(222, 58, 42, 0.1);
-        border-color: rgba(222, 58, 42, 0.22);
+        background: rgba(110, 70, 245, 0.1);
+        border-color: rgba(110, 70, 245, 0.22);
       }
 
       .saved-item.is-selected {
-        background: rgba(222, 58, 42, 0.14);
-        border-color: #de3a2a;
+        background: rgba(110, 70, 245, 0.14);
+        border-color: #6E46F5;
       }
 
       .saved-item-body {
@@ -679,13 +689,13 @@
         border: 0;
         border-radius: 50%;
         background: transparent;
-        color: #c4b3ab;
+        color: #B7B2C8;
         cursor: pointer;
       }
 
       .saved-item-edit:hover {
-        color: #de3a2a;
-        background: rgba(222, 58, 42, 0.1);
+        color: #6E46F5;
+        background: rgba(110, 70, 245, 0.1);
       }
 
       .saved-item-remove:hover {
@@ -701,7 +711,7 @@
         align-items: center;
         justify-content: center;
         padding: 1rem;
-        background: rgba(42, 22, 18, 0.45);
+        background: rgba(27, 22, 56, 0.45);
         backdrop-filter: blur(4px);
       }
 
@@ -713,7 +723,7 @@
         overflow: auto;
         border-radius: 1.15rem;
         background: #fff;
-        box-shadow: 0 1rem 2.5rem rgba(42, 22, 18, 0.22);
+        box-shadow: 0 1rem 2.5rem rgba(27, 22, 56, 0.22);
         padding: 1.15rem 1.2rem 1.2rem;
       }
 
@@ -727,7 +737,7 @@
 
       .edit-modal-header h3 {
         margin: 0;
-        color: #2a1612;
+        color: #1B1638;
         font: 700 1rem/1.35rem "Poppins", sans-serif;
       }
 
@@ -736,13 +746,13 @@
         height: 2rem;
         border: 0;
         border-radius: 50%;
-        background: rgba(222, 58, 42, 0.08);
-        color: #de3a2a;
+        background: rgba(110, 70, 245, 0.08);
+        color: #6E46F5;
         cursor: pointer;
       }
 
       .edit-modal-close:hover {
-        background: rgba(222, 58, 42, 0.16);
+        background: rgba(110, 70, 245, 0.16);
       }
 
       .edit-form {
@@ -760,7 +770,7 @@
         display: grid;
         gap: 0.28rem;
         margin: 0;
-        color: #7d6e68;
+        color: #6F6A86;
         font: 600 0.72rem/1rem "Poppins", sans-serif;
         text-transform: uppercase;
         letter-spacing: 0.03em;
@@ -771,10 +781,10 @@
       .edit-form input,
       .edit-form select {
         width: 100%;
-        border: 1px solid rgba(222, 58, 42, 0.22);
+        border: 1px solid rgba(110, 70, 245, 0.22);
         border-radius: 0.75rem;
         background: #fff;
-        color: #2a1612;
+        color: #1B1638;
         padding: 0.55rem 0.7rem;
         font: 500 0.88rem/1.25rem "Poppins", sans-serif;
         outline: none;
@@ -782,8 +792,8 @@
 
       .edit-form input:focus,
       .edit-form select:focus {
-        border-color: #de3a2a;
-        box-shadow: 0 0 0 3px rgba(222, 58, 42, 0.12);
+        border-color: #6E46F5;
+        box-shadow: 0 0 0 3px rgba(110, 70, 245, 0.12);
       }
 
       .edit-modal-actions {
@@ -795,9 +805,9 @@
       }
 
       .edit-modal-actions .action-btn.is-primary {
-        background: #de3a2a;
+        background: var(--fc-gradient);
         color: #fff;
-        border-color: #de3a2a;
+        border-color: transparent;
       }
 
       .edit-modal-actions .action-btn.is-danger {
@@ -820,7 +830,7 @@
 
       .confirm-modal-message {
         margin: 0 0 1rem;
-        color: #5c524e;
+        color: #534E6C;
         font: 400 0.9rem/1.45rem "Poppins", sans-serif;
       }
 
@@ -845,13 +855,13 @@
 
       .saved-item-title {
         margin: 0 0 0.1rem;
-        color: #2a1612;
+        color: #1B1638;
         font: 600 0.82rem/1.15rem "Poppins", sans-serif;
       }
 
       .saved-item-meta {
         margin: 0;
-        color: #7d6e68;
+        color: #6F6A86;
         font: 400 0.72rem/1.1rem "Poppins", sans-serif;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -862,7 +872,7 @@
         display: inline-flex;
         align-items: center;
         gap: 0.45rem;
-        color: #de3a2a;
+        color: #6E46F5;
         font-size: 0.75rem;
         font-weight: 500;
       }
@@ -876,7 +886,7 @@
         width: 0.28rem;
         height: 0.28rem;
         border-radius: 50%;
-        background: rgba(222, 58, 42, 0.75);
+        background: rgba(110, 70, 245, 0.75);
         animation: chat-dot 1s infinite ease-in-out;
       }
 
@@ -927,7 +937,7 @@
           padding: 0.85rem 0.75rem 0.85rem 1.05rem;
           border-radius: 1.45rem;
           border-width: 1.5px;
-          box-shadow: 0 0.55rem 1.5rem rgba(42, 22, 18, 0.14);
+          box-shadow: 0 0.55rem 1.5rem rgba(27, 22, 56, 0.14);
         }
 
         .agent-composer textarea {
@@ -1019,7 +1029,7 @@
 
         .saved-panel-actions {
           padding-top: 0.75rem;
-          border-top: 1px solid rgba(222, 58, 42, 0.12);
+          border-top: 1px solid rgba(110, 70, 245, 0.12);
         }
 
         .delivery-card-actions .action-btn,
@@ -1044,18 +1054,38 @@
       }
 
       html {
-        background-color: #16110f;
+        background-color: #141228;
       }
 
       body {
-        background-color: #fffaf7;
+        background-color: #F4F2FF;
+        background-image:
+          radial-gradient(ellipse 48% 36% at 6% 0%, rgba(79, 125, 255, 0.2), transparent 64%),
+          radial-gradient(ellipse 44% 34% at 98% 2%, rgba(122, 69, 245, 0.18), transparent 60%);
         overflow-x: hidden;
+        color: #534E6C;
+      }
+
+      ::selection {
+        background: rgba(110, 70, 245, 0.22);
+        color: #1B1638;
+      }
+
+      .navbar.fixed-top {
+        background: rgba(244, 242, 255, 0.84);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        box-shadow: inset 0 -1px 0 rgba(110, 70, 245, 0.12);
+      }
+
+      .agent-home h1 {
+        color: #1B1638;
       }
 
       .site-footer {
         position: relative;
         overflow: hidden;
-        background-color: #16110f;
+        background-color: #141228;
         margin: 0;
         padding: 0;
       }
@@ -1105,7 +1135,7 @@
       }
 
       .site-footer a.text-info {
-        color: #f99634 !important;
+        color: #B7C6FF !important;
       }
 
       .site-footer .footer-bottom {
@@ -1303,7 +1333,7 @@
             </div>
             <div class="col-12 col-md-6 text-center text-md-end">
               <p class="fs--1 text-200"> Napravljeno sa&nbsp;
-                <svg class="bi bi-suit-heart-fill" xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="#f99634" viewBox="0 0 16 16">
+                <svg class="bi bi-suit-heart-fill" xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="#B7C6FF" viewBox="0 0 16 16">
                   <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z"></path>
                 </svg>&nbsp;od&nbsp;<a class="fw-bold text-info text-200" href="https://firstcode.in.rs/" target="_blank">FirstCode </a>
               </p>
