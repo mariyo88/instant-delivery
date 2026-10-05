@@ -138,12 +138,16 @@
         border-radius: 1rem;
         background: rgba(111, 66, 193, 0.06);
         border: 1px solid rgba(111, 66, 193, 0.12);
+        text-align: left;
       }
 
       .agent-chat.is-visible { display: flex; }
 
       .chat-row { display: flex; }
-      .chat-row.user { justify-content: flex-end; }
+      .chat-row.user {
+        flex-direction: column;
+        align-items: flex-end;
+      }
       .chat-row.assistant { justify-content: flex-start; }
 
       .chat-bubble {
@@ -179,8 +183,9 @@
         justify-content: flex-end;
         flex-wrap: wrap;
         gap: 0.35rem;
-        margin-top: 0.7rem;
-        width: 100%;
+        margin-top: 0.4rem;
+        width: auto;
+        max-width: 100%;
       }
 
       .chat-actions.is-visible { display: flex; }
@@ -203,14 +208,16 @@
       }
 
       .chat-row.user .chat-actions .msg-btn {
-        border-color: rgba(255, 255, 255, 0.45);
-        color: rgba(255, 255, 255, 0.92);
+        border-color: rgba(111, 66, 193, 0.28);
+        background: #fff;
+        color: #6f42c1;
+        box-shadow: 0 0.2rem 0.55rem rgba(44, 23, 94, 0.08);
       }
 
       .chat-row.user .chat-actions .msg-btn:hover {
-        background: #fff;
-        color: #6f42c1;
-        border-color: #fff;
+        background: #6f42c1;
+        color: #fff;
+        border-color: #6f42c1;
       }
 
       .delivery-card-actions .msg-btn:hover,
@@ -230,6 +237,7 @@
         display: grid;
         gap: 0.55rem;
         min-width: min(100%, 18rem);
+        text-align: left;
       }
 
       .delivery-card-title {
@@ -718,7 +726,7 @@
         display: inline-flex;
         align-items: center;
         gap: 0.45rem;
-        color: rgba(255, 255, 255, 0.72);
+        color: #6f42c1;
         font-size: 0.75rem;
         font-weight: 500;
       }
@@ -732,7 +740,7 @@
         width: 0.28rem;
         height: 0.28rem;
         border-radius: 50%;
-        background: rgba(255, 255, 255, 0.7);
+        background: rgba(111, 66, 193, 0.75);
         animation: chat-dot 1s infinite ease-in-out;
       }
 
@@ -833,6 +841,29 @@
           padding: 0.85rem 0.95rem;
         }
 
+        .chat-row.assistant,
+        .chat-row.assistant .chat-bubble {
+          width: 100%;
+        }
+
+        .chat-row.user .chat-bubble,
+        .chat-row.assistant .chat-bubble,
+        .delivery-card,
+        .delivery-card-title,
+        .delivery-card-meta,
+        .delivery-card-meta span {
+          text-align: left;
+        }
+
+        .delivery-card {
+          width: 100%;
+          min-width: 0;
+        }
+
+        .chat-row.user .chat-actions {
+          margin-top: 0.45rem;
+        }
+
         .chat-row.user .chat-actions .msg-btn {
           width: 2.2rem;
           height: 2.2rem;
@@ -840,6 +871,29 @@
 
         .chat-row.user .chat-actions .msg-btn i {
           font-size: 0.85rem;
+        }
+
+        .delivery-card-actions,
+        .saved-panel-actions {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 0.5rem;
+          margin-top: 0.75rem;
+        }
+
+        .saved-panel-actions {
+          padding-top: 0.75rem;
+          border-top: 1px solid rgba(111, 66, 193, 0.12);
+        }
+
+        .delivery-card-actions .action-btn,
+        .saved-panel-actions .action-btn {
+          justify-content: center;
+          width: 100%;
+          min-width: 0;
+          min-height: 2.55rem;
+          padding: 0.45rem 0.55rem;
+          font-size: 0.8rem;
         }
 
         .footer-mobile .footer-col-title {
@@ -1398,8 +1452,8 @@
         const actions = document.createElement("div");
         actions.className = "chat-actions";
 
-        const { bubble } = addMessage("user", textEl);
-        bubble.appendChild(actions);
+        const { row, bubble } = addMessage("user", textEl);
+        row.appendChild(actions);
         return { bubble, actions };
       }
 
