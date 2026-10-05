@@ -20,7 +20,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicons/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicons/favicon-16x16.png">
     <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicons/favicon.ico">
-    <link rel="manifest" href="assets/img/favicons/manifest.json">
+    <link rel="manifest" href="assets/img/favicons/site.webmanifest">
     <meta name="msapplication-TileImage" content="assets/img/favicons/mstile-150x150.png">
     <meta name="theme-color" content="#ffffff">
 
@@ -477,6 +477,8 @@
       .saved-panel-header {
         display: flex;
         align-items: center;
+        justify-content: space-between;
+        gap: 0.65rem;
         margin-bottom: 0.55rem;
       }
 
@@ -490,6 +492,24 @@
 
       .saved-panel-header h2 span {
         font-weight: 600;
+      }
+
+      .saved-select-all {
+        border: 0;
+        background: transparent;
+        color: #6f42c1;
+        padding: 0;
+        font: 600 0.72rem/1rem "Poppins", sans-serif;
+        cursor: pointer;
+        white-space: nowrap;
+      }
+
+      .saved-select-all:hover {
+        text-decoration: underline;
+      }
+
+      .saved-select-all.is-hidden {
+        display: none;
       }
 
       .saved-panel-actions {
@@ -508,10 +528,59 @@
         --saved-gap: 0.5rem;
         display: grid;
         gap: var(--saved-gap);
-        max-height: calc(6 * var(--saved-item-h) + 5 * var(--saved-gap));
-        overflow-x: hidden;
-        overflow-y: auto;
+        overflow: visible;
         min-height: 0;
+      }
+
+      .saved-pagination {
+        display: none;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+        margin-top: 0.65rem;
+      }
+
+      .saved-pagination.is-visible {
+        display: flex;
+      }
+
+      .saved-pagination-info {
+        color: #9a92b0;
+        font: 500 0.72rem/1rem "Poppins", sans-serif;
+      }
+
+      .saved-pagination-controls {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+      }
+
+      .saved-page-btn {
+        display: inline-grid;
+        place-items: center;
+        width: 1.85rem;
+        height: 1.85rem;
+        border: 1px solid rgba(111, 66, 193, 0.22);
+        border-radius: 50%;
+        background: #fff;
+        color: #6f42c1;
+        cursor: pointer;
+        transition: all 0.18s ease;
+      }
+
+      .saved-page-btn:hover:not(:disabled) {
+        background: #6f42c1;
+        color: #fff;
+        border-color: #6f42c1;
+      }
+
+      .saved-page-btn:disabled {
+        opacity: 0.35;
+        cursor: default;
+      }
+
+      .saved-page-btn i {
+        font-size: 0.7rem;
       }
 
       @media (min-width: 992px) {
@@ -536,7 +605,6 @@
 
         .saved-list {
           flex: 0 1 auto;
-          overflow-y: auto;
         }
 
         .agent-home .hero-bg {
@@ -554,14 +622,15 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 0.6rem;
+        gap: 0.45rem;
         min-height: var(--saved-item-h, 3.65rem);
-        padding: 0.55rem 0.7rem;
+        padding: 0.55rem 0.45rem 0.55rem 0.8rem;
         border-radius: 0.85rem;
         background: rgba(111, 66, 193, 0.05);
         border: 1px solid rgba(111, 66, 193, 0.1);
         cursor: pointer;
-        transition: background 0.18s ease, border-color 0.18s ease;
+        transition: background 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+        user-select: none;
       }
 
       .saved-item:hover {
@@ -569,14 +638,45 @@
         border-color: rgba(111, 66, 193, 0.22);
       }
 
+      .saved-item.is-selected {
+        background: rgba(111, 66, 193, 0.14);
+        border-color: #6f42c1;
+      }
+
       .saved-item-body {
         min-width: 0;
         flex: 1 1 auto;
         text-align: left;
-        background: transparent;
+        pointer-events: none;
+      }
+
+      .saved-item-actions {
+        display: flex;
+        align-items: center;
+        gap: 0.15rem;
+        flex: 0 0 auto;
+      }
+
+      .saved-item-edit,
+      .saved-item-remove {
+        flex: 0 0 auto;
+        width: 1.75rem;
+        height: 1.75rem;
         border: 0;
-        padding: 0;
+        border-radius: 50%;
+        background: transparent;
+        color: #b0a8c4;
         cursor: pointer;
+      }
+
+      .saved-item-edit:hover {
+        color: #6f42c1;
+        background: rgba(111, 66, 193, 0.1);
+      }
+
+      .saved-item-remove:hover {
+        color: #d9534f;
+        background: rgba(217, 83, 79, 0.08);
       }
 
       .edit-modal {
@@ -595,7 +695,7 @@
 
       .edit-modal-dialog {
         width: min(100%, 32rem);
-        max-height: min(90vh, 42rem);
+        max-height: min(92vh, 44rem);
         overflow: auto;
         border-radius: 1.15rem;
         background: #fff;
@@ -686,7 +786,42 @@
         border-color: #6f42c1;
       }
 
+      .edit-modal-actions .action-btn.is-danger {
+        background: #d9534f;
+        color: #fff;
+        border-color: #d9534f;
+      }
+
+      .edit-modal-actions .action-btn.is-danger:hover {
+        background: #c9302c;
+        border-color: #c9302c;
+        color: #fff;
+      }
+
+      .confirm-modal-dialog {
+        width: min(100%, 24rem);
+        max-height: none;
+        overflow: visible;
+      }
+
+      .confirm-modal-message {
+        margin: 0 0 1rem;
+        color: #5e5873;
+        font: 400 0.9rem/1.45rem "Poppins", sans-serif;
+      }
+
       @media (max-width: 575.98px) {
+        .edit-modal {
+          padding: 0.65rem;
+          align-items: center;
+        }
+
+        .edit-modal-dialog {
+          width: 100%;
+          max-height: calc(100dvh - 1.3rem);
+          max-height: calc(100vh - 1.3rem);
+        }
+
         .edit-form-grid {
           grid-template-columns: 1fr;
         }
@@ -708,19 +843,6 @@
         text-overflow: ellipsis;
         white-space: nowrap;
       }
-
-      .saved-item-remove {
-        flex: 0 0 auto;
-        width: 1.75rem;
-        height: 1.75rem;
-        border: 0;
-        border-radius: 50%;
-        background: transparent;
-        color: #b0a8c4;
-        cursor: pointer;
-      }
-
-      .saved-item-remove:hover { color: #d9534f; background: rgba(217, 83, 79, 0.08); }
 
       .chat-loading {
         display: inline-flex;
@@ -1080,9 +1202,21 @@
 
                 <div class="saved-panel-header">
                   <h2>Lista za štampu <span id="savedCount">(0)</span></h2>
+                  <button id="selectAllSaved" class="saved-select-all is-hidden" type="button">Izaberi sve</button>
                 </div>
                 <p id="savedEmpty" class="saved-empty">Sačuvaj dostave da bi ih grupno odštampao.</p>
                 <div id="savedList" class="saved-list"></div>
+                <div id="savedPagination" class="saved-pagination" aria-label="Paginacija liste">
+                  <span id="savedPageInfo" class="saved-pagination-info">1 / 1</span>
+                  <div class="saved-pagination-controls">
+                    <button id="savedPrevPage" class="saved-page-btn" type="button" aria-label="Prethodna strana" disabled>
+                      <i class="fas fa-chevron-left" aria-hidden="true"></i>
+                    </button>
+                    <button id="savedNextPage" class="saved-page-btn" type="button" aria-label="Sledeća strana" disabled>
+                      <i class="fas fa-chevron-right" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                </div>
                 <div id="savedActions" class="saved-panel-actions is-empty">
                   <button id="printSaved" class="action-btn" type="button" disabled>
                     <i class="fas fa-print" aria-hidden="true"></i> Odštampaj
@@ -1212,14 +1346,37 @@
             </label>
           </div>
           <div class="edit-modal-actions">
+            <button id="editCancel" class="action-btn" type="button">
+              <i class="fas fa-times" aria-hidden="true"></i> Zatvori
+            </button>
             <button id="editPrint" class="action-btn" type="button">
               <i class="fas fa-print" aria-hidden="true"></i> Odštampaj
             </button>
-            <button class="action-btn is-primary" type="submit">
+            <button id="editSave" class="action-btn is-primary" type="submit">
               <i class="fas fa-save" aria-hidden="true"></i> Sačuvaj
             </button>
           </div>
         </form>
+      </div>
+    </div>
+
+    <div id="confirmModal" class="edit-modal" aria-hidden="true">
+      <div class="edit-modal-dialog confirm-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="confirmModalTitle">
+        <div class="edit-modal-header">
+          <h3 id="confirmModalTitle">Potvrda</h3>
+          <button id="confirmModalClose" class="edit-modal-close" type="button" aria-label="Zatvori">
+            <i class="fas fa-times" aria-hidden="true"></i>
+          </button>
+        </div>
+        <p id="confirmModalMessage" class="confirm-modal-message"></p>
+        <div class="edit-modal-actions">
+          <button id="confirmCancel" class="action-btn" type="button">
+            <i class="fas fa-times" aria-hidden="true"></i> Otkaži
+          </button>
+          <button id="confirmOk" class="action-btn is-danger" type="button">
+            <i class="fas fa-trash" aria-hidden="true"></i> Obriši
+          </button>
+        </div>
       </div>
     </div>
 
@@ -1268,6 +1425,14 @@
       const printSavedBtn = document.getElementById("printSaved");
       const clearSavedBtn = document.getElementById("clearSaved");
       const savedActions = document.getElementById("savedActions");
+      const selectAllSavedBtn = document.getElementById("selectAllSaved");
+      const savedPagination = document.getElementById("savedPagination");
+      const savedPageInfo = document.getElementById("savedPageInfo");
+      const savedPrevPage = document.getElementById("savedPrevPage");
+      const savedNextPage = document.getElementById("savedNextPage");
+      const selectedIds = new Set();
+      const PAGE_SIZE = 6;
+      let currentPage = 1;
       const printSettings = document.getElementById("printSettings");
       const printSettingsToggle = document.getElementById("printSettingsToggle");
       const printSettingsSummary = document.getElementById("printSettingsSummary");
@@ -1276,7 +1441,16 @@
       const editModal = document.getElementById("editModal");
       const editForm = document.getElementById("editForm");
       const editModalClose = document.getElementById("editModalClose");
+      const editCancelBtn = document.getElementById("editCancel");
       const editPrintBtn = document.getElementById("editPrint");
+      const editSaveBtn = document.getElementById("editSave");
+      const confirmModal = document.getElementById("confirmModal");
+      const confirmModalClose = document.getElementById("confirmModalClose");
+      const confirmModalTitle = document.getElementById("confirmModalTitle");
+      const confirmModalMessage = document.getElementById("confirmModalMessage");
+      const confirmCancelBtn = document.getElementById("confirmCancel");
+      const confirmOkBtn = document.getElementById("confirmOk");
+      let confirmAction = null;
       const editId = document.getElementById("editId");
       const editFullName = document.getElementById("editFullName");
       const editPhone = document.getElementById("editPhone");
@@ -1573,17 +1747,64 @@
         }
 
         const list = loadSaved();
+        const id = (crypto.randomUUID && crypto.randomUUID()) || String(Date.now()) + Math.random();
         list.unshift({
-          id: (crypto.randomUUID && crypto.randomUUID()) || String(Date.now()) + Math.random(),
+          id,
           savedAt: new Date().toISOString(),
           sourceText: sourceText || "",
           delivery: delivery
         });
+        selectedIds.add(id);
+        currentPage = 1;
         persistSaved(list);
       }
 
       function removeSaved(id) {
+        selectedIds.delete(id);
         persistSaved(loadSaved().filter((item) => item.id !== id));
+      }
+
+      function pruneSelection(list) {
+        const valid = new Set(list.map((item) => item.id));
+        [...selectedIds].forEach((id) => {
+          if (!valid.has(id)) selectedIds.delete(id);
+        });
+      }
+
+      function getSelectedItems() {
+        return loadSaved().filter((item) => selectedIds.has(item.id));
+      }
+
+      function updatePrintButtonLabel() {
+        const selectedCount = getSelectedItems().length;
+        if (selectedCount > 0) {
+          printSavedBtn.innerHTML =
+            '<i class="fas fa-print" aria-hidden="true"></i> Odštampaj (' + selectedCount + ")";
+        } else {
+          printSavedBtn.innerHTML = '<i class="fas fa-print" aria-hidden="true"></i> Odštampaj';
+        }
+      }
+
+      function updateSelectAllButton(list) {
+        const hasItems = list.length > 0;
+        selectAllSavedBtn.classList.toggle("is-hidden", !hasItems);
+        if (!hasItems) return;
+
+        const allSelected = list.every((item) => selectedIds.has(item.id));
+        selectAllSavedBtn.textContent = allSelected ? "Poništi izbor" : "Izaberi sve";
+      }
+
+      function toggleSelectAll() {
+        const list = loadSaved();
+        if (!list.length) return;
+
+        const allSelected = list.every((item) => selectedIds.has(item.id));
+        if (allSelected) {
+          selectedIds.clear();
+        } else {
+          list.forEach((item) => selectedIds.add(item.id));
+        }
+        renderSavedList();
       }
 
       function findSaved(id) {
@@ -1608,7 +1829,7 @@
 
         editModal.classList.add("is-open");
         editModal.setAttribute("aria-hidden", "false");
-        editFullName.focus();
+        editSaveBtn.focus();
       }
 
       function closeEditModal() {
@@ -1616,6 +1837,52 @@
         editModal.setAttribute("aria-hidden", "true");
         editForm.reset();
         editId.value = "";
+      }
+
+      function openConfirmModal({ title, message, confirmLabel, onConfirm }) {
+        confirmModalTitle.textContent = title || "Potvrda";
+        confirmModalMessage.textContent = message || "";
+        confirmOkBtn.innerHTML =
+          '<i class="fas fa-trash" aria-hidden="true"></i> ' + (confirmLabel || "Obriši");
+        confirmAction = typeof onConfirm === "function" ? onConfirm : null;
+        confirmModal.classList.add("is-open");
+        confirmModal.setAttribute("aria-hidden", "false");
+        confirmOkBtn.focus();
+      }
+
+      function closeConfirmModal() {
+        confirmModal.classList.remove("is-open");
+        confirmModal.setAttribute("aria-hidden", "true");
+        confirmAction = null;
+      }
+
+      function requestRemoveSaved(id) {
+        const item = findSaved(id);
+        const name = item && item.delivery && item.delivery.fullName
+          ? item.delivery.fullName
+          : "ovu dostavu";
+
+        openConfirmModal({
+          title: "Brisanje dostave",
+          message: 'Da li želiš da obrišeš "' + name + '" iz liste za štampu?',
+          confirmLabel: "Obriši",
+          onConfirm: () => removeSaved(id)
+        });
+      }
+
+      function requestClearSaved() {
+        if (!loadSaved().length) return;
+
+        openConfirmModal({
+          title: "Brisanje liste",
+          message: "Da li želiš da obrišeš celu listu za štampu?",
+          confirmLabel: "Obriši sve",
+          onConfirm: () => {
+            selectedIds.clear();
+            currentPage = 1;
+            persistSaved([]);
+          }
+        });
       }
 
       function readEditFormDelivery() {
@@ -1663,23 +1930,67 @@
         return true;
       }
 
+      function getTotalPages(listLength) {
+        return Math.max(1, Math.ceil(listLength / PAGE_SIZE));
+      }
+
+      function clampCurrentPage(listLength) {
+        const totalPages = getTotalPages(listLength);
+        if (currentPage > totalPages) currentPage = totalPages;
+        if (currentPage < 1) currentPage = 1;
+      }
+
+      function getPageItems(list) {
+        clampCurrentPage(list.length);
+        const start = (currentPage - 1) * PAGE_SIZE;
+        return list.slice(start, start + PAGE_SIZE);
+      }
+
+      function updatePagination(listLength) {
+        const totalPages = getTotalPages(listLength);
+        const show = listLength > PAGE_SIZE;
+        savedPagination.classList.toggle("is-visible", show);
+        savedPageInfo.textContent = currentPage + " / " + totalPages;
+        savedPrevPage.disabled = currentPage <= 1 || busy;
+        savedNextPage.disabled = currentPage >= totalPages || busy;
+      }
+
       function renderSavedList() {
         const list = loadSaved();
-        savedCount.textContent = "(" + list.length + ")";
-        printSavedBtn.disabled = list.length === 0 || busy;
+        pruneSelection(list);
+        clampCurrentPage(list.length);
+
+        const selectedCount = list.filter((item) => selectedIds.has(item.id)).length;
+        savedCount.textContent = selectedCount > 0
+          ? "(" + selectedCount + "/" + list.length + ")"
+          : "(" + list.length + ")";
+
+        printSavedBtn.disabled = selectedCount === 0 || busy;
         clearSavedBtn.disabled = list.length === 0 || busy;
         savedActions.classList.toggle("is-empty", list.length === 0);
         savedEmpty.classList.toggle("is-hidden", list.length > 0);
+        updateSelectAllButton(list);
+        updatePrintButtonLabel();
+        updatePagination(list.length);
         savedList.replaceChildren();
 
-        list.forEach((item) => {
+        getPageItems(list).forEach((item) => {
+          const selected = selectedIds.has(item.id);
           const row = document.createElement("div");
-          row.className = "saved-item";
+          row.className = "saved-item" + (selected ? " is-selected" : "");
+          row.setAttribute("role", "button");
+          row.setAttribute("tabindex", "0");
+          row.setAttribute(
+            "aria-pressed",
+            selected ? "true" : "false"
+          );
+          row.setAttribute(
+            "aria-label",
+            (selected ? "Izabrano: " : "Izaberi: ") + (item.delivery.fullName || "dostavu")
+          );
 
-          const body = document.createElement("button");
-          body.type = "button";
+          const body = document.createElement("div");
           body.className = "saved-item-body";
-          body.setAttribute("aria-label", "Otvori i izmeni dostavu");
 
           const title = document.createElement("p");
           title.className = "saved-item-title";
@@ -1692,7 +2003,20 @@
             .join(" · ");
 
           body.append(title, meta);
-          body.addEventListener("click", () => openEditModal(item.id));
+
+          const actions = document.createElement("div");
+          actions.className = "saved-item-actions";
+
+          const edit = document.createElement("button");
+          edit.type = "button";
+          edit.className = "saved-item-edit";
+          edit.setAttribute("aria-label", "Izmeni");
+          edit.title = "Izmeni";
+          edit.innerHTML = '<i class="fas fa-pen" aria-hidden="true"></i>';
+          edit.addEventListener("click", (event) => {
+            event.stopPropagation();
+            openEditModal(item.id);
+          });
 
           const remove = document.createElement("button");
           remove.type = "button";
@@ -1702,10 +2026,25 @@
           remove.innerHTML = '<i class="fas fa-times" aria-hidden="true"></i>';
           remove.addEventListener("click", (event) => {
             event.stopPropagation();
-            removeSaved(item.id);
+            requestRemoveSaved(item.id);
           });
 
-          row.append(body, remove);
+          actions.append(edit, remove);
+
+          row.addEventListener("click", () => {
+            if (selectedIds.has(item.id)) selectedIds.delete(item.id);
+            else selectedIds.add(item.id);
+            renderSavedList();
+          });
+
+          row.addEventListener("keydown", (event) => {
+            if (event.key === "Enter" || event.key === " ") {
+              event.preventDefault();
+              row.click();
+            }
+          });
+
+          row.append(body, actions);
           savedList.appendChild(row);
         });
       }
@@ -1838,8 +2177,8 @@
       });
 
       printSavedBtn.addEventListener("click", async () => {
-        const list = loadSaved();
-        if (!list.length || busy) return;
+        const selected = getSelectedItems();
+        if (!selected.length || busy) return;
 
         busy = true;
         syncSendButton();
@@ -1849,25 +2188,36 @@
 
         try {
           const file = await printDeliveries(
-            list.map((item) => item.delivery),
-            list.length === 1 ? toNameFilename(list[0].delivery.fullName) : "grupne-dostave.pdf"
+            selected.map((item) => item.delivery),
+            selected.length === 1
+              ? toNameFilename(selected[0].delivery.fullName)
+              : "grupne-dostave.pdf"
           );
           window.open(file.url, "_blank", "noopener");
         } catch (error) {
           alert(error.message || "Grupna štampa nije uspela.");
         } finally {
           busy = false;
-          printSavedBtn.innerHTML = '<i class="fas fa-print" aria-hidden="true"></i> Odštampaj';
           syncSendButton();
           renderSavedList();
         }
       });
 
-      clearSavedBtn.addEventListener("click", () => {
-        if (!loadSaved().length) return;
-        if (confirm("Obrisati celu listu za štampu?")) {
-          persistSaved([]);
-        }
+      clearSavedBtn.addEventListener("click", requestClearSaved);
+
+      selectAllSavedBtn.addEventListener("click", toggleSelectAll);
+
+      savedPrevPage.addEventListener("click", () => {
+        if (currentPage <= 1) return;
+        currentPage -= 1;
+        renderSavedList();
+      });
+
+      savedNextPage.addEventListener("click", () => {
+        const totalPages = getTotalPages(loadSaved().length);
+        if (currentPage >= totalPages) return;
+        currentPage += 1;
+        renderSavedList();
       });
 
       printSettingsToggle.addEventListener("click", () => {
@@ -1885,13 +2235,32 @@
       });
 
       editModalClose.addEventListener("click", closeEditModal);
+      editCancelBtn.addEventListener("click", closeEditModal);
 
       editModal.addEventListener("click", (event) => {
         if (event.target === editModal) closeEditModal();
       });
 
+      confirmModalClose.addEventListener("click", closeConfirmModal);
+      confirmCancelBtn.addEventListener("click", closeConfirmModal);
+
+      confirmModal.addEventListener("click", (event) => {
+        if (event.target === confirmModal) closeConfirmModal();
+      });
+
+      confirmOkBtn.addEventListener("click", () => {
+        const action = confirmAction;
+        closeConfirmModal();
+        if (action) action();
+      });
+
       document.addEventListener("keydown", (event) => {
-        if (event.key === "Escape" && editModal.classList.contains("is-open")) {
+        if (event.key !== "Escape") return;
+        if (confirmModal.classList.contains("is-open")) {
+          closeConfirmModal();
+          return;
+        }
+        if (editModal.classList.contains("is-open")) {
           closeEditModal();
         }
       });

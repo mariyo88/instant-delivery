@@ -122,7 +122,7 @@ var getGrays = function getGrays(dom) {
 };
 
 var hasClass = function hasClass(el, className) {
-  !el && false;
+  if (!el) return false;
   return el.classList.value.includes(className);
 };
 
@@ -481,6 +481,10 @@ var navbarInit = function navbarInit() {
     var windowHeight = window.innerHeight;
     var html = document.documentElement;
     var navbarCollapse = navbar.querySelector(Selector.NAVBAR_COLLAPSE);
+    var navbarToggler = navbar.querySelector(Selector.NAVBAR_TOGGLER);
+    var collapseOpen = function collapseOpen() {
+      return Boolean(navbarCollapse) && utils.hasClass(navbarCollapse, 'show');
+    };
     var name = utils.getData(navbar, DataKey.NAVBAR_ON_SCROLL);
     var colorName = name || 'light';
     var color = utils.getColor(colorName);
@@ -499,8 +503,8 @@ var navbarInit = function navbarInit() {
       var alpha = scrollTop / windowHeight * 5;
       alpha >= 1 && (alpha = 1);
       navbar.style.backgroundColor = "rgba(".concat(colorRgb[0], ", ").concat(colorRgb[1], ", ").concat(colorRgb[2], ", ").concat(alpha, ")");
-      navbar.style.backgroundImage = alpha > 0 || utils.hasClass(navbarCollapse, 'show') ? backgroundImage : 'none';
-      alpha > 0 || utils.hasClass(navbarCollapse, 'show') ? navbar.classList.add(shadowName) : navbar.classList.remove(shadowName);
+      navbar.style.backgroundImage = alpha > 0 || collapseOpen() ? backgroundImage : 'none';
+      alpha > 0 || collapseOpen() ? navbar.classList.add(shadowName) : navbar.classList.remove(shadowName);
     }); // Toggle bg class on window resize
 
     utils.resize(function () {
@@ -509,30 +513,33 @@ var navbarInit = function navbarInit() {
       if (window.innerWidth > breakPoint) {
         navbar.style.backgroundImage = html.scrollTop ? backgroundImage : 'none';
         navbar.style.transition = 'none';
-      } else if (!utils.hasClass(navbar.querySelector(Selector.NAVBAR_TOGGLER), ClassNames.COLLAPSED)) {
+      } else if (navbarToggler && !utils.hasClass(navbarToggler, ClassNames.COLLAPSED)) {
         navbar.classList.add(bgClassName);
         navbar.classList.add(shadowName);
         navbar.style.backgroundImage = backgroundImage;
       }
 
       if (window.innerWidth <= breakPoint) {
-        navbar.style.transition = utils.hasClass(navbarCollapse, 'show') ? transition : 'none';
+        navbar.style.transition = collapseOpen() ? transition : 'none';
       }
     });
-    navbarCollapse.addEventListener(Events.SHOW_BS_COLLAPSE, function () {
-      navbar.classList.add(bgClassName);
-      navbar.classList.add(shadowName);
-      navbar.style.backgroundImage = backgroundImage;
-      navbar.style.transition = transition;
-    });
-    navbarCollapse.addEventListener(Events.HIDE_BS_COLLAPSE, function () {
-      navbar.classList.remove(bgClassName);
-      navbar.classList.remove(shadowName);
-      !html.scrollTop && (navbar.style.backgroundImage = 'none');
-    });
-    navbarCollapse.addEventListener(Events.HIDDEN_BS_COLLAPSE, function () {
-      navbar.style.transition = 'none';
-    });
+
+    if (navbarCollapse) {
+      navbarCollapse.addEventListener(Events.SHOW_BS_COLLAPSE, function () {
+        navbar.classList.add(bgClassName);
+        navbar.classList.add(shadowName);
+        navbar.style.backgroundImage = backgroundImage;
+        navbar.style.transition = transition;
+      });
+      navbarCollapse.addEventListener(Events.HIDE_BS_COLLAPSE, function () {
+        navbar.classList.remove(bgClassName);
+        navbar.classList.remove(shadowName);
+        !html.scrollTop && (navbar.style.backgroundImage = 'none');
+      });
+      navbarCollapse.addEventListener(Events.HIDDEN_BS_COLLAPSE, function () {
+        navbar.style.transition = 'none';
+      });
+    }
   }
 };
 /*-----------------------------------------------
