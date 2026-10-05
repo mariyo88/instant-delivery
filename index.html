@@ -34,19 +34,33 @@
     <link href="assets/css/theme.css" rel="stylesheet" />
     <link href="assets/css/user.css" rel="stylesheet" />
     <style>
+      .agent-home {
+        padding-top: 5.5rem !important;
+        padding-bottom: 3rem !important;
+        min-height: auto !important;
+      }
+
       .agent-home.is-chatting .agent-suggestions { display: none; }
+
+      .agent-home .hero-row {
+        align-items: flex-start;
+      }
+
+      .agent-main {
+        max-width: 36rem;
+      }
 
       .agent-composer {
         display: flex;
         align-items: flex-end;
         gap: 0.75rem;
         width: 100%;
-        max-width: 36rem;
-        padding: 0.7rem 0.7rem 0.7rem 1.15rem;
-        border: 1px solid rgba(111, 66, 193, 0.18);
+        max-width: none;
+        padding: 0.85rem 0.8rem 0.85rem 1.25rem;
+        border: 1.5px solid rgba(111, 66, 193, 0.28);
         border-radius: 1.75rem;
         background: #fff;
-        box-shadow: 0 0.5rem 1.75rem rgba(44, 23, 94, 0.12);
+        box-shadow: 0 0.65rem 2rem rgba(44, 23, 94, 0.14);
       }
 
       .agent-composer textarea {
@@ -83,38 +97,43 @@
       .agent-suggestions {
         display: flex;
         flex-wrap: wrap;
-        gap: 0.6rem;
-        max-width: 36rem;
-        margin-top: 1rem;
+        gap: 0.4rem;
+        max-width: none;
+        margin-top: 0.7rem;
       }
 
       .agent-suggestions button {
         display: inline-flex;
         align-items: center;
-        border: 1px solid rgba(111, 66, 193, 0.28);
-        border-radius: 1.5rem;
-        background: #fff;
-        color: #6f42c1;
-        padding: 0.4rem 0.9rem;
-        font: 600 0.8rem/1.35rem "Poppins", sans-serif;
+        border: 1px solid rgba(111, 66, 193, 0.14);
+        border-radius: 999px;
+        background: rgba(111, 66, 193, 0.04);
+        color: #8a7aa8;
+        padding: 0.28rem 0.7rem;
+        font: 500 0.72rem/1.1rem "Poppins", sans-serif;
         cursor: pointer;
         transition: all 0.2s ease;
       }
 
+      .agent-suggestions button i {
+        font-size: 0.68rem;
+        opacity: 0.85;
+      }
+
       .agent-suggestions button:hover {
-        background: #6f42c1;
-        color: #fff;
+        background: rgba(111, 66, 193, 0.1);
+        border-color: rgba(111, 66, 193, 0.28);
+        color: #6f42c1;
       }
 
       .agent-chat {
         display: none;
         flex-direction: column;
         gap: 0.8rem;
-        max-width: 36rem;
-        max-height: 18rem;
+        max-width: none;
         margin-top: 1.25rem;
         padding: 1rem;
-        overflow-y: auto;
+        overflow: visible;
         border-radius: 1rem;
         background: rgba(111, 66, 193, 0.06);
         border: 1px solid rgba(111, 66, 193, 0.12);
@@ -249,7 +268,8 @@
       }
 
       .delivery-card-actions .action-btn,
-      .saved-panel-actions .action-btn {
+      .saved-panel-actions .action-btn,
+      .edit-modal-actions .action-btn {
         display: inline-flex;
         align-items: center;
         gap: 0.35rem;
@@ -264,13 +284,15 @@
       }
 
       .delivery-card-actions .action-btn:hover,
-      .saved-panel-actions .action-btn:hover {
+      .saved-panel-actions .action-btn:hover,
+      .edit-modal-actions .action-btn:hover {
         background: #6f42c1;
         color: #fff;
       }
 
       .delivery-card-actions .action-btn:disabled,
-      .saved-panel-actions .action-btn:disabled {
+      .saved-panel-actions .action-btn:disabled,
+      .edit-modal-actions .action-btn:disabled {
         opacity: 0.5;
         cursor: default;
       }
@@ -281,72 +303,400 @@
       }
 
       .saved-panel {
-        display: none;
+        display: block;
         width: 100%;
-        max-width: 36rem;
         margin-top: 1rem;
-        padding: 1rem;
-        border-radius: 1rem;
-        background: #fff;
+        padding: 1.1rem;
+        border-radius: 1.15rem;
+        background: rgba(255, 255, 255, 0.92);
+        backdrop-filter: blur(10px);
         border: 1px solid rgba(111, 66, 193, 0.14);
-        box-shadow: 0 0.35rem 1.25rem rgba(44, 23, 94, 0.08);
+        box-shadow: 0 0.45rem 1.5rem rgba(44, 23, 94, 0.1);
         text-align: left;
       }
 
-      .saved-panel.is-visible { display: block; }
+      .print-settings {
+        margin-bottom: 0.85rem;
+        padding-bottom: 0.85rem;
+        border-bottom: 1px solid rgba(111, 66, 193, 0.12);
+      }
+
+      .print-settings-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.65rem;
+        width: 100%;
+        margin: 0;
+        padding: 0.45rem 0.15rem;
+        border: 0;
+        background: transparent;
+        color: #6f42c1;
+        cursor: pointer;
+        text-align: left;
+      }
+
+      .print-settings-toggle-main {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        min-width: 0;
+        font: 600 0.8rem/1.2rem "Poppins", sans-serif;
+      }
+
+      .print-settings-toggle-main i {
+        font-size: 0.85rem;
+      }
+
+      .print-settings-summary {
+        flex: 1 1 auto;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: #9a92b0;
+        font: 500 0.75rem/1.2rem "Poppins", sans-serif;
+        text-align: right;
+      }
+
+      .print-settings-chevron {
+        color: #b0a8c4;
+        font-size: 0.7rem;
+        transition: transform 0.18s ease;
+      }
+
+      .print-settings.is-open .print-settings-chevron {
+        transform: rotate(180deg);
+      }
+
+      .print-settings-body {
+        display: none;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.65rem;
+        padding-top: 0.65rem;
+      }
+
+      .print-settings.is-open .print-settings-body {
+        display: grid;
+      }
+
+      .print-settings label,
+      .print-settings-field {
+        display: grid;
+        gap: 0.3rem;
+        margin: 0;
+      }
+
+      .print-settings label,
+      .print-settings-label {
+        color: #7a738f;
+        font: 600 0.72rem/1rem "Poppins", sans-serif;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+      }
+
+      .print-settings select {
+        width: 100%;
+        border: 1px solid rgba(111, 66, 193, 0.22);
+        border-radius: 0.75rem;
+        background: #fff;
+        color: #2c175e;
+        padding: 0.45rem 0.65rem;
+        font: 500 0.8rem/1.2rem "Poppins", sans-serif;
+        outline: none;
+        cursor: pointer;
+      }
+
+      .print-settings select:focus {
+        border-color: #6f42c1;
+        box-shadow: 0 0 0 3px rgba(111, 66, 193, 0.12);
+      }
+
+      .lang-toggle {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.25rem;
+        padding: 0.2rem;
+        border: 1px solid rgba(111, 66, 193, 0.22);
+        border-radius: 0.75rem;
+        background: rgba(111, 66, 193, 0.05);
+      }
+
+      .lang-toggle button {
+        border: 0;
+        border-radius: 0.6rem;
+        background: transparent;
+        color: #7a738f;
+        padding: 0.4rem 0.5rem;
+        font: 700 0.78rem/1.1rem "Poppins", sans-serif;
+        cursor: pointer;
+        transition: all 0.18s ease;
+      }
+
+      .lang-toggle button.is-active {
+        background: #6f42c1;
+        color: #fff;
+        box-shadow: 0 0.2rem 0.55rem rgba(111, 66, 193, 0.28);
+      }
+
+      .lang-toggle button:not(.is-active):hover {
+        color: #2c175e;
+        background: rgba(255, 255, 255, 0.7);
+      }
+
+      @media (min-width: 992px) {
+        .print-settings-toggle {
+          display: none;
+        }
+
+        .print-settings-body,
+        .print-settings.is-open .print-settings-body {
+          display: grid;
+          padding-top: 0;
+        }
+      }
+
+      .saved-empty {
+        margin: 0;
+        padding: 0.85rem 0.2rem 0.2rem;
+        color: #9a92b0;
+        font: 400 0.8rem/1.35rem "Poppins", sans-serif;
+      }
+
+      .saved-empty.is-hidden { display: none; }
 
       .saved-panel-header {
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        gap: 0.75rem;
-        margin-bottom: 0.75rem;
+        margin-bottom: 0.55rem;
       }
 
       .saved-panel-header h2 {
         margin: 0;
-        color: #2c175e;
-        font: 700 0.95rem/1.3rem "Poppins", sans-serif;
+        color: #9a92b0;
+        font: 600 0.72rem/1rem "Poppins", sans-serif;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+      }
+
+      .saved-panel-header h2 span {
+        font-weight: 600;
       }
 
       .saved-panel-actions {
         display: flex;
         flex-wrap: wrap;
         gap: 0.4rem;
+        margin-top: 0.75rem;
+      }
+
+      .saved-panel-actions.is-empty {
+        display: none;
       }
 
       .saved-list {
+        --saved-item-h: 3.65rem;
+        --saved-gap: 0.5rem;
         display: grid;
-        gap: 0.55rem;
-        max-height: 14rem;
+        gap: var(--saved-gap);
+        max-height: calc(6 * var(--saved-item-h) + 5 * var(--saved-gap));
         overflow-y: auto;
+        min-height: 0;
+      }
+
+      @media (min-width: 992px) {
+        .agent-home {
+          padding-top: 6rem !important;
+          padding-bottom: 3.5rem !important;
+        }
+
+        .agent-side {
+          padding-top: 0.25rem;
+        }
+
+        .saved-panel {
+          margin-top: 0;
+          position: sticky;
+          top: 5.5rem;
+          max-height: calc(100vh - 7rem);
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+        }
+
+        .saved-list {
+          flex: 0 1 auto;
+          overflow-y: auto;
+        }
+
+        .agent-home .hero-bg {
+          opacity: 0.45;
+        }
+      }
+
+      @media (max-width: 575.98px) {
+        .print-settings.is-open .print-settings-body {
+          grid-template-columns: 1fr;
+        }
       }
 
       .saved-item {
         display: flex;
-        align-items: flex-start;
+        align-items: center;
         justify-content: space-between;
-        gap: 0.75rem;
-        padding: 0.7rem 0.8rem;
+        gap: 0.6rem;
+        min-height: var(--saved-item-h, 3.65rem);
+        padding: 0.55rem 0.7rem;
         border-radius: 0.85rem;
         background: rgba(111, 66, 193, 0.05);
         border: 1px solid rgba(111, 66, 193, 0.1);
+        cursor: pointer;
+        transition: background 0.18s ease, border-color 0.18s ease;
+      }
+
+      .saved-item:hover {
+        background: rgba(111, 66, 193, 0.1);
+        border-color: rgba(111, 66, 193, 0.22);
       }
 
       .saved-item-body {
         min-width: 0;
+        flex: 1 1 auto;
+        text-align: left;
+        background: transparent;
+        border: 0;
+        padding: 0;
+        cursor: pointer;
+      }
+
+      .edit-modal {
+        position: fixed;
+        inset: 0;
+        z-index: 1080;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+        background: rgba(44, 23, 94, 0.45);
+        backdrop-filter: blur(4px);
+      }
+
+      .edit-modal.is-open { display: flex; }
+
+      .edit-modal-dialog {
+        width: min(100%, 32rem);
+        max-height: min(90vh, 42rem);
+        overflow: auto;
+        border-radius: 1.15rem;
+        background: #fff;
+        box-shadow: 0 1rem 2.5rem rgba(44, 23, 94, 0.22);
+        padding: 1.15rem 1.2rem 1.2rem;
+      }
+
+      .edit-modal-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+        margin-bottom: 0.9rem;
+      }
+
+      .edit-modal-header h3 {
+        margin: 0;
+        color: #2c175e;
+        font: 700 1rem/1.35rem "Poppins", sans-serif;
+      }
+
+      .edit-modal-close {
+        width: 2rem;
+        height: 2rem;
+        border: 0;
+        border-radius: 50%;
+        background: rgba(111, 66, 193, 0.08);
+        color: #6f42c1;
+        cursor: pointer;
+      }
+
+      .edit-modal-close:hover {
+        background: rgba(111, 66, 193, 0.16);
+      }
+
+      .edit-form {
+        display: grid;
+        gap: 0.7rem;
+      }
+
+      .edit-form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.7rem;
+      }
+
+      .edit-form label {
+        display: grid;
+        gap: 0.28rem;
+        margin: 0;
+        color: #7a738f;
+        font: 600 0.72rem/1rem "Poppins", sans-serif;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+      }
+
+      .edit-form label.span-2 { grid-column: 1 / -1; }
+
+      .edit-form input,
+      .edit-form select {
+        width: 100%;
+        border: 1px solid rgba(111, 66, 193, 0.22);
+        border-radius: 0.75rem;
+        background: #fff;
+        color: #2c175e;
+        padding: 0.55rem 0.7rem;
+        font: 500 0.88rem/1.25rem "Poppins", sans-serif;
+        outline: none;
+      }
+
+      .edit-form input:focus,
+      .edit-form select:focus {
+        border-color: #6f42c1;
+        box-shadow: 0 0 0 3px rgba(111, 66, 193, 0.12);
+      }
+
+      .edit-modal-actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 0.45rem;
+        margin-top: 0.35rem;
+      }
+
+      .edit-modal-actions .action-btn.is-primary {
+        background: #6f42c1;
+        color: #fff;
+        border-color: #6f42c1;
+      }
+
+      @media (max-width: 575.98px) {
+        .edit-form-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .edit-form label.span-2 { grid-column: auto; }
       }
 
       .saved-item-title {
-        margin: 0 0 0.15rem;
+        margin: 0 0 0.1rem;
         color: #2c175e;
-        font: 600 0.85rem/1.3rem "Poppins", sans-serif;
+        font: 600 0.82rem/1.15rem "Poppins", sans-serif;
       }
 
       .saved-item-meta {
         margin: 0;
         color: #7a738f;
-        font: 400 0.75rem/1.25rem "Poppins", sans-serif;
+        font: 400 0.72rem/1.1rem "Poppins", sans-serif;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
 
       .saved-item-remove {
@@ -394,8 +744,8 @@
 
       @media (max-width: 767.98px) {
         .agent-home {
-          padding-top: 5.5rem !important;
-          padding-bottom: 2.5rem !important;
+          padding-top: 4.75rem !important;
+          padding-bottom: 2rem !important;
         }
 
         .agent-home .container {
@@ -415,6 +765,7 @@
           margin-bottom: 0;
         }
 
+        .agent-main,
         .agent-composer,
         .agent-suggestions,
         .agent-chat,
@@ -426,51 +777,50 @@
 
         .agent-composer {
           gap: 0.55rem;
-          margin-top: 1.25rem !important;
-          padding: 0.65rem 0.65rem 0.65rem 1rem;
-          border-radius: 1.35rem;
-          box-shadow: 0 0.35rem 1.1rem rgba(44, 23, 94, 0.1);
+          margin-top: 1.35rem !important;
+          padding: 0.85rem 0.75rem 0.85rem 1.05rem;
+          border-radius: 1.45rem;
+          border-width: 1.5px;
+          box-shadow: 0 0.55rem 1.5rem rgba(44, 23, 94, 0.14);
         }
 
         .agent-composer textarea {
-          font-size: 1rem;
+          font-size: 1.02rem;
           line-height: 1.45rem;
           max-height: 8rem;
-          padding-top: 0.45rem;
-          padding-bottom: 0.45rem;
+          padding-top: 0.5rem;
+          padding-bottom: 0.5rem;
         }
 
         .agent-send {
-          width: 2.75rem;
-          height: 2.75rem;
+          width: 2.85rem;
+          height: 2.85rem;
         }
 
         .agent-suggestions {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 0.55rem;
-          margin-top: 0.85rem;
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 0.35rem;
+          margin-top: 0.65rem;
         }
 
         .agent-suggestions button {
-          width: 100%;
+          width: auto;
+          min-height: 0;
           justify-content: center;
-          display: inline-flex;
-          align-items: center;
-          min-height: 2.65rem;
-          padding: 0.55rem 0.7rem;
-          font-size: 0.78rem;
-          line-height: 1.2rem;
-          border-radius: 0.9rem;
+          padding: 0.25rem 0.65rem;
+          font-size: 0.7rem;
+          line-height: 1.05rem;
+          border-radius: 999px;
           text-align: center;
         }
 
         .agent-suggestions button:last-child {
-          grid-column: 1 / -1;
+          grid-column: auto;
         }
 
         .agent-chat {
-          max-height: min(50vh, 18rem);
           margin-top: 1rem;
           padding: 0.85rem;
         }
@@ -499,14 +849,6 @@
         .agent-home h1 {
           font-size: 1.55rem !important;
         }
-
-        .agent-suggestions {
-          grid-template-columns: 1fr;
-        }
-
-        .agent-suggestions button:last-child {
-          grid-column: auto;
-        }
       }
     </style>
 
@@ -523,56 +865,92 @@
         <div class="container"><a class="navbar-brand" href="index.html"><img src="assets/img/icons/Logo.png" height="35" alt="FirstCode logo" /></a>
         </div>
       </nav>
-      <section class="py-7 py-lg-10 agent-home" id="home">
+      <section class="agent-home" id="home">
         <div class="bg-holder bg-size" style="background-image:url(assets/img/illustration/2.png);background-position:left top;background-size:contain;">
         </div>
         <!--/.bg-holder-->
 
-        <div class="bg-holder d-none d-xxl-block hero-bg" style="background-image:url(assets/img/illustration/1.png);background-position:right top;background-size:contain;">
+        <div class="bg-holder d-none d-lg-block hero-bg" style="background-image:url(assets/img/illustration/1.png);background-position:right top;background-size:contain;">
         </div>
         <!--/.bg-holder-->
 
         <div class="container">
-          <div class="row align-items-center h-100 justify-content-center justify-content-lg-start">
-            <div class="col-12 col-md-10 col-lg-8 col-xxl-6 text-md-start text-center py-4 py-md-6 pt-6 pt-md-8">
-              <h1 class="fs-4 fs-md-5 fs-xxl-4" data-zanim-xs='{"delay":0.3}' data-zanim-trigger="scroll">Zdravo. Spreman da počnemo?</h1>
-              <p class="fs-1" data-zanim-xs='{"delay":0.5}' data-zanim-trigger="scroll">Nalepi poruku o dostavi, a FirstCode će izvući adresu. Sačuvaj je u listu i odštampaj nalepnice grupno.</p>
+          <div class="row hero-row justify-content-center justify-content-lg-between g-4 g-xl-5">
+            <div class="col-12 col-md-10 col-lg-7 text-md-start text-center">
+              <div class="agent-main mx-auto mx-md-0">
+                <h1 class="fs-4 fs-md-5 fs-xxl-4" data-zanim-xs='{"delay":0.3}' data-zanim-trigger="scroll">Zdravo. Spreman da počnemo?</h1>
+                <p class="fs-1 mb-0" data-zanim-xs='{"delay":0.5}' data-zanim-trigger="scroll">Nalepi poruku o dostavi, a FirstCode će izvući adresu. Sačuvaj je u listu i odštampaj nalepnice grupno.</p>
 
-              <form id="composer" class="agent-composer mt-4 mt-md-5 mx-auto mx-md-0" autocomplete="off" data-zanim-xs='{"delay":0.5}' data-zanim-trigger="scroll">
-                <label class="visually-hidden" for="prompt">Nalepi poruku o dostavi</label>
-                <textarea id="prompt" rows="1" placeholder="Nalepi poruku o dostavi" maxlength="5000"></textarea>
-                <button id="send" class="agent-send" type="submit" aria-label="Izvuci adresu" disabled>
-                  <i class="fas fa-arrow-up"></i>
-                </button>
-              </form>
+                <form id="composer" class="agent-composer mt-3 mt-md-4" autocomplete="off" data-zanim-xs='{"delay":0.5}' data-zanim-trigger="scroll">
+                  <label class="visually-hidden" for="prompt">Nalepi poruku o dostavi</label>
+                  <textarea id="prompt" rows="1" placeholder="Nalepi poruku o dostavi" maxlength="5000"></textarea>
+                  <button id="send" class="agent-send" type="submit" aria-label="Izvuci adresu" disabled>
+                    <i class="fas fa-arrow-up"></i>
+                  </button>
+                </form>
 
-              <div id="suggestions" class="agent-suggestions mx-auto mx-md-0" data-zanim-xs='{"delay":0.6}' data-zanim-trigger="scroll">
-                <button type="button" data-text="Molimo dostaviti za Anu Petrović, Knez Mihailova 12, 11000 Beograd. Telefon +381 64 123 4567.">
-                  <i class="fas fa-tag me-1"></i><span class="d-none d-sm-inline">Izvuci adresu</span><span class="d-inline d-sm-none">Adresa</span>
-                </button>
-                <button type="button" data-text="Pouzeće 3500 RSD za Marka Jovića, Bulevar kralja Aleksandra 72, 11000 Beograd. Telefon +381 63 111 2222.">
-                  <i class="fas fa-pen me-1"></i>Pouzeće
-                </button>
-                <button type="button" data-text="Pošalji za John Smith, 221B Baker Street, London NW1 6XE, United Kingdom. Telefon +44 20 7946 0958.">
-                  <i class="fas fa-globe me-1"></i>Inostranstvo
-                </button>
+                <div id="suggestions" class="agent-suggestions" data-zanim-xs='{"delay":0.6}' data-zanim-trigger="scroll">
+                  <button type="button" data-text="Molimo dostaviti za Anu Petrović, Knez Mihailova 12, 11000 Beograd. Telefon +381 64 123 4567.">
+                    <i class="fas fa-tag me-1"></i><span class="d-none d-sm-inline">Izvuci adresu</span><span class="d-inline d-sm-none">Adresa</span>
+                  </button>
+                  <button type="button" data-text="Pouzeće 3500 RSD za Marka Jovića, Bulevar kralja Aleksandra 72, 11000 Beograd. Telefon +381 63 111 2222.">
+                    <i class="fas fa-pen me-1"></i>Pouzeće
+                  </button>
+                  <button type="button" data-text="Pošalji za John Smith, 221B Baker Street, London NW1 6XE, United Kingdom. Telefon +44 20 7946 0958.">
+                    <i class="fas fa-globe me-1"></i>Inostranstvo
+                  </button>
+                </div>
+
+                <div id="chat" class="agent-chat" aria-live="polite"></div>
               </div>
+            </div>
 
-              <div id="chat" class="agent-chat mx-auto mx-md-0" aria-live="polite"></div>
-
-              <div id="savedPanel" class="saved-panel mx-auto mx-md-0" data-zanim-xs='{"delay":0.7}' data-zanim-trigger="scroll">
-                <div class="saved-panel-header">
-                  <h2>Lista za štampu <span id="savedCount">(0)</span></h2>
-                  <div class="saved-panel-actions">
-                    <button id="printSaved" class="action-btn" type="button" disabled>
-                      <i class="fas fa-print" aria-hidden="true"></i> Odštampaj
-                    </button>
-                    <button id="clearSaved" class="action-btn" type="button" disabled>
-                      <i class="fas fa-trash" aria-hidden="true"></i> Obriši sve
-                    </button>
+            <div class="col-12 col-md-10 col-lg-5 agent-side">
+              <div id="savedPanel" class="saved-panel" data-zanim-xs='{"delay":0.7}' data-zanim-trigger="scroll">
+                <div id="printSettings" class="print-settings">
+                  <button id="printSettingsToggle" class="print-settings-toggle" type="button" aria-expanded="false" aria-controls="printSettingsBody">
+                    <span class="print-settings-toggle-main">
+                      <i class="fas fa-sliders-h" aria-hidden="true"></i>
+                      Podešavanja
+                    </span>
+                    <span id="printSettingsSummary" class="print-settings-summary">Premium · SR</span>
+                    <i class="fas fa-chevron-down print-settings-chevron" aria-hidden="true"></i>
+                  </button>
+                  <div id="printSettingsBody" class="print-settings-body">
+                    <label for="printFormat">
+                      Format
+                      <select id="printFormat">
+                        <option value="PREMIUM_A4_2x3">Premium A4 (2×3)</option>
+                        <option value="CLASSIC_A4_2x3">Classic A4 (2×3)</option>
+                        <option value="MODERN_A4_2x4" disabled>Modern A4 (2×4)</option>
+                        <option value="A4_4x2">A4 2×3 labels</option>
+                        <option value="A4_3x3">A4 3×5 labels</option>
+                        <option value="LABEL_100x150">Label 100×150 mm</option>
+                      </select>
+                    </label>
+                    <div class="print-settings-field">
+                      <span class="print-settings-label">Jezik</span>
+                      <div id="printLanguage" class="lang-toggle" role="group" aria-label="Jezik štampe">
+                        <button type="button" data-lang="sr" aria-pressed="true">SR</button>
+                        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+                      </div>
+                    </div>
                   </div>
                 </div>
+
+                <div class="saved-panel-header">
+                  <h2>Lista za štampu <span id="savedCount">(0)</span></h2>
+                </div>
+                <p id="savedEmpty" class="saved-empty">Sačuvaj dostave da bi ih grupno odštampao.</p>
                 <div id="savedList" class="saved-list"></div>
+                <div id="savedActions" class="saved-panel-actions is-empty">
+                  <button id="printSaved" class="action-btn" type="button" disabled>
+                    <i class="fas fa-print" aria-hidden="true"></i> Odštampaj
+                  </button>
+                  <button id="clearSaved" class="action-btn" type="button" disabled>
+                    <i class="fas fa-trash" aria-hidden="true"></i> Obriši sve
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -584,8 +962,8 @@
         <div class="container">
           <div class="row py-5 py-lg-7">
             <div class="col-12 col-lg-6 mb-4 order-0"><a class="text-decoration-none" href="#"><img src="assets/img/icons/Logo2.png" height="51" alt="FirstCode" /></a>
-              <p class="text-light mt-4 mb-0">EU: +49 9999 0000</p>
-              <p class="text-light mb-0">US: +00 4444 0000</p>
+              <p class="text-light mt-4 mb-0">RS: +381 1234 5678</p>
+              <!-- <p class="text-light mb-0">US: +00 4444 0000</p> -->
               <p class="text-light mt-4 mt-lg-5">info@firstcode.in.rs</p>
               <div class="d-flex mt-3"><a href="#!"><img class="me-3" src="assets/img/gallery/linkedin-line1.svg" alt="LinkedIn" width="20" height="20" /></a><a href="#!"><img class="me-3" src="assets/img/gallery/facebook-line1.svg" alt="Facebook" width="20" height="20" /></a><a href="#!"><img class="me-3" src="assets/img/gallery/twitter-line1.svg" alt="Twitter" width="20" height="20" /></a><a href="#!"><img class="me-3" src="assets/img/gallery/instagram-line1.svg" alt="Instagram" width="20" height="20" /></a>
               </div>
@@ -653,8 +1031,68 @@
     <!--    End of Main Content-->
     <!-- ===============================================-->
 
-
-
+    <div id="editModal" class="edit-modal" aria-hidden="true">
+      <div class="edit-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="editModalTitle">
+        <div class="edit-modal-header">
+          <h3 id="editModalTitle">Izmena dostave</h3>
+          <button id="editModalClose" class="edit-modal-close" type="button" aria-label="Zatvori">
+            <i class="fas fa-times" aria-hidden="true"></i>
+          </button>
+        </div>
+        <form id="editForm" class="edit-form">
+          <input type="hidden" id="editId" />
+          <div class="edit-form-grid">
+            <label class="span-2">
+              Ime i prezime
+              <input id="editFullName" name="fullName" type="text" required maxlength="200" autocomplete="name" />
+            </label>
+            <label>
+              Telefon
+              <input id="editPhone" name="phoneNumber" type="text" maxlength="50" autocomplete="tel" />
+            </label>
+            <label>
+              Email
+              <input id="editEmail" name="email" type="email" maxlength="120" autocomplete="email" />
+            </label>
+            <label class="span-2">
+              Ulica i broj
+              <input id="editStreet" name="streetAddress" type="text" required maxlength="250" autocomplete="street-address" />
+            </label>
+            <label>
+              Grad
+              <input id="editCity" name="city" type="text" required maxlength="120" autocomplete="address-level2" />
+            </label>
+            <label>
+              Poštanski broj
+              <input id="editPostal" name="postalCode" type="text" maxlength="20" autocomplete="postal-code" />
+            </label>
+            <label>
+              Država
+              <input id="editCountry" name="country" type="text" maxlength="120" autocomplete="country-name" />
+            </label>
+            <label>
+              Plaća
+              <select id="editPayer" name="payerType">
+                <option value="RECEIVER">Primalac</option>
+                <option value="SENDER">Pošiljalac</option>
+              </select>
+            </label>
+            <label class="span-2">
+              Pouzeće (RSD)
+              <input id="editCod" name="codAmount" type="number" min="0" step="0.01" inputmode="decimal" />
+            </label>
+          </div>
+          <div class="edit-modal-actions">
+            <button id="editPrint" class="action-btn" type="button">
+              <i class="fas fa-print" aria-hidden="true"></i> Odštampaj
+            </button>
+            <button class="action-btn is-primary" type="submit">
+              <i class="fas fa-save" aria-hidden="true"></i> Sačuvaj
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
 
     <!-- ===============================================-->
     <!--    JavaScripts-->
@@ -676,8 +1114,17 @@
       const API_BASE = "https://firstcode-auth-api-473383712022.europe-west1.run.app";
       const EXTRACT_URL = API_BASE + "/api/delivery/extract";
       const PRINT_URL = API_BASE + "/api/print/delivery-labels";
-      const PRINT_FORMAT = "PREMIUM_A4_2x3";
       const STORAGE_KEY = "firstcode.instantDeliveries";
+      const SETTINGS_KEY = "firstcode.instantPrintSettings";
+      const DEFAULT_SETTINGS = { format: "PREMIUM_A4_2x3", language: "sr" };
+      const FORMAT_VALUES = [
+        "PREMIUM_A4_2x3",
+        "CLASSIC_A4_2x3",
+        "A4_4x2",
+        "A4_3x3",
+        "LABEL_100x150"
+      ];
+      const LANGUAGE_VALUES = ["sr", "en"];
 
       const home = document.getElementById("home");
       const form = document.getElementById("composer");
@@ -687,11 +1134,93 @@
       const chat = document.getElementById("chat");
       const savedPanel = document.getElementById("savedPanel");
       const savedList = document.getElementById("savedList");
+      const savedEmpty = document.getElementById("savedEmpty");
       const savedCount = document.getElementById("savedCount");
       const printSavedBtn = document.getElementById("printSaved");
       const clearSavedBtn = document.getElementById("clearSaved");
+      const savedActions = document.getElementById("savedActions");
+      const printSettings = document.getElementById("printSettings");
+      const printSettingsToggle = document.getElementById("printSettingsToggle");
+      const printSettingsSummary = document.getElementById("printSettingsSummary");
+      const printFormatSelect = document.getElementById("printFormat");
+      const printLanguageToggle = document.getElementById("printLanguage");
+      const editModal = document.getElementById("editModal");
+      const editForm = document.getElementById("editForm");
+      const editModalClose = document.getElementById("editModalClose");
+      const editPrintBtn = document.getElementById("editPrint");
+      const editId = document.getElementById("editId");
+      const editFullName = document.getElementById("editFullName");
+      const editPhone = document.getElementById("editPhone");
+      const editEmail = document.getElementById("editEmail");
+      const editStreet = document.getElementById("editStreet");
+      const editCity = document.getElementById("editCity");
+      const editPostal = document.getElementById("editPostal");
+      const editCountry = document.getElementById("editCountry");
+      const editPayer = document.getElementById("editPayer");
+      const editCod = document.getElementById("editCod");
       const objectUrls = [];
       let busy = false;
+      let selectedLanguage = DEFAULT_SETTINGS.language;
+
+      function loadSettings() {
+        try {
+          const raw = localStorage.getItem(SETTINGS_KEY);
+          const data = raw ? JSON.parse(raw) : {};
+          return {
+            format: FORMAT_VALUES.includes(data.format) ? data.format : DEFAULT_SETTINGS.format,
+            language: LANGUAGE_VALUES.includes(data.language) ? data.language : DEFAULT_SETTINGS.language
+          };
+        } catch (e) {
+          return { ...DEFAULT_SETTINGS };
+        }
+      }
+
+      function persistSettings(settings) {
+        localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+      }
+
+      function getSelectedFormat() {
+        return printFormatSelect.value || DEFAULT_SETTINGS.format;
+      }
+
+      function getSelectedLanguage() {
+        return selectedLanguage || DEFAULT_SETTINGS.language;
+      }
+
+      function setLanguage(language) {
+        selectedLanguage = LANGUAGE_VALUES.includes(language) ? language : DEFAULT_SETTINGS.language;
+        printLanguageToggle.querySelectorAll("button").forEach((button) => {
+          const active = button.dataset.lang === selectedLanguage;
+          button.classList.toggle("is-active", active);
+          button.setAttribute("aria-pressed", active ? "true" : "false");
+        });
+      }
+
+      function formatSummaryLabel(format) {
+        const option = printFormatSelect.querySelector('option[value="' + format + '"]');
+        const label = option ? option.textContent : format;
+        return label.replace(/\s*A4.*$/i, "").trim() || label;
+      }
+
+      function updateSettingsSummary() {
+        printSettingsSummary.textContent =
+          formatSummaryLabel(getSelectedFormat()) + " · " + getSelectedLanguage().toUpperCase();
+      }
+
+      function syncSettingsControls() {
+        const settings = loadSettings();
+        printFormatSelect.value = settings.format;
+        setLanguage(settings.language);
+        updateSettingsSummary();
+      }
+
+      function saveSettingsFromControls() {
+        persistSettings({
+          format: getSelectedFormat(),
+          language: getSelectedLanguage()
+        });
+        updateSettingsSummary();
+      }
 
       function syncSendButton() {
         send.disabled = prompt.value.trim().length === 0 || busy;
@@ -928,20 +1457,100 @@
         persistSaved(loadSaved().filter((item) => item.id !== id));
       }
 
+      function findSaved(id) {
+        return loadSaved().find((item) => item.id === id) || null;
+      }
+
+      function openEditModal(id) {
+        const item = findSaved(id);
+        if (!item) return;
+
+        const delivery = item.delivery || {};
+        editId.value = item.id;
+        editFullName.value = delivery.fullName || "";
+        editPhone.value = delivery.phoneNumber || "";
+        editEmail.value = delivery.email || "";
+        editStreet.value = delivery.streetAddress || "";
+        editCity.value = delivery.city || "";
+        editPostal.value = delivery.postalCode || "";
+        editCountry.value = delivery.country || "";
+        editPayer.value = delivery.payerType || "";
+        editCod.value = delivery.codAmount != null && delivery.codAmount !== "" ? delivery.codAmount : "";
+
+        editModal.classList.add("is-open");
+        editModal.setAttribute("aria-hidden", "false");
+        editFullName.focus();
+      }
+
+      function closeEditModal() {
+        editModal.classList.remove("is-open");
+        editModal.setAttribute("aria-hidden", "true");
+        editForm.reset();
+        editId.value = "";
+      }
+
+      function readEditFormDelivery() {
+        const fullName = editFullName.value.trim();
+        const streetAddress = editStreet.value.trim();
+        const city = editCity.value.trim();
+        if (!fullName || !streetAddress || !city) {
+          throw new Error("Ime, ulica i grad su obavezni.");
+        }
+
+        const codRaw = editCod.value.trim();
+        let codAmount = null;
+        if (codRaw !== "") {
+          const parsed = Number(codRaw);
+          if (Number.isNaN(parsed) || parsed < 0) {
+            throw new Error("Pouzeće mora biti validan iznos.");
+          }
+          codAmount = parsed;
+        }
+
+        return {
+          fullName,
+          phoneNumber: editPhone.value.trim() || null,
+          email: editEmail.value.trim() || null,
+          streetAddress,
+          city,
+          postalCode: editPostal.value.trim() || null,
+          country: editCountry.value.trim() || null,
+          payerType: editPayer.value || null,
+          codAmount
+        };
+      }
+
+      function updateSavedDelivery(id, delivery) {
+        const list = loadSaved();
+        const index = list.findIndex((item) => item.id === id);
+        if (index < 0) return false;
+
+        list[index] = {
+          ...list[index],
+          delivery,
+          updatedAt: new Date().toISOString()
+        };
+        persistSaved(list);
+        return true;
+      }
+
       function renderSavedList() {
         const list = loadSaved();
         savedCount.textContent = "(" + list.length + ")";
         printSavedBtn.disabled = list.length === 0 || busy;
         clearSavedBtn.disabled = list.length === 0 || busy;
-        savedPanel.classList.toggle("is-visible", list.length > 0);
+        savedActions.classList.toggle("is-empty", list.length === 0);
+        savedEmpty.classList.toggle("is-hidden", list.length > 0);
         savedList.replaceChildren();
 
         list.forEach((item) => {
           const row = document.createElement("div");
           row.className = "saved-item";
 
-          const body = document.createElement("div");
+          const body = document.createElement("button");
+          body.type = "button";
           body.className = "saved-item-body";
+          body.setAttribute("aria-label", "Otvori i izmeni dostavu");
 
           const title = document.createElement("p");
           title.className = "saved-item-title";
@@ -954,6 +1563,7 @@
             .join(" · ");
 
           body.append(title, meta);
+          body.addEventListener("click", () => openEditModal(item.id));
 
           const remove = document.createElement("button");
           remove.type = "button";
@@ -961,7 +1571,10 @@
           remove.setAttribute("aria-label", "Ukloni");
           remove.title = "Ukloni";
           remove.innerHTML = '<i class="fas fa-times" aria-hidden="true"></i>';
-          remove.addEventListener("click", () => removeSaved(item.id));
+          remove.addEventListener("click", (event) => {
+            event.stopPropagation();
+            removeSaved(item.id);
+          });
 
           row.append(body, remove);
           savedList.appendChild(row);
@@ -974,7 +1587,7 @@
           headers: {
             "Content-Type": "application/json",
             "Accept": "application/json",
-            "Accept-Language": "sr"
+            "Accept-Language": getSelectedLanguage()
           },
           body: JSON.stringify({ text })
         });
@@ -998,11 +1611,12 @@
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "Accept": "application/pdf"
+            "Accept": "application/pdf",
+            "Accept-Language": getSelectedLanguage()
           },
           body: JSON.stringify({
             addresses: deliveries.map(toPrintAddress),
-            format: PRINT_FORMAT
+            format: getSelectedFormat()
           })
         });
 
@@ -1127,6 +1741,63 @@
         }
       });
 
+      printSettingsToggle.addEventListener("click", () => {
+        const open = printSettings.classList.toggle("is-open");
+        printSettingsToggle.setAttribute("aria-expanded", open ? "true" : "false");
+      });
+
+      printFormatSelect.addEventListener("change", saveSettingsFromControls);
+
+      printLanguageToggle.addEventListener("click", (event) => {
+        const button = event.target.closest("button[data-lang]");
+        if (!button) return;
+        setLanguage(button.dataset.lang);
+        saveSettingsFromControls();
+      });
+
+      editModalClose.addEventListener("click", closeEditModal);
+
+      editModal.addEventListener("click", (event) => {
+        if (event.target === editModal) closeEditModal();
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && editModal.classList.contains("is-open")) {
+          closeEditModal();
+        }
+      });
+
+      editForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        try {
+          const id = editId.value;
+          const delivery = readEditFormDelivery();
+          if (!updateSavedDelivery(id, delivery)) {
+            throw new Error("Dostava nije pronađena u listi.");
+          }
+          closeEditModal();
+        } catch (error) {
+          alert(error.message || "Izmena nije sačuvana.");
+        }
+      });
+
+      editPrintBtn.addEventListener("click", async () => {
+        try {
+          const delivery = readEditFormDelivery();
+          const id = editId.value;
+          updateSavedDelivery(id, delivery);
+          editPrintBtn.disabled = true;
+          const file = await printDeliveries([delivery], toNameFilename(delivery.fullName));
+          window.open(file.url, "_blank", "noopener");
+        } catch (error) {
+          alert(error.message || "Štampa nije uspela.");
+        } finally {
+          editPrintBtn.disabled = false;
+          renderSavedList();
+        }
+      });
+
+      syncSettingsControls();
       syncSendButton();
       renderSavedList();
     </script>
