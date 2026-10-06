@@ -834,6 +834,119 @@
         font: 400 0.9rem/1.45rem "Poppins", sans-serif;
       }
 
+      body.pdf-preview-open {
+        overflow: hidden;
+      }
+
+      .pdf-preview-modal {
+        z-index: 1100;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 4.25rem 1.15rem 1.15rem;
+        background: rgba(17, 12, 36, 0.62);
+        backdrop-filter: blur(6px);
+      }
+
+      .pdf-preview-tools {
+        position: absolute;
+        top: 0.9rem;
+        right: 0.9rem;
+        z-index: 2;
+        display: flex;
+        gap: 0.45rem;
+      }
+
+      .pdf-preview-tool {
+        display: inline-grid;
+        place-items: center;
+        width: 2.35rem;
+        height: 2.35rem;
+        border: 0;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.16);
+        color: #fff;
+        cursor: pointer;
+        transition: background 0.18s ease;
+      }
+
+      .pdf-preview-tool:hover:not(:disabled) {
+        background: rgba(255, 255, 255, 0.28);
+      }
+
+      .pdf-preview-tool:disabled {
+        opacity: 0.4;
+        cursor: default;
+      }
+
+      .pdf-preview-dialog {
+        position: relative;
+        flex: 0 1 auto;
+        width: min(100%, 70rem);
+        max-height: 100%;
+        min-height: 14rem;
+        border-radius: 1rem;
+        overflow: hidden;
+        background: transparent;
+        box-shadow: none;
+      }
+
+      .pdf-preview-pages {
+        position: relative;
+        width: 100%;
+        max-height: calc(100vh - 5.4rem);
+        max-height: calc(100dvh - 5.4rem);
+        overflow: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.85rem;
+        padding: 0.35rem;
+        background: transparent;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .pdf-preview-page {
+        width: 100%;
+        height: auto;
+        background: #fff;
+        box-shadow: 0 0.45rem 1.4rem rgba(17, 12, 36, 0.28);
+      }
+
+      .pdf-preview-status {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        display: grid;
+        align-content: center;
+        justify-items: center;
+        gap: 0.85rem;
+        color: #fff;
+        background: transparent;
+        font: 500 0.92rem/1.3rem "Poppins", sans-serif;
+      }
+
+      .pdf-preview-status[hidden] {
+        display: none !important;
+      }
+
+      .pdf-preview-status.is-error .pdf-preview-spinner {
+        display: none;
+      }
+
+      .pdf-preview-spinner {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        border: 3px solid rgba(255, 255, 255, 0.25);
+        border-top-color: #fff;
+        animation: pdf-preview-spin 0.7s linear infinite;
+      }
+
+      @keyframes pdf-preview-spin {
+        to { transform: rotate(360deg); }
+      }
+
       @media (max-width: 575.98px) {
         .edit-modal {
           padding: 0.65rem;
@@ -851,6 +964,15 @@
         }
 
         .edit-form label.span-2 { grid-column: auto; }
+
+        .pdf-preview-modal {
+          padding: 3.6rem 0.65rem 0.65rem;
+        }
+
+        .pdf-preview-pages {
+          max-height: calc(100vh - 4.25rem);
+          max-height: calc(100dvh - 4.25rem);
+        }
       }
 
       .saved-item-title {
@@ -1428,6 +1550,27 @@
       </div>
     </div>
 
+    <div id="pdfPreviewModal" class="edit-modal pdf-preview-modal" aria-hidden="true">
+      <div class="pdf-preview-tools">
+        <button id="pdfPreviewDownload" class="pdf-preview-tool" type="button" aria-label="Preuzmi" disabled>
+          <i class="fas fa-download" aria-hidden="true"></i>
+        </button>
+        <button id="pdfPreviewPrint" class="pdf-preview-tool" type="button" aria-label="Odštampaj" disabled>
+          <i class="fas fa-print" aria-hidden="true"></i>
+        </button>
+        <button id="pdfPreviewClose" class="pdf-preview-tool" type="button" aria-label="Zatvori">
+          <i class="fas fa-times" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="pdf-preview-dialog" role="dialog" aria-modal="true" aria-label="Pregled nalepnice">
+        <div id="pdfPreviewStatus" class="pdf-preview-status" hidden>
+          <span class="pdf-preview-spinner" aria-hidden="true"></span>
+          <span id="pdfPreviewStatusText">Pripremam pregled</span>
+        </div>
+        <div id="pdfPreviewPages" class="pdf-preview-pages"></div>
+      </div>
+    </div>
+
     <!-- ===============================================-->
     <!--    JavaScripts-->
     <!-- ===============================================-->
@@ -1498,6 +1641,24 @@
       const confirmCancelBtn = document.getElementById("confirmCancel");
       const confirmOkBtn = document.getElementById("confirmOk");
       let confirmAction = null;
+      const pdfPreviewModal = document.getElementById("pdfPreviewModal");
+      const pdfPreviewClose = document.getElementById("pdfPreviewClose");
+      const pdfPreviewDownload = document.getElementById("pdfPreviewDownload");
+      const pdfPreviewPrint = document.getElementById("pdfPreviewPrint");
+      const pdfPreviewPages = document.getElementById("pdfPreviewPages");
+      const pdfPreviewStatus = document.getElementById("pdfPreviewStatus");
+      const pdfPreviewStatusText = document.getElementById("pdfPreviewStatusText");
+      const PDFJS_SRC = "vendors/pdfjs/pdf.min.js";
+      const PDFJS_WORKER = "vendors/pdfjs/pdf.worker.min.js";
+      let pdfjsLoader = null;
+      let pdfPreviewUrl = null;
+      let pdfPreviewData = null;
+      let pdfPreviewDoc = null;
+      let pdfPreviewFilename = "dostave.pdf";
+      let pdfPreviewRequest = 0;
+      let pdfPreviewRenderWidth = 0;
+      let pdfPreviewResizeTimer = 0;
+      let pdfPreviewRenderToken = 0;
       const editId = document.getElementById("editId");
       const editFullName = document.getElementById("editFullName");
       const editPhone = document.getElementById("editPhone");
@@ -1773,8 +1934,7 @@
         printBtn.addEventListener("click", async () => {
           printBtn.disabled = true;
           try {
-            const file = await printDeliveries([delivery], toNameFilename(delivery.fullName));
-            window.open(file.url, "_blank", "noopener");
+            await previewDeliveries([delivery], toNameFilename(delivery.fullName));
           } catch (error) {
             alert(error.message || "Štampa nije uspela.");
           } finally {
@@ -2146,10 +2306,223 @@
         }
 
         const bytes = await response.blob();
-        const pdf = new Blob([bytes], { type: "application/pdf" });
+        const name = filename || "dostave.pdf";
+        const pdf = new File([bytes], name, { type: "application/pdf" });
         const url = URL.createObjectURL(pdf);
         objectUrls.push(url);
-        return { url, filename: filename || "dostave.pdf" };
+        return { url, filename: name };
+      }
+
+      function discardObjectUrl(url) {
+        const index = objectUrls.indexOf(url);
+        if (index >= 0) objectUrls.splice(index, 1);
+        URL.revokeObjectURL(url);
+      }
+
+      function releasePdfPreviewUrl() {
+        if (!pdfPreviewUrl) return;
+        const url = pdfPreviewUrl;
+        pdfPreviewUrl = null;
+        discardObjectUrl(url);
+      }
+
+      function loadPdfJs() {
+        if (window.pdfjsLib) {
+          window.pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS_WORKER;
+          return Promise.resolve(window.pdfjsLib);
+        }
+        if (!pdfjsLoader) {
+          pdfjsLoader = new Promise((resolve, reject) => {
+            const script = document.createElement("script");
+            script.src = PDFJS_SRC;
+            script.async = true;
+            script.onload = () => {
+              if (!window.pdfjsLib) {
+                pdfjsLoader = null;
+                reject(new Error("PDF pregled nije dostupan."));
+                return;
+              }
+              window.pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS_WORKER;
+              resolve(window.pdfjsLib);
+            };
+            script.onerror = () => {
+              pdfjsLoader = null;
+              reject(new Error("PDF pregled nije mogao da se učita."));
+            };
+            document.head.appendChild(script);
+          });
+        }
+        return pdfjsLoader;
+      }
+
+      function setPdfToolsEnabled(enabled) {
+        pdfPreviewDownload.disabled = !enabled;
+        pdfPreviewPrint.disabled = !enabled;
+      }
+
+      function resetPdfPreviewStatus() {
+        pdfPreviewStatus.classList.remove("is-error");
+        pdfPreviewStatusText.textContent = "Pripremam pregled";
+        pdfPreviewStatus.hidden = false;
+      }
+
+      function showPdfPreviewError(message) {
+        pdfPreviewStatus.classList.add("is-error");
+        pdfPreviewStatusText.textContent = message;
+        pdfPreviewStatus.hidden = false;
+      }
+
+      function destroyPdfPreviewDoc() {
+        if (!pdfPreviewDoc) return;
+        const doc = pdfPreviewDoc;
+        pdfPreviewDoc = null;
+        doc.destroy().catch(() => {});
+      }
+
+      function openPdfPreview() {
+        const requestId = ++pdfPreviewRequest;
+        pdfPreviewData = null;
+        pdfPreviewRenderWidth = 0;
+        destroyPdfPreviewDoc();
+        pdfPreviewPages.replaceChildren();
+        setPdfToolsEnabled(false);
+        resetPdfPreviewStatus();
+        pdfPreviewModal.classList.add("is-open");
+        pdfPreviewModal.setAttribute("aria-hidden", "false");
+        document.body.classList.add("pdf-preview-open");
+        pdfPreviewClose.focus();
+        return requestId;
+      }
+
+      function isCurrentPdfRender(requestId, renderToken) {
+        return requestId === pdfPreviewRequest && renderToken === pdfPreviewRenderToken;
+      }
+
+      async function renderPdfPages(requestId) {
+        const renderToken = ++pdfPreviewRenderToken;
+        const pdfjsLib = await loadPdfJs();
+        if (!isCurrentPdfRender(requestId, renderToken) || !pdfPreviewData) return;
+
+        destroyPdfPreviewDoc();
+        const doc = await pdfjsLib.getDocument({ data: new Uint8Array(pdfPreviewData) }).promise;
+        if (!isCurrentPdfRender(requestId, renderToken)) {
+          doc.destroy().catch(() => {});
+          return;
+        }
+
+        pdfPreviewDoc = doc;
+        pdfPreviewPages.replaceChildren();
+        const cssWidth = Math.max((pdfPreviewPages.clientWidth || 320) - 28, 240);
+        pdfPreviewRenderWidth = pdfPreviewPages.clientWidth;
+        const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+
+        for (let pageNumber = 1; pageNumber <= doc.numPages; pageNumber += 1) {
+          if (!isCurrentPdfRender(requestId, renderToken)) return;
+          const page = await doc.getPage(pageNumber);
+          const base = page.getViewport({ scale: 1 });
+          const viewport = page.getViewport({
+            scale: (cssWidth / base.width) * pixelRatio
+          });
+          const canvas = document.createElement("canvas");
+          canvas.className = "pdf-preview-page";
+          canvas.width = Math.floor(viewport.width);
+          canvas.height = Math.floor(viewport.height);
+          const context = canvas.getContext("2d", { alpha: false });
+          await page.render({ canvasContext: context, viewport }).promise;
+          if (!isCurrentPdfRender(requestId, renderToken)) return;
+          pdfPreviewPages.appendChild(canvas);
+          pdfPreviewStatus.hidden = true;
+        }
+      }
+
+      async function showPdfPreview(file, requestId) {
+        if (requestId !== pdfPreviewRequest) {
+          discardObjectUrl(file.url);
+          return;
+        }
+
+        releasePdfPreviewUrl();
+        pdfPreviewUrl = file.url;
+        pdfPreviewFilename = file.filename || "dostave.pdf";
+        setPdfToolsEnabled(true);
+
+        try {
+          const response = await fetch(file.url);
+          const data = await response.arrayBuffer();
+          if (requestId !== pdfPreviewRequest) return;
+          pdfPreviewData = data;
+          await renderPdfPages(requestId);
+        } catch (error) {
+          if (requestId !== pdfPreviewRequest) return;
+          showPdfPreviewError(error.message || "Pregled nije mogao da se prikaže.");
+        }
+      }
+
+      function closePdfPreview() {
+        pdfPreviewRequest += 1;
+        window.clearTimeout(pdfPreviewResizeTimer);
+        pdfPreviewModal.classList.remove("is-open");
+        pdfPreviewModal.setAttribute("aria-hidden", "true");
+        pdfPreviewPages.replaceChildren();
+        pdfPreviewData = null;
+        pdfPreviewRenderWidth = 0;
+        setPdfToolsEnabled(false);
+        pdfPreviewStatus.hidden = true;
+        document.body.classList.remove("pdf-preview-open");
+        destroyPdfPreviewDoc();
+        releasePdfPreviewUrl();
+      }
+
+      function downloadPdfPreview() {
+        if (!pdfPreviewUrl) return;
+        const link = document.createElement("a");
+        link.href = pdfPreviewUrl;
+        link.download = pdfPreviewFilename || "dostave.pdf";
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+      }
+
+      function printPdfPreview() {
+        const canvases = pdfPreviewPages.querySelectorAll("canvas");
+        if (!canvases.length) return;
+
+        const iframe = document.createElement("iframe");
+        iframe.setAttribute("aria-hidden", "true");
+        iframe.style.cssText = "position:fixed;width:0;height:0;border:0;";
+        document.body.appendChild(iframe);
+        const doc = iframe.contentDocument;
+        doc.open();
+        doc.write("<!DOCTYPE html><html><head><title></title><style>@page{margin:8mm}body{margin:0}img{display:block;width:100%;height:auto;break-after:page}img:last-child{break-after:auto}</style></head><body></body></html>");
+        doc.close();
+        canvases.forEach((canvas) => {
+          const image = doc.createElement("img");
+          image.alt = "";
+          image.src = canvas.toDataURL("image/png");
+          doc.body.appendChild(image);
+        });
+
+        const win = iframe.contentWindow;
+        const removeFrame = () => {
+          if (iframe.parentNode) iframe.remove();
+        };
+        win.addEventListener("afterprint", () => window.setTimeout(removeFrame, 200));
+        window.setTimeout(() => {
+          win.focus();
+          win.print();
+          window.setTimeout(removeFrame, 1500);
+        }, 200);
+      }
+
+      async function previewDeliveries(deliveries, filename) {
+        const requestId = openPdfPreview();
+        try {
+          const file = await printDeliveries(deliveries, filename);
+          await showPdfPreview(file, requestId);
+        } catch (error) {
+          if (requestId === pdfPreviewRequest) closePdfPreview();
+          throw error;
+        }
       }
 
       async function submitText(text) {
@@ -2157,6 +2530,7 @@
         const value = text.trim();
         if (!value) return;
 
+        closePdfPreview();
         objectUrls.forEach((url) => URL.revokeObjectURL(url));
         objectUrls.length = 0;
         chat.replaceChildren();
@@ -2234,13 +2608,12 @@
         printSavedBtn.innerHTML = '<i class="fas fa-spinner fa-spin" aria-hidden="true"></i> Štampam';
 
         try {
-          const file = await printDeliveries(
+          await previewDeliveries(
             selected.map((item) => item.delivery),
             selected.length === 1
               ? toNameFilename(selected[0].delivery.fullName)
               : "grupne-dostave.pdf"
           );
-          window.open(file.url, "_blank", "noopener");
         } catch (error) {
           alert(error.message || "Grupna štampa nije uspela.");
         } finally {
@@ -2301,8 +2674,31 @@
         if (action) action();
       });
 
+      pdfPreviewClose.addEventListener("click", closePdfPreview);
+      pdfPreviewDownload.addEventListener("click", downloadPdfPreview);
+      pdfPreviewPrint.addEventListener("click", printPdfPreview);
+
+      pdfPreviewModal.addEventListener("click", (event) => {
+        if (event.target === pdfPreviewModal) closePdfPreview();
+      });
+
+      window.addEventListener("resize", () => {
+        if (!pdfPreviewModal.classList.contains("is-open") || !pdfPreviewData) return;
+        const width = pdfPreviewPages.clientWidth;
+        if (Math.abs(width - pdfPreviewRenderWidth) < 48) return;
+        window.clearTimeout(pdfPreviewResizeTimer);
+        const requestId = pdfPreviewRequest;
+        pdfPreviewResizeTimer = window.setTimeout(() => {
+          renderPdfPages(requestId).catch(() => {});
+        }, 180);
+      });
+
       document.addEventListener("keydown", (event) => {
         if (event.key !== "Escape") return;
+        if (pdfPreviewModal.classList.contains("is-open")) {
+          closePdfPreview();
+          return;
+        }
         if (confirmModal.classList.contains("is-open")) {
           closeConfirmModal();
           return;
@@ -2332,8 +2728,7 @@
           const id = editId.value;
           updateSavedDelivery(id, delivery);
           editPrintBtn.disabled = true;
-          const file = await printDeliveries([delivery], toNameFilename(delivery.fullName));
-          window.open(file.url, "_blank", "noopener");
+          await previewDeliveries([delivery], toNameFilename(delivery.fullName));
         } catch (error) {
           alert(error.message || "Štampa nije uspela.");
         } finally {
