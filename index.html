@@ -244,6 +244,13 @@
         border-color: #6E46F5;
       }
 
+      .chat-row.user .chat-actions .msg-btn:focus-visible,
+      .delivery-card-actions .action-btn:focus-visible {
+        outline: 2px solid #6E46F5;
+        outline-offset: 2px;
+        box-shadow: 0 0 0 4px rgba(110, 70, 245, 0.2);
+      }
+
       .delivery-card-actions .msg-btn:hover,
       .saved-panel-actions .msg-btn:hover {
         background: #6E46F5;
@@ -1315,7 +1322,7 @@
 
                 <form id="composer" class="agent-composer mt-3 mt-md-4" autocomplete="off" data-zanim-xs='{"delay":0.5}' data-zanim-trigger="scroll">
                   <label class="visually-hidden" for="prompt">Nalepi poruku o dostavi</label>
-                  <textarea id="prompt" rows="1" placeholder="Nalepi poruku o dostavi" maxlength="5000"></textarea>
+                  <textarea id="prompt" rows="1" placeholder="Nalepi poruku o dostavi" maxlength="5000" enterkeyhint="enter"></textarea>
                   <button id="send" class="agent-send" type="submit" aria-label="Izvuci adresu" disabled>
                     <i class="fas fa-arrow-up"></i>
                   </button>
@@ -1873,6 +1880,7 @@
         edit.type = "button";
         edit.addEventListener("click", () => editSourceText(sourceText));
         actions.appendChild(edit);
+        return edit;
       }
 
       function metaItem(icon, text) {
@@ -1944,7 +1952,15 @@
 
         actions.append(saveBtn, printBtn);
         card.append(title, meta, actions);
-        return card;
+        return { card, saveBtn };
+      }
+
+      function focusParsedAction(button) {
+        if (!button || button.disabled) return;
+        window.setTimeout(() => {
+          button.focus({ focusVisible: true });
+          button.scrollIntoView({ block: "nearest", inline: "nearest" });
+        }, 0);
       }
 
       function saveDelivery(delivery, sourceText) {
@@ -2545,7 +2561,7 @@
         if (value.length < 10) {
           const status = addMessage("assistant", "Tekst mora imati između 10 i 5000 karaktera.");
           status.bubble.classList.add("is-error");
-          fillMessageActions(userMessage.actions, value);
+          focusParsedAction(fillMessageActions(userMessage.actions, value));
           return;
         }
 
@@ -2554,33 +2570,27 @@
         renderSavedList();
         try {
           const delivery = await extractDelivery(value);
-          fillMessageActions(userMessage.actions, value);
-          addMessage("assistant", createDeliveryCard(delivery, value));
+          const editBtn = fillMessageActions(userMessage.actions, value);
+          const { card, saveBtn } = createDeliveryCard(delivery, value);
+          addMessage("assistant", card);
+          focusParsedAction(saveBtn.disabled ? editBtn : saveBtn);
         } catch (error) {
           const message = error && error.message === "Failed to fetch"
             ? "Nije moguće povezati se sa servisom za dostavu. Proveri API adresu ili CORS."
             : (error.message || "Adresa nije mogla da se izvuče.");
           const status = addMessage("assistant", message);
           status.bubble.classList.add("is-error");
-          fillMessageActions(userMessage.actions, value);
+          focusParsedAction(fillMessageActions(userMessage.actions, value));
         } finally {
           busy = false;
           syncSendButton();
           renderSavedList();
-          prompt.focus();
         }
       }
 
       prompt.addEventListener("input", () => {
         resizePrompt();
         syncSendButton();
-      });
-
-      prompt.addEventListener("keydown", (event) => {
-        if (event.key === "Enter" && !event.shiftKey) {
-          event.preventDefault();
-          form.requestSubmit();
-        }
       });
 
       form.addEventListener("submit", (event) => {
