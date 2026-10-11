@@ -375,7 +375,7 @@
 
 .print-settings-body {
   display: none;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 0.65rem;
   padding-top: 0.65rem;
 }
@@ -416,23 +416,40 @@
   box-shadow: 0 0 0 3px rgba(110, 70, 245, 0.12);
 }
 
+.navbar-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.navbar-bar .navbar-brand {
+  margin-right: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
 .lang-toggle {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0.25rem;
-  padding: 0.2rem;
+  width: 5.5rem;
+  flex: 0 0 auto;
+  margin-left: auto;
+  gap: 0.12rem;
+  padding: 0.16rem;
   border: 1px solid rgba(110, 70, 245, 0.22);
-  border-radius: 0.75rem;
-  background: rgba(110, 70, 245, 0.05);
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 0.15rem 0.55rem rgba(27, 22, 56, 0.08);
 }
 
 .lang-toggle button {
   border: 0;
-  border-radius: 0.6rem;
+  border-radius: 999px;
   background: transparent;
   color: #6F6A86;
-  padding: 0.4rem 0.5rem;
-  font: 700 0.78rem/1.1rem "Poppins", sans-serif;
+  padding: 0.28rem 0.2rem;
+  font: 700 0.72rem/1rem "Poppins", sans-serif;
   cursor: pointer;
   transition: all 0.18s ease;
 }

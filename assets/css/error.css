@@ -27,7 +27,39 @@ body {
 }
 
 .error-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
   padding: 1.15rem 1.5rem;
+}
+
+.lang-toggle {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 5.5rem;
+  flex: 0 0 auto;
+  gap: 0.12rem;
+  padding: 0.16rem;
+  border: 1px solid rgba(110, 70, 245, 0.22);
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 0.15rem 0.55rem rgba(27, 22, 56, 0.08);
+}
+
+.lang-toggle button {
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: #6F6A86;
+  padding: 0.28rem 0.2rem;
+  font: 700 0.72rem/1rem "Poppins", sans-serif;
+  cursor: pointer;
+}
+
+.lang-toggle button.is-active {
+  background: linear-gradient(135deg, #4F7DFF 0%, #6E46F5 74%);
+  color: #fff;
 }
 
 .error-brand {

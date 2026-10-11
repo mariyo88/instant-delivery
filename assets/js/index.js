@@ -38,7 +38,7 @@ const printSettings = document.getElementById("printSettings");
 const printSettingsToggle = document.getElementById("printSettingsToggle");
 const printSettingsSummary = document.getElementById("printSettingsSummary");
 const printFormatSelect = document.getElementById("printFormat");
-const printLanguageToggle = document.getElementById("printLanguage");
+const appLanguageToggle = document.getElementById("appLanguage");
 const editModal = document.getElementById("editModal");
 const editForm = document.getElementById("editForm");
 const editModalClose = document.getElementById("editModalClose");
@@ -82,7 +82,9 @@ const editPayer = document.getElementById("editPayer");
 const editCod = document.getElementById("editCod");
 const objectUrls = [];
 let busy = false;
-let selectedLanguage = DEFAULT_SETTINGS.language;
+let printingBatch = false;
+let selectedLanguage = getStoredLanguage();
+let confirmCopy = null;
 
 function loadSettings() {
   try {
@@ -110,12 +112,54 @@ function getSelectedLanguage() {
 }
 
 function setLanguage(language) {
-  selectedLanguage = LANGUAGE_VALUES.includes(language) ? language : DEFAULT_SETTINGS.language;
-  printLanguageToggle.querySelectorAll("button").forEach((button) => {
-    const active = button.dataset.lang === selectedLanguage;
-    button.classList.toggle("is-active", active);
-    button.setAttribute("aria-pressed", active ? "true" : "false");
+  selectedLanguage = persistStoredLanguage(language);
+  document.documentElement.lang = selectedLanguage;
+  if (appLanguageToggle) {
+    appLanguageToggle.querySelectorAll("button").forEach((button) => {
+      const active = button.dataset.lang === selectedLanguage;
+      button.classList.toggle("is-active", active);
+      button.setAttribute("aria-pressed", active ? "true" : "false");
+    });
+  }
+  applyI18n(document);
+  refreshDynamicCopy();
+  renderSavedList();
+}
+
+function iconLabel(icon, label) {
+  return '<i class="fas ' + icon + '" aria-hidden="true"></i> ' + label;
+}
+
+function refreshDynamicCopy() {
+  document.querySelectorAll("[data-ui]").forEach((el) => {
+    const ui = el.dataset.ui;
+    if (ui === "extracting") {
+      el.textContent = t("extracting");
+    } else if (ui === "unnamed") {
+      el.textContent = t("unnamed");
+    } else if (ui === "i18n-message") {
+      el.textContent = t(el.dataset.messageKey);
+    } else if (ui === "edit" || ui === "remove") {
+      const label = t(ui);
+      el.setAttribute("aria-label", label);
+      el.title = label;
+    } else if (ui === "save" || ui === "saved") {
+      el.innerHTML = iconLabel(ui === "saved" ? "fa-check" : "fa-bookmark", t(ui));
+    } else if (ui === "print") {
+      el.innerHTML = iconLabel("fa-print", t("print"));
+    } else if (ui === "cod") {
+      const span = el.querySelector("span");
+      if (span) span.textContent = t("codLine", { amount: formatMoney(el.dataset.amount) });
+    } else if (ui === "payer") {
+      const span = el.querySelector("span");
+      if (span) span.textContent = t("payerLine", { payer: formatPayer(el.dataset.payer) });
+    }
   });
+
+  if (pdfPreviewStatusText.dataset.state === "loading") {
+    pdfPreviewStatusText.textContent = t("preparingPreview");
+  }
+  if (confirmModal.classList.contains("is-open")) applyConfirmCopy();
 }
 
 function formatSummaryLabel(format) {
@@ -125,8 +169,7 @@ function formatSummaryLabel(format) {
 }
 
 function updateSettingsSummary() {
-  printSettingsSummary.textContent =
-    formatSummaryLabel(getSelectedFormat()) + " · " + getSelectedLanguage().toUpperCase();
+  printSettingsSummary.textContent = formatSummaryLabel(getSelectedFormat());
 }
 
 function syncSettingsControls() {
@@ -185,7 +228,7 @@ function isAlreadySaved(delivery) {
 
 function toPrintAddress(delivery) {
   return {
-    name: delivery.fullName || "Bez imena",
+    name: delivery.fullName || t("unnamed"),
     street: delivery.streetAddress || "-",
     city: delivery.city || "-",
     zip: delivery.postalCode || "",
@@ -202,24 +245,25 @@ function toNameFilename(name) {
     .trim()
     .replace(/[\\/:*?"<>|]+/g, "")
     .replace(/\s+/g, " ");
-  return cleaned ? cleaned + " dostava.pdf" : "dostava.pdf";
+  return cleaned ? cleaned + " " + t("filenameSuffix") : t("filenameDefault");
 }
 
 function formatMoney(value) {
   if (value == null || value === "") return "";
   const num = Number(value);
   if (Number.isNaN(num)) return String(value);
-  return num.toLocaleString("sr-RS") + " RSD";
+  const locale = getSelectedLanguage() === "en" ? "en-GB" : "sr-RS";
+  return num.toLocaleString(locale) + " RSD";
 }
 
 function formatPayer(value) {
   if (!value) return "";
-  if (value === "SENDER") return "Pošiljalac";
-  if (value === "RECEIVER") return "Primalac";
+  if (value === "SENDER") return t("sender");
+  if (value === "RECEIVER") return t("receiver");
   return value;
 }
 
-function addMessage(role, content) {
+function addMessage(role, content, messageKey) {
   chat.classList.add("is-visible");
   home.classList.add("is-chatting");
   const row = document.createElement("div");
@@ -228,6 +272,10 @@ function addMessage(role, content) {
   bubble.className = "chat-bubble";
   if (typeof content === "string") {
     bubble.textContent = content;
+    if (messageKey) {
+      bubble.dataset.ui = "i18n-message";
+      bubble.dataset.messageKey = messageKey;
+    }
   } else {
     bubble.appendChild(content);
   }
@@ -263,7 +311,8 @@ function showLoading(actions) {
   actions.classList.add("is-visible");
   const loading = document.createElement("div");
   loading.className = "chat-loading";
-  loading.innerHTML = '<span class="chat-loading-dots" aria-hidden="true"><span></span><span></span><span></span></span><span>Izvlačim adresu</span>';
+  loading.innerHTML = '<span class="chat-loading-dots" aria-hidden="true"><span></span><span></span><span></span></span><span data-ui="extracting"></span>';
+  loading.querySelector("[data-ui='extracting']").textContent = t("extracting");
   actions.appendChild(loading);
 }
 
@@ -280,7 +329,8 @@ function fillMessageActions(actions, sourceText) {
   actions.replaceChildren();
   actions.classList.add("is-visible");
 
-  const edit = iconButton("button", "fa-pen", "Izmeni");
+  const edit = iconButton("button", "fa-pen", t("edit"));
+  edit.dataset.ui = "edit";
   edit.type = "button";
   edit.addEventListener("click", () => editSourceText(sourceText));
   actions.appendChild(edit);
@@ -301,7 +351,8 @@ function createDeliveryCard(delivery, sourceText) {
 
   const title = document.createElement("h3");
   title.className = "delivery-card-title";
-  title.textContent = delivery.fullName || "Bez imena";
+  title.textContent = delivery.fullName || t("unnamed");
+  if (!delivery.fullName) title.dataset.ui = "unnamed";
 
   const meta = document.createElement("ul");
   meta.className = "delivery-card-meta";
@@ -310,12 +361,23 @@ function createDeliveryCard(delivery, sourceText) {
     .filter(Boolean)
     .join(", ");
 
+  const codItem = metaItem("fa-money-bill", delivery.codAmount != null ? t("codLine", { amount: formatMoney(delivery.codAmount) }) : "");
+  if (codItem) {
+    codItem.dataset.ui = "cod";
+    codItem.dataset.amount = String(delivery.codAmount);
+  }
+  const payerItem = metaItem("fa-user-check", delivery.payerType ? t("payerLine", { payer: formatPayer(delivery.payerType) }) : "");
+  if (payerItem) {
+    payerItem.dataset.ui = "payer";
+    payerItem.dataset.payer = delivery.payerType;
+  }
+
   [
     metaItem("fa-phone", delivery.phoneNumber),
     metaItem("fa-envelope", delivery.email),
     metaItem("fa-map-marker-alt", addressParts),
-    metaItem("fa-money-bill", delivery.codAmount != null ? "Pouzeće: " + formatMoney(delivery.codAmount) : ""),
-    metaItem("fa-user-check", delivery.payerType ? "Plaća: " + formatPayer(delivery.payerType) : "")
+    codItem,
+    payerItem
   ].forEach((item) => {
     if (item) meta.appendChild(item);
   });
@@ -328,27 +390,28 @@ function createDeliveryCard(delivery, sourceText) {
   saveBtn.className = "action-btn";
   const saved = isAlreadySaved(delivery);
   saveBtn.classList.toggle("is-saved", saved);
-  saveBtn.innerHTML = saved
-    ? '<i class="fas fa-check" aria-hidden="true"></i> Sačuvano'
-    : '<i class="fas fa-bookmark" aria-hidden="true"></i> Sačuvaj';
+  saveBtn.dataset.ui = saved ? "saved" : "save";
+  saveBtn.innerHTML = iconLabel(saved ? "fa-check" : "fa-bookmark", t(saveBtn.dataset.ui));
   saveBtn.disabled = saved;
   saveBtn.addEventListener("click", () => {
     saveDelivery(delivery, sourceText);
     saveBtn.classList.add("is-saved");
     saveBtn.disabled = true;
-    saveBtn.innerHTML = '<i class="fas fa-check" aria-hidden="true"></i> Sačuvano';
+    saveBtn.dataset.ui = "saved";
+    saveBtn.innerHTML = iconLabel("fa-check", t("saved"));
   });
 
   const printBtn = document.createElement("button");
   printBtn.type = "button";
   printBtn.className = "action-btn";
-  printBtn.innerHTML = '<i class="fas fa-print" aria-hidden="true"></i> Odštampaj';
+  printBtn.dataset.ui = "print";
+  printBtn.innerHTML = iconLabel("fa-print", t("print"));
   printBtn.addEventListener("click", async () => {
     printBtn.disabled = true;
     try {
       await previewDeliveries([delivery], toNameFilename(delivery.fullName));
     } catch (error) {
-      alert(error.message || "Štampa nije uspela.");
+      alert(error.message || t("printFailed"));
     } finally {
       printBtn.disabled = false;
     }
@@ -356,7 +419,7 @@ function createDeliveryCard(delivery, sourceText) {
 
   actions.append(saveBtn, printBtn);
   card.append(title, meta, actions);
-  return { card, saveBtn };
+  return card;
 }
 
 function focusParsedAction(button) {
@@ -404,11 +467,12 @@ function getSelectedItems() {
 
 function updatePrintButtonLabel() {
   const selectedCount = getSelectedItems().length;
-  if (selectedCount > 0) {
-    printSavedBtn.innerHTML =
-      '<i class="fas fa-print" aria-hidden="true"></i> Odštampaj (' + selectedCount + ")";
+  if (printingBatch) {
+    printSavedBtn.innerHTML = iconLabel("fa-spinner fa-spin", t("printing"));
+  } else if (selectedCount > 0) {
+    printSavedBtn.innerHTML = iconLabel("fa-print", t("printCount", { count: selectedCount }));
   } else {
-    printSavedBtn.innerHTML = '<i class="fas fa-print" aria-hidden="true"></i> Odštampaj';
+    printSavedBtn.innerHTML = iconLabel("fa-print", t("print"));
   }
 }
 
@@ -418,7 +482,7 @@ function updateSelectAllButton(list) {
   if (!hasItems) return;
 
   const allSelected = list.every((item) => selectedIds.has(item.id));
-  selectAllSavedBtn.textContent = allSelected ? "Poništi izbor" : "Izaberi sve";
+  selectAllSavedBtn.textContent = allSelected ? t("clearSelection") : t("selectAll");
 }
 
 function toggleSelectAll() {
@@ -466,11 +530,21 @@ function closeEditModal() {
   editId.value = "";
 }
 
-function openConfirmModal({ title, message, confirmLabel, onConfirm }) {
-  confirmModalTitle.textContent = title || "Potvrda";
-  confirmModalMessage.textContent = message || "";
-  confirmOkBtn.innerHTML =
-    '<i class="fas fa-trash" aria-hidden="true"></i> ' + (confirmLabel || "Obriši");
+function applyConfirmCopy() {
+  if (!confirmCopy) return;
+  confirmModalTitle.textContent = t(confirmCopy.titleKey);
+  confirmModalMessage.textContent = t(confirmCopy.messageKey, confirmCopy.messageParams);
+  confirmOkBtn.innerHTML = iconLabel("fa-trash", t(confirmCopy.confirmKey));
+}
+
+function openConfirmModal({ titleKey, messageKey, messageParams, confirmKey, onConfirm }) {
+  confirmCopy = {
+    titleKey: titleKey || "confirm",
+    messageKey: messageKey || "",
+    messageParams: messageParams || null,
+    confirmKey: confirmKey || "delete"
+  };
+  applyConfirmCopy();
   confirmAction = typeof onConfirm === "function" ? onConfirm : null;
   confirmModal.classList.add("is-open");
   confirmModal.setAttribute("aria-hidden", "false");
@@ -481,18 +555,20 @@ function closeConfirmModal() {
   confirmModal.classList.remove("is-open");
   confirmModal.setAttribute("aria-hidden", "true");
   confirmAction = null;
+  confirmCopy = null;
 }
 
 function requestRemoveSaved(id) {
   const item = findSaved(id);
   const name = item && item.delivery && item.delivery.fullName
     ? item.delivery.fullName
-    : "ovu dostavu";
+    : t("thisDelivery");
 
   openConfirmModal({
-    title: "Brisanje dostave",
-    message: 'Da li želiš da obrišeš "' + name + '" iz liste za štampu?',
-    confirmLabel: "Obriši",
+    titleKey: "deleteDeliveryTitle",
+    messageKey: "deleteDeliveryMessage",
+    messageParams: { name: name },
+    confirmKey: "delete",
     onConfirm: () => removeSaved(id)
   });
 }
@@ -501,9 +577,9 @@ function requestClearSaved() {
   if (!loadSaved().length) return;
 
   openConfirmModal({
-    title: "Brisanje liste",
-    message: "Da li želiš da obrišeš celu listu za štampu?",
-    confirmLabel: "Obriši sve",
+    titleKey: "deleteListTitle",
+    messageKey: "deleteListMessage",
+    confirmKey: "deleteAll",
     onConfirm: () => {
       selectedIds.clear();
       currentPage = 1;
@@ -517,7 +593,7 @@ function readEditFormDelivery() {
   const streetAddress = editStreet.value.trim();
   const city = editCity.value.trim();
   if (!fullName || !streetAddress || !city) {
-    throw new Error("Ime, ulica i grad su obavezni.");
+    throw new Error(t("requiredFields"));
   }
 
   const codRaw = editCod.value.trim();
@@ -525,7 +601,7 @@ function readEditFormDelivery() {
   if (codRaw !== "") {
     const parsed = Number(codRaw);
     if (Number.isNaN(parsed) || parsed < 0) {
-      throw new Error("Pouzeće mora biti validan iznos.");
+      throw new Error(t("invalidCod"));
     }
     codAmount = parsed;
   }
@@ -613,7 +689,7 @@ function renderSavedList() {
     );
     row.setAttribute(
       "aria-label",
-      (selected ? "Izabrano: " : "Izaberi: ") + (item.delivery.fullName || "dostavu")
+      (selected ? t("selectedItem", { name: item.delivery.fullName || t("deliveryNoun") }) : t("selectItem", { name: item.delivery.fullName || t("deliveryNoun") }))
     );
 
     const body = document.createElement("div");
@@ -621,7 +697,8 @@ function renderSavedList() {
 
     const title = document.createElement("p");
     title.className = "saved-item-title";
-    title.textContent = item.delivery.fullName || "Bez imena";
+    title.textContent = item.delivery.fullName || t("unnamed");
+    if (!item.delivery.fullName) title.dataset.ui = "unnamed";
 
     const meta = document.createElement("p");
     meta.className = "saved-item-meta";
@@ -637,8 +714,9 @@ function renderSavedList() {
     const edit = document.createElement("button");
     edit.type = "button";
     edit.className = "saved-item-edit";
-    edit.setAttribute("aria-label", "Izmeni");
-    edit.title = "Izmeni";
+    edit.dataset.ui = "edit";
+    edit.setAttribute("aria-label", t("edit"));
+    edit.title = t("edit");
     edit.innerHTML = '<i class="fas fa-pen" aria-hidden="true"></i>';
     edit.addEventListener("click", (event) => {
       event.stopPropagation();
@@ -648,8 +726,9 @@ function renderSavedList() {
     const remove = document.createElement("button");
     remove.type = "button";
     remove.className = "saved-item-remove";
-    remove.setAttribute("aria-label", "Ukloni");
-    remove.title = "Ukloni";
+    remove.dataset.ui = "remove";
+    remove.setAttribute("aria-label", t("remove"));
+    remove.title = t("remove");
     remove.innerHTML = '<i class="fas fa-times" aria-hidden="true"></i>';
     remove.addEventListener("click", (event) => {
       event.stopPropagation();
@@ -691,11 +770,11 @@ async function extractDelivery(text) {
   const data = type.includes("json") ? await response.json() : null;
 
   if (!response.ok) {
-    throw new Error((data && (data.message || data.error)) || "Adresa nije mogla da se izvuče.");
+    throw new Error((data && (data.message || data.error)) || t("extractFailed"));
   }
 
   if (!data || !data.fullName || !data.streetAddress || !data.city) {
-    throw new Error("Servis nije vratio kompletnu adresu dostave.");
+    throw new Error(t("incompleteAddress"));
   }
 
   return data;
@@ -717,7 +796,7 @@ async function printDeliveries(deliveries, filename) {
 
   const type = response.headers.get("Content-Type") || "";
   if (!response.ok) {
-    let message = "Štampa nije uspela.";
+    let message = t("printFailed");
     if (type.includes("json")) {
       const data = await response.json();
       message = data.message || data.error || message;
@@ -726,7 +805,7 @@ async function printDeliveries(deliveries, filename) {
   }
 
   const bytes = await response.blob();
-  const name = filename || "dostave.pdf";
+  const name = filename || t("filenameDeliveries");
   const pdf = new File([bytes], name, { type: "application/pdf" });
   const url = URL.createObjectURL(pdf);
   objectUrls.push(url);
@@ -759,7 +838,7 @@ function loadPdfJs() {
       script.onload = () => {
         if (!window.pdfjsLib) {
           pdfjsLoader = null;
-          reject(new Error("PDF pregled nije dostupan."));
+          reject(new Error(t("pdfUnavailable")));
           return;
         }
         window.pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS_WORKER;
@@ -767,7 +846,7 @@ function loadPdfJs() {
       };
       script.onerror = () => {
         pdfjsLoader = null;
-        reject(new Error("PDF pregled nije mogao da se učita."));
+        reject(new Error(t("pdfLoadFailed")));
       };
       document.head.appendChild(script);
     });
@@ -782,12 +861,14 @@ function setPdfToolsEnabled(enabled) {
 
 function resetPdfPreviewStatus() {
   pdfPreviewStatus.classList.remove("is-error");
-  pdfPreviewStatusText.textContent = "Pripremam pregled";
+  pdfPreviewStatusText.dataset.state = "loading";
+  pdfPreviewStatusText.textContent = t("preparingPreview");
   pdfPreviewStatus.hidden = false;
 }
 
 function showPdfPreviewError(message) {
   pdfPreviewStatus.classList.add("is-error");
+  pdfPreviewStatusText.dataset.state = "error";
   pdfPreviewStatusText.textContent = message;
   pdfPreviewStatus.hidden = false;
 }
@@ -863,7 +944,7 @@ async function showPdfPreview(file, requestId) {
 
   releasePdfPreviewUrl();
   pdfPreviewUrl = file.url;
-  pdfPreviewFilename = file.filename || "dostave.pdf";
+  pdfPreviewFilename = file.filename || t("filenameDeliveries");
   setPdfToolsEnabled(true);
 
   try {
@@ -874,7 +955,7 @@ async function showPdfPreview(file, requestId) {
     await renderPdfPages(requestId);
   } catch (error) {
     if (requestId !== pdfPreviewRequest) return;
-    showPdfPreviewError(error.message || "Pregled nije mogao da se prikaže.");
+    showPdfPreviewError(error.message || t("previewFailed"));
   }
 }
 
@@ -897,7 +978,7 @@ function downloadPdfPreview() {
   if (!pdfPreviewUrl) return;
   const link = document.createElement("a");
   link.href = pdfPreviewUrl;
-  link.download = pdfPreviewFilename || "dostave.pdf";
+  link.download = pdfPreviewFilename || t("filenameDeliveries");
   document.body.appendChild(link);
   link.click();
   link.remove();
@@ -963,7 +1044,7 @@ async function submitText(text) {
   syncSendButton();
 
   if (value.length < 10) {
-    const status = addMessage("assistant", "Tekst mora imati između 10 i 5000 karaktera.");
+    const status = addMessage("assistant", t("textLength"), "textLength");
     status.bubble.classList.add("is-error");
     focusParsedAction(fillMessageActions(userMessage.actions, value));
     return;
@@ -974,15 +1055,14 @@ async function submitText(text) {
   renderSavedList();
   try {
     const delivery = await extractDelivery(value);
-    const editBtn = fillMessageActions(userMessage.actions, value);
-    const { card, saveBtn } = createDeliveryCard(delivery, value);
-    addMessage("assistant", card);
-    focusParsedAction(saveBtn.disabled ? editBtn : saveBtn);
+    fillMessageActions(userMessage.actions, value);
+    addMessage("assistant", createDeliveryCard(delivery, value));
   } catch (error) {
-    const message = error && error.message === "Failed to fetch"
-      ? "Nije moguće povezati se sa servisom za dostavu. Proveri API adresu ili CORS."
-      : (error.message || "Adresa nije mogla da se izvuče.");
-    const status = addMessage("assistant", message);
+    const network = error && error.message === "Failed to fetch";
+    const message = network
+      ? t("networkError")
+      : (error.message || t("extractFailed"));
+    const status = addMessage("assistant", message, network ? "networkError" : "");
     status.bubble.classList.add("is-error");
     focusParsedAction(fillMessageActions(userMessage.actions, value));
   } finally {
@@ -1016,22 +1096,22 @@ printSavedBtn.addEventListener("click", async () => {
   if (!selected.length || busy) return;
 
   busy = true;
+  printingBatch = true;
   syncSendButton();
   renderSavedList();
-  printSavedBtn.disabled = true;
-  printSavedBtn.innerHTML = '<i class="fas fa-spinner fa-spin" aria-hidden="true"></i> Štampam';
 
   try {
     await previewDeliveries(
       selected.map((item) => item.delivery),
       selected.length === 1
         ? toNameFilename(selected[0].delivery.fullName)
-        : "grupne-dostave.pdf"
+        : t("filenameBatch")
     );
   } catch (error) {
-    alert(error.message || "Grupna štampa nije uspela.");
+    alert(error.message || t("batchPrintFailed"));
   } finally {
     busy = false;
+    printingBatch = false;
     syncSendButton();
     renderSavedList();
   }
@@ -1061,7 +1141,7 @@ printSettingsToggle.addEventListener("click", () => {
 
 printFormatSelect.addEventListener("change", saveSettingsFromControls);
 
-printLanguageToggle.addEventListener("click", (event) => {
+appLanguageToggle.addEventListener("click", (event) => {
   const button = event.target.closest("button[data-lang]");
   if (!button) return;
   setLanguage(button.dataset.lang);
@@ -1128,11 +1208,11 @@ editForm.addEventListener("submit", (event) => {
     const id = editId.value;
     const delivery = readEditFormDelivery();
     if (!updateSavedDelivery(id, delivery)) {
-      throw new Error("Dostava nije pronađena u listi.");
+      throw new Error(t("notInList"));
     }
     closeEditModal();
   } catch (error) {
-    alert(error.message || "Izmena nije sačuvana.");
+    alert(error.message || t("saveFailed"));
   }
 });
 
@@ -1144,7 +1224,7 @@ editPrintBtn.addEventListener("click", async () => {
     editPrintBtn.disabled = true;
     await previewDeliveries([delivery], toNameFilename(delivery.fullName));
   } catch (error) {
-    alert(error.message || "Štampa nije uspela.");
+    alert(error.message || t("printFailed"));
   } finally {
     editPrintBtn.disabled = false;
     renderSavedList();

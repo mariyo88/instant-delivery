@@ -10,7 +10,7 @@
     <!-- ===============================================-->
     <!--    Document Title-->
     <!-- ===============================================-->
-    <title>FirstCode | Asistent za nalepnice</title>
+    <title data-i18n="pageTitle">FirstCode | Asistent za nalepnice</title>
 
 
     <!-- ===============================================-->
@@ -45,7 +45,12 @@
     <!-- ===============================================-->
     <main class="main" id="top">
       <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" data-navbar-on-scroll="light">
-        <div class="container"><a class="navbar-brand" href="index.html"><img src="assets/img/icons/Logo.png" height="35" alt="FirstCode logo" /></a>
+        <div class="container navbar-bar">
+          <a class="navbar-brand" href="index.html"><img src="assets/img/icons/Logo.png" height="35" alt="FirstCode logo" /></a>
+          <div id="appLanguage" class="lang-toggle" role="group" data-i18n-aria="language" aria-label="Jezik">
+            <button type="button" data-lang="sr" class="is-active" aria-pressed="true">SR</button>
+            <button type="button" data-lang="en" aria-pressed="false">EN</button>
+          </div>
         </div>
       </nav>
       <section class="agent-home" id="home">
@@ -61,26 +66,26 @@
           <div class="row hero-row justify-content-center justify-content-lg-between g-4 g-xl-5">
             <div class="col-12 col-md-10 col-lg-7 text-md-start text-center">
               <div class="agent-main mx-auto mx-md-0">
-                <h1 class="fs-4 fs-md-5 fs-xxl-4" data-zanim-xs='{"delay":0.3}' data-zanim-trigger="scroll">Zdravo. Spreman da počnemo?</h1>
-                <p class="fs-1 mb-0" data-zanim-xs='{"delay":0.5}' data-zanim-trigger="scroll">Nalepi poruku o dostavi, a FirstCode će izvući adresu. Sačuvaj je u listu i odštampaj nalepnice grupno.</p>
+                <h1 class="fs-4 fs-md-5 fs-xxl-4" data-i18n="heroTitle" data-zanim-xs='{"delay":0.3}' data-zanim-trigger="scroll">Zdravo. Spreman da počnemo?</h1>
+                <p class="fs-1 mb-0" data-i18n="heroLead" data-zanim-xs='{"delay":0.5}' data-zanim-trigger="scroll">Nalepi poruku o dostavi, a FirstCode će izvući adresu. Sačuvaj je u listu i odštampaj nalepnice grupno.</p>
 
                 <form id="composer" class="agent-composer mt-3 mt-md-4" autocomplete="off" data-zanim-xs='{"delay":0.5}' data-zanim-trigger="scroll">
-                  <label class="visually-hidden" for="prompt">Nalepi poruku o dostavi</label>
-                  <textarea id="prompt" rows="1" placeholder="Nalepi poruku o dostavi" maxlength="5000" enterkeyhint="enter"></textarea>
-                  <button id="send" class="agent-send" type="submit" aria-label="Izvuci adresu" disabled>
+                  <label class="visually-hidden" for="prompt" data-i18n="promptLabel">Nalepi poruku o dostavi</label>
+                  <textarea id="prompt" rows="1" data-i18n-placeholder="promptLabel" placeholder="Nalepi poruku o dostavi" maxlength="5000" enterkeyhint="enter"></textarea>
+                  <button id="send" class="agent-send" type="submit" data-i18n-aria="extractAddress" aria-label="Izvuci adresu" disabled>
                     <i class="fas fa-arrow-up"></i>
                   </button>
                 </form>
 
                 <div id="suggestions" class="agent-suggestions" data-zanim-xs='{"delay":0.6}' data-zanim-trigger="scroll">
-                  <button type="button" data-text="Molimo dostaviti za Anu Petrović, Knez Mihailova 12, 11000 Beograd. Telefon +381 64 123 4567.">
-                    <i class="fas fa-tag me-1"></i><span class="d-none d-sm-inline">Izvuci adresu</span><span class="d-inline d-sm-none">Adresa</span>
+                  <button type="button" data-i18n-text="sampleLocal" data-text="Molimo dostaviti za Anu Petrović, Knez Mihailova 12, 11000 Beograd. Telefon +381 64 123 4567.">
+                    <i class="fas fa-tag me-1"></i><span class="d-none d-sm-inline" data-i18n="extractAddress">Izvuci adresu</span><span class="d-inline d-sm-none" data-i18n="addressShort">Adresa</span>
                   </button>
-                  <button type="button" data-text="Pouzeće 3500 RSD za Marka Jovića, Bulevar kralja Aleksandra 72, 11000 Beograd. Telefon +381 63 111 2222.">
-                    <i class="fas fa-pen me-1"></i>Pouzeće
+                  <button type="button" data-i18n-text="sampleCod" data-text="Pouzeće 3500 RSD za Marka Jovića, Bulevar kralja Aleksandra 72, 11000 Beograd. Telefon +381 63 111 2222.">
+                    <i class="fas fa-pen me-1"></i><span data-i18n="cashOnDelivery">Pouzeće</span>
                   </button>
-                  <button type="button" data-text="Pošalji za John Smith, 221B Baker Street, London NW1 6XE, United Kingdom. Telefon +44 20 7946 0958.">
-                    <i class="fas fa-globe me-1"></i>Inostranstvo
+                  <button type="button" data-i18n-text="sampleIntl" data-text="Pošalji za John Smith, 221B Baker Street, London NW1 6XE, United Kingdom. Telefon +44 20 7946 0958.">
+                    <i class="fas fa-globe me-1"></i><span data-i18n="international">Inostranstvo</span>
                   </button>
                 </div>
 
@@ -94,14 +99,14 @@
                   <button id="printSettingsToggle" class="print-settings-toggle" type="button" aria-expanded="false" aria-controls="printSettingsBody">
                     <span class="print-settings-toggle-main">
                       <i class="fas fa-sliders-h" aria-hidden="true"></i>
-                      Podešavanja
+                      <span data-i18n="settings">Podešavanja</span>
                     </span>
-                    <span id="printSettingsSummary" class="print-settings-summary">Premium · SR</span>
+                    <span id="printSettingsSummary" class="print-settings-summary">Premium</span>
                     <i class="fas fa-chevron-down print-settings-chevron" aria-hidden="true"></i>
                   </button>
                   <div id="printSettingsBody" class="print-settings-body">
                     <label for="printFormat">
-                      Format
+                      <span data-i18n="format">Format</span>
                       <select id="printFormat">
                         <option value="PREMIUM_A4_2x3">Premium A4 (2×3)</option>
                         <option value="CLASSIC_A4_2x3">Classic A4 (2×3)</option>
@@ -111,39 +116,32 @@
                         <option value="LABEL_100x150">Label 100×150 mm</option>
                       </select>
                     </label>
-                    <div class="print-settings-field">
-                      <span class="print-settings-label">Jezik</span>
-                      <div id="printLanguage" class="lang-toggle" role="group" aria-label="Jezik štampe">
-                        <button type="button" data-lang="sr" aria-pressed="true">SR</button>
-                        <button type="button" data-lang="en" aria-pressed="false">EN</button>
-                      </div>
-                    </div>
                   </div>
                 </div>
 
                 <div class="saved-panel-header">
-                  <h2>Lista za štampu <span id="savedCount">(0)</span></h2>
+                  <h2><span data-i18n="printList">Lista za štampu</span> <span id="savedCount">(0)</span></h2>
                   <button id="selectAllSaved" class="saved-select-all is-hidden" type="button">Izaberi sve</button>
                 </div>
-                <p id="savedEmpty" class="saved-empty">Sačuvaj dostave da bi ih grupno odštampao.</p>
+                <p id="savedEmpty" class="saved-empty" data-i18n="savedEmpty">Sačuvaj dostave da bi ih grupno odštampao.</p>
                 <div id="savedList" class="saved-list"></div>
-                <div id="savedPagination" class="saved-pagination" aria-label="Paginacija liste">
+                <div id="savedPagination" class="saved-pagination" data-i18n-aria="listPagination" aria-label="Paginacija liste">
                   <span id="savedPageInfo" class="saved-pagination-info">1 / 1</span>
                   <div class="saved-pagination-controls">
-                    <button id="savedPrevPage" class="saved-page-btn" type="button" aria-label="Prethodna strana" disabled>
+                    <button id="savedPrevPage" class="saved-page-btn" type="button" data-i18n-aria="prevPage" aria-label="Prethodna strana" disabled>
                       <i class="fas fa-chevron-left" aria-hidden="true"></i>
                     </button>
-                    <button id="savedNextPage" class="saved-page-btn" type="button" aria-label="Sledeća strana" disabled>
+                    <button id="savedNextPage" class="saved-page-btn" type="button" data-i18n-aria="nextPage" aria-label="Sledeća strana" disabled>
                       <i class="fas fa-chevron-right" aria-hidden="true"></i>
                     </button>
                   </div>
                 </div>
                 <div id="savedActions" class="saved-panel-actions is-empty">
                   <button id="printSaved" class="action-btn" type="button" disabled>
-                    <i class="fas fa-print" aria-hidden="true"></i> Odštampaj
+                    <i class="fas fa-print" aria-hidden="true"></i> <span data-i18n="print">Odštampaj</span>
                   </button>
                   <button id="clearSaved" class="action-btn" type="button" disabled>
-                    <i class="fas fa-trash" aria-hidden="true"></i> Obriši sve
+                    <i class="fas fa-trash" aria-hidden="true"></i> <span data-i18n="deleteAll">Obriši sve</span>
                   </button>
                 </div>
               </div>
@@ -171,17 +169,17 @@
               </div>
             </div>
             <div class="col-6 col-sm-4 col-lg-2 mb-3 mb-lg-0 order-2 order-sm-1">
-              <h5 class="fw-bold text-light font-sans-serif footer-col-title">O nama</h5>
+              <h5 class="fw-bold text-light font-sans-serif footer-col-title" data-i18n="about">O nama</h5>
               <ul class="list-unstyled text-light footer-links">
-                <li><a class="text-500 footer-link text-light" href="#!">Vesti</a></li>
-                <li><a class="text-500 footer-link text-light" href="#!">Blog</a></li>
+                <li><a class="text-500 footer-link text-light" href="#!" data-i18n="news">Vesti</a></li>
+                <li><a class="text-500 footer-link text-light" href="#!" data-i18n="blog">Blog</a></li>
                 <li><a class="text-500 footer-link text-light" href="#!">FirstCode API</a></li>
-                <li><a class="text-500 footer-link text-light" href="#!">Poklon kartice</a></li>
-                <li><a class="text-500 footer-link text-light" href="#!">Karijera</a></li>
+                <li><a class="text-500 footer-link text-light" href="#!" data-i18n="giftCards">Poklon kartice</a></li>
+                <li><a class="text-500 footer-link text-light" href="#!" data-i18n="careers">Karijera</a></li>
               </ul>
             </div>
             <div class="col-6 col-sm-4 col-lg-2 mb-3 mb-lg-0 order-3 order-sm-2">
-              <h5 class="fw-bold text-light font-sans-serif footer-col-title">Ponuda</h5>
+              <h5 class="fw-bold text-light font-sans-serif footer-col-title" data-i18n="offer">Ponuda</h5>
               <ul class="list-unstyled text-light footer-links">
                 <li><a class="text-500 footer-link text-light" href="#!">FirstCode Eats</a></li>
                 <li><a class="text-500 footer-link text-light" href="#!">FirstCode Business</a></li>
@@ -190,12 +188,12 @@
               </ul>
             </div>
             <div class="col-12 col-sm-4 col-lg-2 mb-0 order-4 order-sm-3">
-              <h5 class="fw-bold text-light font-sans-serif footer-col-title">Podrška</h5>
+              <h5 class="fw-bold text-light font-sans-serif footer-col-title" data-i18n="support">Podrška</h5>
               <ul class="list-unstyled text-light footer-links">
-                <li><a class="text-500 footer-link text-light" href="#!">Uslovi korišćenja</a></li>
-                <li><a class="text-500 footer-link text-light" href="#!">O nama</a></li>
-                <li><a class="text-500 footer-link text-light" href="#!">Kontakt</a></li>
-                <li><a class="text-500 footer-link text-light" href="#!">Pravila upotrebe</a></li>
+                <li><a class="text-500 footer-link text-light" href="#!" data-i18n="terms">Uslovi korišćenja</a></li>
+                <li><a class="text-500 footer-link text-light" href="#!" data-i18n="about">O nama</a></li>
+                <li><a class="text-500 footer-link text-light" href="#!" data-i18n="contact">Kontakt</a></li>
+                <li><a class="text-500 footer-link text-light" href="#!" data-i18n="usagePolicy">Pravila upotrebe</a></li>
               </ul>
             </div>
           </div>
@@ -205,10 +203,10 @@
               <p class="fs--1 fw-bold text-200">&copy; 2026 Drop Message</p>
             </div>
             <div class="col-12 col-md-6 text-center text-md-end">
-              <p class="fs--1 text-200"> Napravljeno sa&nbsp;
+              <p class="fs--1 text-200"> <span data-i18n="madeWith">Napravljeno sa</span>&nbsp;
                 <svg class="bi bi-suit-heart-fill" xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="#B7C6FF" viewBox="0 0 16 16">
                   <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z"></path>
-                </svg>&nbsp;od&nbsp;<a class="fw-bold text-info text-200" href="https://firstcode.in.rs/" target="_blank">FirstCode </a>
+                </svg>&nbsp;<span data-i18n="madeBy">od</span>&nbsp;<a class="fw-bold text-info text-200" href="https://firstcode.in.rs/" target="_blank">FirstCode </a>
               </p>
             </div>
           </div>
@@ -218,8 +216,8 @@
     <div id="editModal" class="edit-modal" aria-hidden="true">
       <div class="edit-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="editModalTitle">
         <div class="edit-modal-header">
-          <h3 id="editModalTitle">Izmena dostave</h3>
-          <button id="editModalClose" class="edit-modal-close" type="button" aria-label="Zatvori">
+          <h3 id="editModalTitle" data-i18n="editDelivery">Izmena dostave</h3>
+          <button id="editModalClose" class="edit-modal-close" type="button" data-i18n-aria="close" aria-label="Zatvori">
             <i class="fas fa-times" aria-hidden="true"></i>
           </button>
         </div>
@@ -227,54 +225,54 @@
           <input type="hidden" id="editId" />
           <div class="edit-form-grid">
             <label class="span-2">
-              Ime i prezime
+              <span data-i18n="fullName">Ime i prezime</span>
               <input id="editFullName" name="fullName" type="text" required maxlength="200" autocomplete="name" />
             </label>
             <label>
-              Telefon
+              <span data-i18n="phone">Telefon</span>
               <input id="editPhone" name="phoneNumber" type="text" maxlength="50" autocomplete="tel" />
             </label>
             <label>
-              Email
+              <span data-i18n="email">Email</span>
               <input id="editEmail" name="email" type="email" maxlength="120" autocomplete="email" />
             </label>
             <label class="span-2">
-              Ulica i broj
+              <span data-i18n="street">Ulica i broj</span>
               <input id="editStreet" name="streetAddress" type="text" required maxlength="250" autocomplete="street-address" />
             </label>
             <label>
-              Grad
+              <span data-i18n="city">Grad</span>
               <input id="editCity" name="city" type="text" required maxlength="120" autocomplete="address-level2" />
             </label>
             <label>
-              Poštanski broj
+              <span data-i18n="postalCode">Poštanski broj</span>
               <input id="editPostal" name="postalCode" type="text" maxlength="20" autocomplete="postal-code" />
             </label>
             <label>
-              Država
+              <span data-i18n="country">Država</span>
               <input id="editCountry" name="country" type="text" maxlength="120" autocomplete="country-name" />
             </label>
             <label>
-              Plaća
+              <span data-i18n="payer">Plaća</span>
               <select id="editPayer" name="payerType">
-                <option value="RECEIVER">Primalac</option>
-                <option value="SENDER">Pošiljalac</option>
+                <option value="RECEIVER" data-i18n="receiver">Primalac</option>
+                <option value="SENDER" data-i18n="sender">Pošiljalac</option>
               </select>
             </label>
             <label class="span-2">
-              Pouzeće (RSD)
+              <span data-i18n="codAmount">Pouzeće (RSD)</span>
               <input id="editCod" name="codAmount" type="number" min="0" step="0.01" inputmode="decimal" />
             </label>
           </div>
           <div class="edit-modal-actions">
             <button id="editCancel" class="action-btn" type="button">
-              <i class="fas fa-times" aria-hidden="true"></i> Zatvori
+              <i class="fas fa-times" aria-hidden="true"></i> <span data-i18n="close">Zatvori</span>
             </button>
             <button id="editPrint" class="action-btn" type="button">
-              <i class="fas fa-print" aria-hidden="true"></i> Odštampaj
+              <i class="fas fa-print" aria-hidden="true"></i> <span data-i18n="print">Odštampaj</span>
             </button>
             <button id="editSave" class="action-btn is-primary" type="submit">
-              <i class="fas fa-save" aria-hidden="true"></i> Sačuvaj
+              <i class="fas fa-save" aria-hidden="true"></i> <span data-i18n="save">Sačuvaj</span>
             </button>
           </div>
         </form>
@@ -284,18 +282,18 @@
     <div id="confirmModal" class="edit-modal" aria-hidden="true">
       <div class="edit-modal-dialog confirm-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="confirmModalTitle">
         <div class="edit-modal-header">
-          <h3 id="confirmModalTitle">Potvrda</h3>
-          <button id="confirmModalClose" class="edit-modal-close" type="button" aria-label="Zatvori">
+          <h3 id="confirmModalTitle" data-i18n="confirm">Potvrda</h3>
+          <button id="confirmModalClose" class="edit-modal-close" type="button" data-i18n-aria="close" aria-label="Zatvori">
             <i class="fas fa-times" aria-hidden="true"></i>
           </button>
         </div>
         <p id="confirmModalMessage" class="confirm-modal-message"></p>
         <div class="edit-modal-actions">
           <button id="confirmCancel" class="action-btn" type="button">
-            <i class="fas fa-times" aria-hidden="true"></i> Otkaži
+            <i class="fas fa-times" aria-hidden="true"></i> <span data-i18n="cancel">Otkaži</span>
           </button>
           <button id="confirmOk" class="action-btn is-danger" type="button">
-            <i class="fas fa-trash" aria-hidden="true"></i> Obriši
+            <i class="fas fa-trash" aria-hidden="true"></i> <span data-i18n="delete">Obriši</span>
           </button>
         </div>
       </div>
@@ -303,17 +301,17 @@
 
     <div id="pdfPreviewModal" class="edit-modal pdf-preview-modal" aria-hidden="true">
       <div class="pdf-preview-tools">
-        <button id="pdfPreviewDownload" class="pdf-preview-tool" type="button" aria-label="Preuzmi" disabled>
+        <button id="pdfPreviewDownload" class="pdf-preview-tool" type="button" data-i18n-aria="download" aria-label="Preuzmi" disabled>
           <i class="fas fa-download" aria-hidden="true"></i>
         </button>
-        <button id="pdfPreviewPrint" class="pdf-preview-tool" type="button" aria-label="Odštampaj" disabled>
+        <button id="pdfPreviewPrint" class="pdf-preview-tool" type="button" data-i18n-aria="print" aria-label="Odštampaj" disabled>
           <i class="fas fa-print" aria-hidden="true"></i>
         </button>
-        <button id="pdfPreviewClose" class="pdf-preview-tool" type="button" aria-label="Zatvori">
+        <button id="pdfPreviewClose" class="pdf-preview-tool" type="button" data-i18n-aria="close" aria-label="Zatvori">
           <i class="fas fa-times" aria-hidden="true"></i>
         </button>
       </div>
-      <div class="pdf-preview-dialog" role="dialog" aria-modal="true" aria-label="Pregled nalepnice">
+      <div class="pdf-preview-dialog" role="dialog" aria-modal="true" data-i18n-aria="labelPreview" aria-label="Pregled nalepnice">
         <div id="pdfPreviewStatus" class="pdf-preview-status" hidden>
           <span class="pdf-preview-spinner" aria-hidden="true"></span>
           <span id="pdfPreviewStatusText">Pripremam pregled</span>
@@ -337,6 +335,7 @@
     <script src="vendors/gsap/scrollToPlugin.js"></script>
     <!--script(src=`${CWD}vendors/gsap/drawSVGPlugin.js`)-->
     <script src="assets/js/theme.js"></script>
+    <script src="assets/js/i18n.js"></script>
     <script src="assets/js/index.js"></script>
 
 
