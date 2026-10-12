@@ -1314,6 +1314,64 @@ body {
   background-size: contain;
 }
 
+.legal-doc {
+  width: min(100%, 40rem);
+  margin: 0 auto;
+  padding: 6.5rem 1.25rem 3.5rem;
+}
+
+.legal-doc h1 {
+  margin: 0;
+  color: #1B1638;
+  font-family: "Baloo Bhaijaan 2", "Poppins", sans-serif;
+  font-size: clamp(1.8rem, 4vw, 2.35rem);
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.legal-updated {
+  margin: 0.55rem 0 0;
+  font-size: 0.85rem;
+}
+
+.legal-doc h2 {
+  margin: 1.75rem 0 0;
+  color: #1B1638;
+  font-family: "Baloo Bhaijaan 2", "Poppins", sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.legal-doc p {
+  margin: 0.7rem 0 0;
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+.legal-doc a {
+  color: #6E46F5;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.legal-doc a:hover {
+  text-decoration: underline;
+}
+
+.legal-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.85rem;
+  margin-top: 2rem;
+}
+
+@media (max-width: 767.98px) {
+  .legal-doc {
+    padding-top: 5.5rem;
+  }
+}
+
 .pdf-print-frame {
   position: fixed;
   width: 0;
