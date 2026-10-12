@@ -4,6 +4,7 @@ const I18N_LANGUAGES = ["sr", "en"];
 const STRINGS = {
   sr: {
     pageTitle: "FirstCode | Asistent za nalepnice",
+    pageDescription: "Nalepi poruku o dostavi i FirstCode izvlači ime, adresu i telefon. Sačuvaj dostavu u listu i odštampaj nalepnice.",
     language: "Jezik",
     heroTitle: "Zdravo. Spreman da počnemo?",
     heroLead: "Nalepi poruku o dostavi, a FirstCode će izvući adresu. Sačuvaj je u listu i odštampaj nalepnice grupno.",
@@ -126,6 +127,7 @@ const STRINGS = {
   },
   en: {
     pageTitle: "FirstCode | Label assistant",
+    pageDescription: "Paste a delivery message and FirstCode extracts the name, address, and phone. Save the delivery to a list and print labels.",
     language: "Language",
     heroTitle: "Hi. Ready to get started?",
     heroLead: "Paste a delivery message and FirstCode will extract the address. Save it to the list and print labels in a batch.",
@@ -298,6 +300,9 @@ function applyI18n(root) {
   });
   scope.querySelectorAll("[data-i18n-text]").forEach((el) => {
     el.dataset.text = t(el.dataset.i18nText);
+  });
+  scope.querySelectorAll("[data-i18n-content]").forEach((el) => {
+    el.setAttribute("content", t(el.dataset.i18nContent));
   });
   document.documentElement.lang = getStoredLanguage();
 }

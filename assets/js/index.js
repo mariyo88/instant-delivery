@@ -1231,6 +1231,21 @@ editPrintBtn.addEventListener("click", async () => {
   }
 });
 
+function consumeInboundText() {
+  const params = new URLSearchParams(window.location.search);
+  if (!params.has("q")) return;
+
+  const robots = document.querySelector('meta[name="robots"]');
+  if (robots) robots.setAttribute("content", "noindex, follow");
+
+  const text = (params.get("q") || "").trim().slice(0, 5000);
+  params.delete("q");
+  const search = params.toString();
+  history.replaceState(null, "", window.location.pathname + (search ? "?" + search : "") + window.location.hash);
+  if (text) submitText(text);
+}
+
 syncSettingsControls();
 syncSendButton();
 renderSavedList();
+consumeInboundText();
