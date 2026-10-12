@@ -6,8 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex">
-    <title>FirstCode | Stranica nije pronađena</title>
-    <base href="/instant-delivery/">
+    <title data-i18n="notFoundTitle">FirstCode | Stranica nije pronađena</title>
+    <base href="/">
 
     <link rel="apple-touch-icon" sizes="180x180" href="assets/img/favicons/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicons/favicon-32x32.png">
@@ -26,23 +26,29 @@
       <a class="error-brand" href="index.html">
         <img src="assets/img/icons/Logo.png" height="35" alt="FirstCode">
       </a>
+      <div id="appLanguage" class="lang-toggle" role="group" data-i18n-aria="language" aria-label="Jezik">
+        <button type="button" data-lang="sr" class="is-active" aria-pressed="true">SR</button>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+      </div>
     </header>
 
     <main class="error-main">
       <div class="error-card">
         <p class="error-code" aria-hidden="true">404</p>
-        <h1>Stranica nije pronađena</h1>
-        <p class="error-lead">Adresa koju tražiš ne postoji ili je premeštena. Vrati se na početnu i nastavi sa nalepnicama.</p>
+        <h1 data-i18n="notFoundHeading">Stranica nije pronađena</h1>
+        <p class="error-lead" data-i18n="notFoundLead">Adresa koju tražiš ne postoji ili je premeštena. Vrati se na početnu i nastavi sa nalepnicama.</p>
         <div class="error-actions">
-          <a class="error-btn" href="index.html">Nazad na početnu</a>
+          <a class="error-btn" href="index.html" data-i18n="backHome">Nazad na početnu</a>
         </div>
       </div>
     </main>
 
     <footer class="error-footer">
-      <p>&copy; 2026 Drop Message</p>
-      <p>Napravljeno od <a href="https://firstcode.in.rs/" target="_blank" rel="noopener">FirstCode</a></p>
+      <p>&copy; 2026 FirstCode</p>
+      <p><span data-i18n="madeByError">Napravljeno od</span> <a href="https://firstcode.in.rs/" target="_blank" rel="noopener">FirstCode</a></p>
     </footer>
+    <script src="assets/js/i18n.js"></script>
+    <script>initLanguageToggle();</script>
   </body>
 
 </html>
