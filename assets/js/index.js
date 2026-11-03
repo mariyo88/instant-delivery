@@ -80,6 +80,8 @@ const editPostal = document.getElementById("editPostal");
 const editCountry = document.getElementById("editCountry");
 const editPayer = document.getElementById("editPayer");
 const editCod = document.getElementById("editCod");
+const editShipmentType = document.getElementById("editShipmentType");
+const editShipmentName = document.getElementById("editShipmentName");
 const objectUrls = [];
 let busy = false;
 let printingBatch = false;
@@ -153,6 +155,13 @@ function refreshDynamicCopy() {
     } else if (ui === "payer") {
       const span = el.querySelector("span");
       if (span) span.textContent = t("payerLine", { payer: formatPayer(el.dataset.payer) });
+    } else if (ui === "shipment") {
+      const span = el.querySelector("span");
+      if (span) {
+        span.textContent = t("shipmentLine", {
+          shipment: formatShipmentSummary(el.dataset.shipmentType, el.dataset.shipmentName)
+        });
+      }
     }
   });
 
@@ -236,7 +245,9 @@ function toPrintAddress(delivery) {
     country: delivery.country || "Serbia",
     payerType: delivery.payerType || null,
     codAmount: delivery.codAmount != null ? delivery.codAmount : null,
-    email: delivery.email || null
+    email: delivery.email || null,
+    shipmentType: delivery.shipmentType || null,
+    shipmentName: delivery.shipmentName || null
   };
 }
 
@@ -261,6 +272,39 @@ function formatPayer(value) {
   if (value === "SENDER") return t("sender");
   if (value === "RECEIVER") return t("receiver");
   return value;
+}
+
+function foldShipmentType(value) {
+  return String(value).trim().toLowerCase()
+    .replace(/š/g, "s")
+    .replace(/đ/g, "d")
+    .replace(/č/g, "c")
+    .replace(/ć/g, "c")
+    .replace(/ž/g, "z");
+}
+
+function formatShipmentType(value) {
+  if (!value) return "";
+  const known = {
+    paket: "shipmentTypePaket",
+    dokument: "shipmentTypeDokument",
+    pismo: "shipmentTypePismo",
+    paleta: "shipmentTypePaleta",
+    "post express": "shipmentTypePostExpress",
+    postexpress: "shipmentTypePostExpress",
+    pe: "shipmentTypePostExpress",
+    preporucena: "shipmentTypeRegistered",
+    "preporucena inostranstvo": "shipmentTypeRegisteredIntl",
+    ems: "shipmentTypeEms",
+    "vrednosno pismo": "shipmentTypeValueLetter",
+    vrednosno: "shipmentTypeValueLetter"
+  };
+  const key = known[foldShipmentType(value)];
+  return key ? t(key) : value;
+}
+
+function formatShipmentSummary(shipmentType, shipmentName) {
+  return [formatShipmentType(shipmentType), shipmentName].filter(Boolean).join(" · ");
 }
 
 function addMessage(role, content, messageKey) {
@@ -371,13 +415,21 @@ function createDeliveryCard(delivery, sourceText) {
     payerItem.dataset.ui = "payer";
     payerItem.dataset.payer = delivery.payerType;
   }
+  const shipmentSummary = formatShipmentSummary(delivery.shipmentType, delivery.shipmentName);
+  const shipmentItem = metaItem("fa-box", shipmentSummary ? t("shipmentLine", { shipment: shipmentSummary }) : "");
+  if (shipmentItem) {
+    shipmentItem.dataset.ui = "shipment";
+    shipmentItem.dataset.shipmentType = delivery.shipmentType || "";
+    shipmentItem.dataset.shipmentName = delivery.shipmentName || "";
+  }
 
   [
     metaItem("fa-phone", delivery.phoneNumber),
     metaItem("fa-envelope", delivery.email),
     metaItem("fa-map-marker-alt", addressParts),
     codItem,
-    payerItem
+    payerItem,
+    shipmentItem
   ].forEach((item) => {
     if (item) meta.appendChild(item);
   });
@@ -517,6 +569,8 @@ function openEditModal(id) {
   editCountry.value = delivery.country || "";
   editPayer.value = delivery.payerType || "";
   editCod.value = delivery.codAmount != null && delivery.codAmount !== "" ? delivery.codAmount : "";
+  editShipmentType.value = delivery.shipmentType || "";
+  editShipmentName.value = delivery.shipmentName || "";
 
   editModal.classList.add("is-open");
   editModal.setAttribute("aria-hidden", "false");
@@ -615,7 +669,9 @@ function readEditFormDelivery() {
     postalCode: editPostal.value.trim() || null,
     country: editCountry.value.trim() || null,
     payerType: editPayer.value || null,
-    codAmount
+    codAmount,
+    shipmentType: editShipmentType.value.trim() || null,
+    shipmentName: editShipmentName.value.trim() || null
   };
 }
 
