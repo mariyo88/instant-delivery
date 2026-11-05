@@ -1280,9 +1280,6 @@ body.pdf-preview-open {
     font-size: 0.8rem;
   }
 
-  .footer-mobile .footer-col-title {
-    margin-top: 0.5rem;
-  }
 }
 
 @media (max-width: 420px) {
@@ -1323,79 +1320,325 @@ body {
 .site-footer {
   position: relative;
   overflow: hidden;
-  background-color: #141228;
   margin: 0;
+  padding: 2.15rem 0 calc(1.15rem + env(safe-area-inset-bottom));
+  background:
+    radial-gradient(ellipse 55% 42% at 8% 0%, rgba(79, 125, 255, 0.22), transparent 70%),
+    radial-gradient(ellipse 48% 40% at 96% 8%, rgba(122, 69, 245, 0.2), transparent 68%),
+    #141228;
+  color: #C9C4DE;
+}
+
+.site-footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(183, 198, 255, 0.55), transparent);
+}
+
+.footer-offers-head {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  max-width: 36rem;
+  margin-bottom: 0.9rem;
+}
+
+.footer-offers-head h2 {
+  margin: 0;
+  color: #F4F2FF;
+  font-family: "Baloo Bhaijaan 2", "Poppins", sans-serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.footer-offers-head p {
+  margin: 0;
+  color: #A39BBF;
+  font: 400 0.88rem/1.45 "Poppins", sans-serif;
+}
+
+.footer-offer-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+
+.footer-offer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+  padding: 0.95rem 1rem 1rem;
+  border: 1px solid rgba(183, 198, 255, 0.14);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.footer-offer.is-current {
+  border-color: rgba(127, 149, 255, 0.5);
+  background:
+    linear-gradient(180deg, rgba(79, 125, 255, 0.18), rgba(122, 69, 245, 0.06) 46%, rgba(255, 255, 255, 0.03));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.footer-offer-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.footer-offer-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.4rem;
+  padding: 0.12rem 0.55rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #D5D0E8;
+  font: 600 0.68rem/1 "Poppins", sans-serif;
+  letter-spacing: 0.02em;
+}
+
+.footer-offer.is-current .footer-offer-badge {
+  background: var(--fc-gradient);
+  color: #fff;
+}
+
+.footer-offer-price {
+  margin: 0;
+  color: #B7C6FF;
+  font: 600 0.78rem/1.2 "Poppins", sans-serif;
+  text-align: right;
+}
+
+.footer-offer h3 {
+  margin: 0.1rem 0 0;
+  color: #F7F5FF;
+  font-family: "Baloo Bhaijaan 2", "Poppins", sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.footer-offer-summary {
+  margin: 0;
+  color: #B7B2C8;
+  font: 400 0.8rem/1.4 "Poppins", sans-serif;
+}
+
+.footer-offer ul {
+  margin: 0.35rem 0 0;
   padding: 0;
+  list-style: none;
 }
 
-.site-footer .footer-main {
-  padding-top: 1.5rem !important;
-  padding-bottom: 1rem !important;
-  margin: 0;
+.footer-offer li {
+  position: relative;
+  padding-left: 0.95rem;
+  color: #E4E0F2;
+  font: 400 0.78rem/1.35 "Poppins", sans-serif;
 }
 
-.site-footer .footer-brand img {
-  height: 38px;
+.footer-offer li + li {
+  margin-top: 0.28rem;
 }
 
-.site-footer .footer-contact {
-  margin-top: 0.85rem !important;
-  margin-bottom: 0 !important;
-  font-size: 0.9rem;
+.footer-offer li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.45rem;
+  width: 0.35rem;
+  height: 0.35rem;
+  border-radius: 50%;
+  background: #8EA0FF;
 }
 
-.site-footer .footer-email {
-  margin-top: 0.55rem !important;
-  margin-bottom: 0 !important;
-  font-size: 0.9rem;
-}
-
-.site-footer .footer-social {
-  margin-top: 0.75rem !important;
-}
-
-.site-footer .footer-col-title {
-  margin-bottom: 0.4rem;
-  font-size: 0.88rem;
-  line-height: 1.25;
-}
-
-.site-footer .footer-links {
-  margin-bottom: 0 !important;
-}
-
-.site-footer .footer-links li {
-  line-height: 1.4 !important;
-}
-
-.site-footer .footer-links a {
-  font-size: 0.82rem;
-}
-
-.site-footer a.text-info {
-  color: #B7C6FF !important;
-}
-
-.site-footer .footer-bottom {
-  margin: 0;
-  padding-top: 0.7rem !important;
-  padding-bottom: 0.9rem !important;
+.footer-main {
+  display: grid;
+  gap: 1.35rem;
+  margin-top: 1.5rem;
+  padding-top: 1.35rem;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.site-footer .footer-bottom > [class*="col-"] {
-  margin-bottom: 0 !important;
+.footer-brand {
+  display: inline-flex;
+  text-decoration: none;
 }
 
-.site-footer .footer-bottom p {
-  margin: 0 !important;
-  line-height: 1.4;
+.footer-brand img {
+  height: 36px;
+  width: auto;
 }
 
-@media (min-width: 992px) {
-  .site-footer .footer-main {
-    padding-top: 1.75rem !important;
-    padding-bottom: 1.1rem !important;
+.footer-tagline {
+  max-width: 18rem;
+  margin: 0.75rem 0 0;
+  color: #C9C4DE;
+  font: 400 0.88rem/1.45 "Poppins", sans-serif;
+}
+
+.footer-email {
+  display: inline-flex;
+  margin-top: 0.55rem;
+  color: #B7C6FF;
+  font: 500 0.9rem/1.3 "Poppins", sans-serif;
+  text-decoration: none;
+}
+
+.footer-email:hover {
+  color: #fff;
+}
+
+.footer-social {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.9rem;
+}
+
+.footer-social a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid rgba(183, 198, 255, 0.18);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.04);
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.footer-social a:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(183, 198, 255, 0.45);
+}
+
+.footer-nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem 1.25rem;
+}
+
+.footer-nav h3 {
+  margin: 0 0 0.55rem;
+  color: #F4F2FF;
+  font-family: "Baloo Bhaijaan 2", "Poppins", sans-serif;
+  font-size: 0.98rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.footer-links {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.footer-links li + li {
+  margin-top: 0.15rem;
+}
+
+.footer-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.25rem;
+  color: #C9C4DE;
+  font: 400 0.88rem/1.3 "Poppins", sans-serif;
+  text-decoration: none;
+}
+
+.footer-links a:hover {
+  color: #fff;
+}
+
+.footer-bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 1.35rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  text-align: center;
+}
+
+.footer-bottom p {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.28rem;
+  margin: 0;
+  color: #8E88A8;
+  font: 500 0.75rem/1.4 "Poppins", sans-serif;
+}
+
+.footer-bottom a {
+  color: #C9C4DE;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.footer-bottom a:hover,
+.site-footer a:hover {
+  color: #fff;
+}
+
+.site-footer a:focus-visible {
+  outline: 2px solid #B7C6FF;
+  outline-offset: 3px;
+  border-radius: 0.2rem;
+}
+
+@media (min-width: 768px) {
+  .site-footer {
+    padding-top: 2.75rem;
+  }
+
+  .footer-offers-head {
+    margin-bottom: 1rem;
+  }
+
+  .footer-offer-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: stretch;
+    gap: 0.85rem;
+  }
+
+  .footer-offer {
+    padding: 1.05rem 1.05rem 1.1rem;
+  }
+
+  .footer-main {
+    grid-template-columns: minmax(0, 1.25fr) minmax(16rem, 1fr);
+    align-items: start;
+    gap: 2rem;
+    margin-top: 1.75rem;
+  }
+
+  .footer-bottom {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    text-align: left;
+  }
+
+  .footer-bottom p:last-child {
+    justify-content: flex-end;
+  }
+}
+
+@media (max-width: 380px) {
+  .footer-nav {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -1471,8 +1714,7 @@ body {
 }
 
 .usage-guide {
-  scroll-margin-top: 5.5rem;
-  padding: 0 0 4.25rem;
+  padding: 6.5rem 0 3.5rem;
 }
 
 .usage-guide-card {
@@ -1491,7 +1733,7 @@ body {
   text-transform: uppercase;
 }
 
-.usage-guide h2 {
+.usage-guide h1 {
   margin: 0.35rem 0 0;
   color: #1B1638;
   font-family: "Baloo Bhaijaan 2", "Poppins", sans-serif;
@@ -1720,6 +1962,16 @@ body {
   font-size: 0.75rem;
   font-weight: 600;
   line-height: 1.35rem;
+}
+
+.usage-guide .legal-nav {
+  margin-top: 1.15rem;
+}
+
+@media (max-width: 767.98px) {
+  .usage-guide {
+    padding-top: 5.5rem;
+  }
 }
 
 @media (min-width: 768px) {

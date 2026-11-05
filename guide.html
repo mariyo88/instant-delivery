@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="sr" dir="ltr">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title data-i18n="guidePageTitle">FirstCode | Uputstvo</title>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/img/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicons/favicon-16x16.png">
+    <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicons/favicon.ico">
+    <link rel="manifest" href="assets/img/favicons/site.webmanifest">
+    <meta name="msapplication-TileImage" content="assets/img/favicons/mstile-150x150.png">
+    <meta name="theme-color" content="#6E46F5">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400;500;600;700&amp;family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,300&amp;display=swap" rel="stylesheet">
+    <link href="assets/css/theme.css" rel="stylesheet" />
+    <link href="assets/css/user.css" rel="stylesheet" />
+    <link href="assets/css/index.css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <main class="main" id="top">
+      <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" data-navbar-on-scroll="light">
+        <div class="container navbar-bar">
+          <a class="navbar-brand" href="index.html"><img src="assets/img/icons/Logo.png" height="35" alt="FirstCode logo" /></a>
+          <div id="appLanguage" class="lang-toggle" role="group" data-i18n-aria="language" aria-label="Jezik">
+            <button type="button" data-lang="sr" class="is-active" aria-pressed="true">SR</button>
+            <button type="button" data-lang="en" aria-pressed="false">EN</button>
+          </div>
+        </div>
+      </nav>
+
+      <article class="usage-guide" aria-labelledby="usageGuideTitle">
+        <div class="container">
+          <div class="usage-guide-card">
+            <p class="usage-kicker" data-i18n="guideKicker">Uputstvo</p>
+            <h1 id="usageGuideTitle" data-i18n="guideTitle">Kako se koristi</h1>
+            <p class="usage-lead" data-i18n="guideLead">Nalepi poruku običnim rečima. FirstCode izvlači ime, adresu, telefon, pouzeće i tip pošiljke. Za tip dovoljna je i skraćenica.</p>
+
+            <ol class="usage-steps">
+              <li class="usage-step">
+                <span class="usage-step-index" aria-hidden="true">1</span>
+                <div>
+                  <h3 data-i18n="guideStep1Title">Nalepi poruku</h3>
+                  <p data-i18n="guideStep1Body">Na početnoj nalepi tekst o dostavi u polje. Ime, ulica i grad su osnova. Ostalo dodaj ako ga imaš.</p>
+                </div>
+              </li>
+              <li class="usage-step">
+                <span class="usage-step-index" aria-hidden="true">2</span>
+                <div>
+                  <h3 data-i18n="guideStep2Title">Proveri karticu</h3>
+                  <p data-i18n="guideStep2Body">FirstCode predlaže šta je pročitao. Ako nešto fali ili je pogrešno, izmeni pre štampe.</p>
+                </div>
+              </li>
+              <li class="usage-step">
+                <span class="usage-step-index" aria-hidden="true">3</span>
+                <div>
+                  <h3 data-i18n="guideStep3Title">Sačuvaj i odštampaj</h3>
+                  <p data-i18n="guideStep3Body">Sačuvaj dostavu u listu. Jednu ili više njih odštampaš kao nalepnice.</p>
+                </div>
+              </li>
+            </ol>
+
+            <div class="usage-split">
+              <article class="usage-panel">
+                <h3 data-i18n="guideWriteTitle">Šta može da stoji u poruci</h3>
+                <p data-i18n="guideWriteBody">Piši rečenicom. Ime, ulica i grad su obavezni. Telefon, email, poštanski broj, državu, pouzeće, ko plaća, tip i naziv pošiljke dodaj kad ih imaš. Ako ne kažeš ko plaća, računa se primalac.</p>
+                <ul class="usage-fields">
+                  <li data-i18n="fullName">Ime i prezime</li>
+                  <li data-i18n="phone">Telefon</li>
+                  <li data-i18n="email">Email</li>
+                  <li data-i18n="street">Ulica i broj</li>
+                  <li data-i18n="city">Grad</li>
+                  <li data-i18n="postalCode">Poštanski broj</li>
+                  <li data-i18n="country">Država</li>
+                  <li data-i18n="codAmount">Pouzeće (RSD)</li>
+                  <li data-i18n="payer">Plaća</li>
+                  <li data-i18n="shipmentType">Tip pošiljke</li>
+                  <li data-i18n="shipmentName">Naziv pošiljke</li>
+                </ul>
+                <div class="usage-example">
+                  <span class="usage-example-label" data-i18n="guideExampleLabel">Primer</span>
+                  <p>
+                    <span data-i18n="guideExampleBefore">Pouzeće 3500 RSD za Marka Jovića, Bulevar kralja Aleksandra 72, 11000 Beograd. Telefon +381 63 111 2222. Plaća primalac. Tip pošiljke </span><code>PE</code><span data-i18n="guideExampleAfter">, naziv pošiljke Patike Nike.</span>
+                  </p>
+                </div>
+              </article>
+
+              <article class="usage-panel">
+                <h3 data-i18n="guideMarksTitle">Skraćenice za tip pošiljke</h3>
+                <p data-i18n="guideMarksLead">Oznake Pošte Srbije. Dovoljne su dve slovne oznake, na primer „tip PE“ ili „tip pe“.</p>
+                <div class="usage-marks">
+                  <div class="usage-mark">
+                    <code>CA–CZ</code>
+                    <strong data-i18n="shipmentTypePaket">Paket</strong>
+                    <small></small>
+                  </div>
+                  <div class="usage-mark">
+                    <code>PE</code>
+                    <strong data-i18n="shipmentTypePostExpress">Post Express</strong>
+                    <small></small>
+                  </div>
+                  <div class="usage-mark">
+                    <code>RE</code>
+                    <strong data-i18n="shipmentTypeRegistered">Preporučena</strong>
+                    <small data-i18n="guideMarkDomestic">u Srbiji</small>
+                  </div>
+                  <div class="usage-mark">
+                    <code>RA–RZ</code>
+                    <strong data-i18n="shipmentTypeRegisteredIntl">Preporučena inostranstvo</strong>
+                    <small data-i18n="guideMarkExceptRe">osim RE</small>
+                  </div>
+                  <div class="usage-mark">
+                    <code>EA–EZ</code>
+                    <strong data-i18n="shipmentTypeEms">EMS</strong>
+                    <small></small>
+                  </div>
+                  <div class="usage-mark">
+                    <code>VA–VZ</code>
+                    <strong data-i18n="shipmentTypeValueLetter">Vrednosno pismo</strong>
+                    <small></small>
+                  </div>
+                </div>
+                <p class="usage-hint" data-i18n="guideMarksHint">RE je izuzetak u nizu RA–RZ: to je preporučena u Srbiji. Ostale oznake od RA do RZ su preporučena za inostranstvo.</p>
+              </article>
+            </div>
+
+            <div class="usage-words">
+              <h3 data-i18n="guideWordsTitle">Isto, napisano rečima</h3>
+              <p data-i18n="guideWordsLead">Velika i mala slova su ista, kvačice nisu obavezne. Duža fraza sa istom rečju, na primer „preporučena pošiljka“, prolazi isto.</p>
+              <table class="usage-aliases">
+                <thead>
+                  <tr>
+                    <th scope="col" data-i18n="guideAliasYouWrite">Napišeš</th>
+                    <th scope="col" data-i18n="guideAliasBecomes">Postaje</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>paket</code><code>package</code></td>
+                    <td data-i18n="shipmentTypePaket">Paket</td>
+                  </tr>
+                  <tr>
+                    <td><code>dokument</code><code>doc</code></td>
+                    <td data-i18n="shipmentTypeDokument">Dokument</td>
+                  </tr>
+                  <tr>
+                    <td><code>pismo</code><code>koverta</code><code>letter</code></td>
+                    <td data-i18n="shipmentTypePismo">Pismo</td>
+                  </tr>
+                  <tr>
+                    <td><code>paleta</code></td>
+                    <td data-i18n="shipmentTypePaleta">Paleta</td>
+                  </tr>
+                  <tr>
+                    <td><code>post express</code></td>
+                    <td data-i18n="shipmentTypePostExpress">Post Express</td>
+                  </tr>
+                  <tr>
+                    <td><code>preporučena</code><code>registered</code></td>
+                    <td data-i18n="shipmentTypeRegistered">Preporučena</td>
+                  </tr>
+                  <tr>
+                    <td><code>preporučena inostranstvo</code></td>
+                    <td data-i18n="shipmentTypeRegisteredIntl">Preporučena inostranstvo</td>
+                  </tr>
+                  <tr>
+                    <td><code>ems</code></td>
+                    <td data-i18n="shipmentTypeEms">EMS</td>
+                  </tr>
+                  <tr>
+                    <td><code>vrednosno</code><code>value letter</code></td>
+                    <td data-i18n="shipmentTypeValueLetter">Vrednosno pismo</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p class="usage-unknown" data-i18n="guideUnknown">Tip koji nije na listi ostaje kako si ga napisao. Naziv pošiljke je roba, ne ime primaoca.</p>
+            </div>
+          </div>
+          <p class="legal-nav">
+            <a href="index.html" data-i18n="backHome">Nazad na početnu</a>
+            <a href="terms.html" data-i18n="terms">Uslovi korišćenja</a>
+            <a href="privacy.html" data-i18n="usagePolicy">Politika privatnosti</a>
+          </p>
+        </div>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <section class="footer-offers" aria-labelledby="footerOffersTitle">
+          <div class="footer-offers-head">
+            <h2 id="footerOffersTitle" data-i18n="offer">Ponuda</h2>
+            <p data-i18n="offerNote">Asistent je trenutno besplatan. Pro i Posao stoje ovde dok ne budu spremni.</p>
+          </div>
+          <div class="footer-offer-grid" data-footer-offers></div>
+        </section>
+
+        <div class="footer-main">
+          <div class="footer-brand-col">
+            <a class="footer-brand" href="index.html"><img src="assets/img/icons/Logo2.png" height="36" alt="FirstCode" /></a>
+            <p class="footer-tagline" data-i18n="footerTagline">Nalepi poruku, izvuci adresu i odštampaj nalepnice.</p>
+            <a class="footer-email" href="mailto:divica394@gmail.com">divica394@gmail.com</a>
+            <div class="footer-social">
+              <a href="#!" aria-label="LinkedIn"><img src="assets/img/gallery/linkedin-line1.svg" alt="" width="18" height="18" /></a>
+              <a href="#!" aria-label="Facebook"><img src="assets/img/gallery/facebook-line1.svg" alt="" width="18" height="18" /></a>
+              <a href="#!" aria-label="Twitter"><img src="assets/img/gallery/twitter-line1.svg" alt="" width="18" height="18" /></a>
+              <a href="#!" aria-label="Instagram"><img src="assets/img/gallery/instagram-line1.svg" alt="" width="18" height="18" /></a>
+            </div>
+          </div>
+          <nav class="footer-nav" data-i18n-aria="footerNav" aria-label="Stranice">
+            <div>
+              <h3 data-i18n="footerProduct">Asistent</h3>
+              <ul class="footer-links">
+                <li><a href="index.html" data-i18n="home">Početna</a></li>
+                <li><a href="guide.html" data-i18n="guideKicker">Uputstvo</a></li>
+              </ul>
+            </div>
+            <div>
+              <h3 data-i18n="support">Podrška</h3>
+              <ul class="footer-links">
+                <li><a href="terms.html" data-i18n="terms">Uslovi korišćenja</a></li>
+                <li><a href="privacy.html" data-i18n="usagePolicy">Politika privatnosti</a></li>
+                <li><a href="mailto:divica394@gmail.com" data-i18n="contact">Kontakt</a></li>
+              </ul>
+            </div>
+          </nav>
+        </div>
+
+        <div class="footer-bottom">
+          <p>&copy; 2026 FirstCode</p>
+          <p><a href="https://firstcode.in.rs/" target="_blank" rel="noopener noreferrer" data-i18n="footerCredit">Proizvod FirstCode-a</a></p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="assets/js/i18n.js"></script>
+    <script>initLanguageToggle();</script>
+  </body>
+
+</html>
