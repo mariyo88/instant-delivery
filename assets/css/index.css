@@ -18,12 +18,13 @@
 
 .agent-home {
   padding-top: 5.5rem !important;
-  padding-bottom: 10.5rem !important;
+  padding-bottom: 3.25rem !important;
   min-height: auto !important;
   overflow: hidden;
 }
 
-.agent-home.is-chatting .agent-suggestions { display: none; }
+.agent-home.is-chatting .agent-suggestions,
+.agent-home.is-chatting .usage-jump { display: none; }
 
 .agent-home .hero-row {
   align-items: flex-start;
@@ -598,7 +599,7 @@
 @media (min-width: 992px) {
   .agent-home {
     padding-top: 6rem !important;
-    padding-bottom: 14rem !important;
+    padding-bottom: 3.75rem !important;
   }
 
   .agent-side {
@@ -1041,7 +1042,7 @@ body.pdf-preview-open {
 @media (max-width: 767.98px) {
   .agent-home {
     padding-top: 4.75rem !important;
-    padding-bottom: 6rem !important;
+    padding-bottom: 2.25rem !important;
   }
 
   .agent-home .container {
@@ -1369,6 +1370,309 @@ body {
 @media (max-width: 767.98px) {
   .legal-doc {
     padding-top: 5.5rem;
+  }
+}
+
+.usage-jump {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.85rem;
+  color: #6E46F5;
+  font: 600 0.8rem/1.2rem "Poppins", sans-serif;
+  text-decoration: none;
+}
+
+.usage-jump i {
+  font-size: 0.75rem;
+}
+
+.usage-jump:hover {
+  color: #5834D6;
+  text-decoration: underline;
+}
+
+.usage-jump:focus-visible {
+  outline: 2px solid #6E46F5;
+  outline-offset: 3px;
+  border-radius: 0.3rem;
+}
+
+.usage-guide {
+  scroll-margin-top: 5.5rem;
+  padding: 0 0 4.25rem;
+}
+
+.usage-guide-card {
+  padding: 1.35rem 1.05rem 1.3rem;
+  border: 1px solid rgba(110, 70, 245, 0.14);
+  border-radius: 1.5rem;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 0.85rem 2.4rem rgba(27, 22, 56, 0.08);
+}
+
+.usage-kicker {
+  margin: 0;
+  color: #6E46F5;
+  font: 700 0.72rem/1rem "Poppins", sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.usage-guide h2 {
+  margin: 0.35rem 0 0;
+  color: #1B1638;
+  font-family: "Baloo Bhaijaan 2", "Poppins", sans-serif;
+  font-size: clamp(1.7rem, 3vw, 2.2rem);
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.usage-lead {
+  max-width: 40rem;
+  margin: 0.65rem 0 0;
+  color: #534E6C;
+  font: 400 0.98rem/1.6rem "Poppins", sans-serif;
+}
+
+.usage-steps {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.7rem;
+  margin: 1.35rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.usage-step {
+  display: flex;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0.95rem 0.95rem 1rem;
+  border: 1px solid rgba(110, 70, 245, 0.1);
+  border-radius: 1rem;
+  background: rgba(110, 70, 245, 0.045);
+}
+
+.usage-step-index {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 1.85rem;
+  height: 1.85rem;
+  border-radius: 50%;
+  background: var(--fc-gradient);
+  color: #fff;
+  font: 700 0.85rem/1 "Poppins", sans-serif;
+}
+
+.usage-step h3 {
+  margin: 0.12rem 0 0;
+  color: #1B1638;
+  font: 600 0.92rem/1.3rem "Poppins", sans-serif;
+}
+
+.usage-step p {
+  margin: 0.28rem 0 0;
+  color: #534E6C;
+  font: 400 0.8rem/1.4rem "Poppins", sans-serif;
+}
+
+.usage-split {
+  display: grid;
+  gap: 0.85rem;
+  margin-top: 0.85rem;
+}
+
+.usage-panel,
+.usage-words {
+  padding: 1.1rem 1rem 1.15rem;
+  border: 1px solid rgba(110, 70, 245, 0.12);
+  border-radius: 1.15rem;
+  background: linear-gradient(180deg, rgba(79, 125, 255, 0.07), rgba(122, 69, 245, 0.045));
+}
+
+.usage-words {
+  margin-top: 0.85rem;
+}
+
+.usage-panel h3,
+.usage-words h3 {
+  margin: 0;
+  color: #1B1638;
+  font-family: "Baloo Bhaijaan 2", "Poppins", sans-serif;
+  font-size: 1.22rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.usage-panel > p,
+.usage-words > p {
+  margin: 0.4rem 0 0;
+  color: #534E6C;
+  font: 400 0.84rem/1.5rem "Poppins", sans-serif;
+}
+
+.usage-fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.9rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.usage-fields li {
+  padding: 0.28rem 0.65rem;
+  border: 1px solid rgba(110, 70, 245, 0.16);
+  border-radius: 999px;
+  background: #fff;
+  color: #3d3760;
+  font: 500 0.75rem/1.2rem "Poppins", sans-serif;
+}
+
+.usage-example {
+  margin: 0.95rem 0 0;
+  padding: 0.85rem 0.95rem;
+  border: 1px solid rgba(110, 70, 245, 0.12);
+  border-radius: 0.9rem;
+  background: #fff;
+}
+
+.usage-example-label {
+  display: block;
+  margin-bottom: 0.3rem;
+  color: #8B86A3;
+  font: 600 0.68rem/1rem "Poppins", sans-serif;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.usage-example p {
+  margin: 0;
+  color: #3d3760;
+  font: 400 0.82rem/1.5rem "Poppins", sans-serif;
+}
+
+.usage-marks {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin-top: 0.9rem;
+}
+
+.usage-mark {
+  min-width: 0;
+  padding: 0.7rem 0.75rem 0.6rem;
+  border: 1px solid rgba(110, 70, 245, 0.12);
+  border-radius: 0.85rem;
+  background: #fff;
+}
+
+.usage-guide code {
+  padding: 0;
+  background: none;
+  color: #6E46F5;
+  font-family: "Poppins", sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.usage-mark code {
+  display: block;
+  font-size: 0.92rem;
+  line-height: 1.2;
+}
+
+.usage-mark strong {
+  display: block;
+  margin-top: 0.18rem;
+  color: #1B1638;
+  font: 600 0.8rem/1.25rem "Poppins", sans-serif;
+}
+
+.usage-mark small {
+  display: block;
+  min-height: 1rem;
+  margin-top: 0.08rem;
+  color: #8B86A3;
+  font: 500 0.68rem/1rem "Poppins", sans-serif;
+}
+
+.usage-hint,
+.usage-unknown {
+  margin: 0.75rem 0 0;
+  color: #6F6A86;
+  font: 400 0.78rem/1.45rem "Poppins", sans-serif;
+}
+
+.usage-aliases {
+  width: 100%;
+  margin: 0.9rem 0 0;
+  border-collapse: collapse;
+}
+
+.usage-aliases th {
+  padding: 0 0.75rem 0.4rem 0;
+  color: #8B86A3;
+  font: 600 0.68rem/1rem "Poppins", sans-serif;
+  letter-spacing: 0.04em;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.usage-aliases td {
+  padding: 0.48rem 0.75rem 0.48rem 0;
+  border-top: 1px solid rgba(110, 70, 245, 0.1);
+  color: #1B1638;
+  font: 500 0.82rem/1.35rem "Poppins", sans-serif;
+  vertical-align: middle;
+}
+
+@media (min-width: 768px) {
+  .usage-aliases td:first-child {
+    width: 1%;
+    white-space: nowrap;
+  }
+}
+
+.usage-aliases code {
+  display: inline-block;
+  margin: 0.12rem 0.35rem 0.12rem 0;
+  padding: 0.08rem 0.42rem;
+  border: 1px solid rgba(110, 70, 245, 0.16);
+  border-radius: 0.4rem;
+  background: #fff;
+  color: #5834D6;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.35rem;
+}
+
+@media (min-width: 768px) {
+  .usage-guide-card {
+    padding: 2rem 1.75rem 1.7rem;
+  }
+
+  .usage-steps {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 992px) {
+  .usage-split {
+    grid-template-columns: minmax(0, 0.96fr) minmax(0, 1.04fr);
+  }
+
+  .usage-marks {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 380px) {
+  .usage-marks {
+    grid-template-columns: 1fr;
   }
 }
 
