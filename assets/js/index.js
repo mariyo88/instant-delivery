@@ -7,6 +7,7 @@ const DEFAULT_SETTINGS = { format: "PREMIUM_A4_2x3", language: "sr" };
 const FORMAT_VALUES = [
   "PREMIUM_A4_2x3",
   "CLASSIC_A4_2x3",
+  "MODERN_A4_2x4",
   "A4_4x2",
   "A4_3x3",
   "LABEL_100x150"
