@@ -5,6 +5,43 @@
   --error-muted: #534E6C;
   --error-bg: #F4F2FF;
   --error-footer: #141228;
+  --error-surface: #fff;
+  --error-border: rgba(110, 70, 245, 0.22);
+  --error-shadow: rgba(27, 22, 56, 0.08);
+  --error-lang-idle: #6F6A86;
+  --error-glow-a: rgba(79, 125, 255, 0.16);
+  --error-glow-b: rgba(110, 70, 245, 0.1);
+  --error-ghost-border: rgba(110, 70, 245, 0.28);
+  --error-ghost-hover: rgba(110, 70, 245, 0.06);
+  --fc-gradient: linear-gradient(135deg, #4F7DFF 0%, #6E46F5 74%);
+  --fc-gradient-hover: linear-gradient(135deg, #3E68E6 0%, #6236D4 70%);
+  --fc-accent: #6E46F5;
+  --fc-on-accent: #fff;
+  --fc-surface: #fff;
+  --fc-border: rgba(110, 70, 245, 0.22);
+  --fc-shadow-soft: rgba(27, 22, 56, 0.08);
+  color-scheme: light;
+}
+
+html[data-theme="dark"] {
+  --error-ink: #F4F2FF;
+  --error-muted: #C9C4DE;
+  --error-bg: #12101F;
+  --error-footer: #0B0A14;
+  --error-surface: #1C1830;
+  --error-border: rgba(183, 178, 200, 0.22);
+  --error-shadow: rgba(0, 0, 0, 0.28);
+  --error-lang-idle: #A39BBF;
+  --error-glow-a: rgba(79, 125, 255, 0.14);
+  --error-glow-b: rgba(122, 69, 245, 0.16);
+  --error-ghost-border: rgba(167, 139, 250, 0.4);
+  --error-ghost-hover: rgba(167, 139, 250, 0.12);
+  --error-primary: #A78BFA;
+  --fc-accent: #A78BFA;
+  --fc-surface: #1C1830;
+  --fc-border: rgba(183, 178, 200, 0.22);
+  --fc-shadow-soft: rgba(0, 0, 0, 0.28);
+  color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
@@ -14,13 +51,17 @@ html, body {
   min-height: 100%;
 }
 
+html {
+  background-color: var(--error-footer);
+}
+
 body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   background:
-    radial-gradient(ellipse 70% 50% at 0% 0%, rgba(79, 125, 255, 0.16), transparent 55%),
-    radial-gradient(ellipse 60% 45% at 100% 8%, rgba(110, 70, 245, 0.1), transparent 50%),
+    radial-gradient(ellipse 70% 50% at 0% 0%, var(--error-glow-a), transparent 55%),
+    radial-gradient(ellipse 60% 45% at 100% 8%, var(--error-glow-b), transparent 50%),
     var(--error-bg);
   color: var(--error-muted);
   font-family: "Poppins", sans-serif;
@@ -34,6 +75,51 @@ body {
   padding: 1.15rem 1.5rem;
 }
 
+.error-tools {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.theme-toggle {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 2.15rem;
+  height: 2.15rem;
+  flex: 0 0 auto;
+  border: 1px solid var(--fc-border);
+  border-radius: 50%;
+  background: var(--fc-surface);
+  color: var(--fc-accent);
+  box-shadow: 0 0.15rem 0.55rem var(--fc-shadow-soft);
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.theme-toggle:hover,
+.theme-toggle:focus-visible {
+  background: var(--fc-gradient);
+  color: var(--fc-on-accent);
+  border-color: transparent;
+  box-shadow: 0 0.2rem 0.55rem rgba(110, 70, 245, 0.28);
+}
+
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--fc-accent);
+  outline-offset: 3px;
+}
+
+.theme-toggle svg {
+  width: 0.95rem;
+  height: 0.95rem;
+  display: block;
+}
+
+.theme-toggle .theme-icon-sun { display: none; }
+html[data-theme="dark"] .theme-toggle .theme-icon-moon { display: none; }
+html[data-theme="dark"] .theme-toggle .theme-icon-sun { display: block; }
+
 .lang-toggle {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -41,17 +127,17 @@ body {
   flex: 0 0 auto;
   gap: 0.12rem;
   padding: 0.16rem;
-  border: 1px solid rgba(110, 70, 245, 0.22);
+  border: 1px solid var(--error-border);
   border-radius: 999px;
-  background: #fff;
-  box-shadow: 0 0.15rem 0.55rem rgba(27, 22, 56, 0.08);
+  background: var(--error-surface);
+  box-shadow: 0 0.15rem 0.55rem var(--error-shadow);
 }
 
 .lang-toggle button {
   border: 0;
   border-radius: 999px;
   background: transparent;
-  color: #6F6A86;
+  color: var(--error-lang-idle);
   padding: 0.28rem 0.2rem;
   font: 700 0.72rem/1rem "Poppins", sans-serif;
   cursor: pointer;
@@ -69,6 +155,10 @@ body {
 .error-brand img {
   height: 35px;
   width: auto;
+}
+
+html[data-theme="dark"] .error-brand img {
+  filter: brightness(1.15) saturate(1.05);
 }
 
 .error-main {
@@ -146,11 +236,11 @@ body {
   background: transparent;
   color: var(--error-primary);
   box-shadow: none;
-  border: 1.5px solid rgba(110, 70, 245, 0.28);
+  border: 1.5px solid var(--error-ghost-border);
 }
 
 .error-btn-ghost:hover {
-  background: rgba(110, 70, 245, 0.06);
+  background: var(--error-ghost-hover);
   color: var(--error-primary);
 }
 
