@@ -54,12 +54,32 @@ const STRINGS = {
     printCount: "Odštampaj ({count})",
     printing: "Štampam",
     deleteAll: "Obriši sve",
-    about: "O nama",
-    news: "Vesti",
-    blog: "Blog",
-    giftCards: "Poklon kartice",
-    careers: "Karijera",
     offer: "Ponuda",
+    offerNote: "Asistent je trenutno besplatan. Pro i Posao stoje ovde dok ne budu spremni.",
+    offerCurrent: "Sada",
+    offerSoon: "Uskoro",
+    offerPriceLater: "Cena kasnije",
+    offerFreeName: "Besplatno",
+    offerFreePrice: "0 RSD",
+    offerFreeSummary: "Sve što treba da izvučeš adresu i odštampaš nalepnice.",
+    offerFree1: "Izvlačenje adrese iz poruke",
+    offerFree2: "Lista za štampu u pregledaču",
+    offerFree3: "Grupna štampa nalepnica",
+    offerFree4: "Formati A4 i 100×150",
+    offerProName: "Pro",
+    offerProSummary: "Za one koji šalju češće i hoće svoj znak na nalepnici.",
+    offerPro1: "Logo na nalepnici",
+    offerPro2: "Uvoz liste iz tabele",
+    offerPro3: "Više sačuvanih formata",
+    offerBusinessName: "Posao",
+    offerBusinessSummary: "Za firmu koja hoće API i zajedničku listu.",
+    offerBusiness1: "API za adresu i PDF",
+    offerBusiness2: "Zajednička lista za tim",
+    offerBusiness3: "Brendirane nalepnice",
+    footerTagline: "Nalepi poruku, izvuci adresu i odštampaj nalepnice.",
+    footerProduct: "Asistent",
+    footerNav: "Stranice",
+    home: "Početna",
     support: "Podrška",
     terms: "Uslovi korišćenja",
     contact: "Kontakt",
@@ -214,12 +234,32 @@ const STRINGS = {
     printCount: "Print ({count})",
     printing: "Printing",
     deleteAll: "Delete all",
-    about: "About",
-    news: "News",
-    blog: "Blog",
-    giftCards: "Gift cards",
-    careers: "Careers",
-    offer: "Products",
+    offer: "Plans",
+    offerNote: "The assistant is free right now. Pro and Business stay here until they are ready.",
+    offerCurrent: "Now",
+    offerSoon: "Soon",
+    offerPriceLater: "Price later",
+    offerFreeName: "Free",
+    offerFreePrice: "0 RSD",
+    offerFreeSummary: "Everything you need to pull an address and print labels.",
+    offerFree1: "Address extraction from a message",
+    offerFree2: "Print list kept in the browser",
+    offerFree3: "Batch label printing",
+    offerFree4: "A4 and 100×150 formats",
+    offerProName: "Pro",
+    offerProSummary: "For people who ship often and want their own mark on the label.",
+    offerPro1: "Logo on the label",
+    offerPro2: "Import a list from a spreadsheet",
+    offerPro3: "More saved formats",
+    offerBusinessName: "Business",
+    offerBusinessSummary: "For a company that wants an API and a shared list.",
+    offerBusiness1: "API for addresses and PDFs",
+    offerBusiness2: "A shared list for the team",
+    offerBusiness3: "Branded labels",
+    footerTagline: "Paste a message, extract the address, and print labels.",
+    footerProduct: "Assistant",
+    footerNav: "Pages",
+    home: "Home",
     support: "Support",
     terms: "Terms of use",
     contact: "Contact",
@@ -324,6 +364,85 @@ const STRINGS = {
   }
 };
 
+// Plans shown in the footer. "current" is live. "planned" is reserved for later
+// and is not sold yet. Reuse this list when a pricing page is added.
+const OFFERS = [
+  {
+    id: "free",
+    status: "current",
+    price: 0,
+    currency: "RSD",
+    priceLabelKey: "offerFreePrice",
+    nameKey: "offerFreeName",
+    summaryKey: "offerFreeSummary",
+    featureKeys: ["offerFree1", "offerFree2", "offerFree3", "offerFree4"]
+  },
+  {
+    id: "pro",
+    status: "planned",
+    price: null,
+    currency: "RSD",
+    priceLabelKey: "offerPriceLater",
+    nameKey: "offerProName",
+    summaryKey: "offerProSummary",
+    featureKeys: ["offerPro1", "offerPro2", "offerPro3"]
+  },
+  {
+    id: "business",
+    status: "planned",
+    price: null,
+    currency: "RSD",
+    priceLabelKey: "offerPriceLater",
+    nameKey: "offerBusinessName",
+    summaryKey: "offerBusinessSummary",
+    featureKeys: ["offerBusiness1", "offerBusiness2", "offerBusiness3"]
+  }
+];
+
+if (typeof window !== "undefined") window.FirstCodeOffers = OFFERS;
+
+function offerCard(offer) {
+  const article = document.createElement("article");
+  article.className = "footer-offer is-" + (offer.status === "current" ? "current" : "planned");
+  article.dataset.offer = offer.id;
+
+  const top = document.createElement("div");
+  top.className = "footer-offer-top";
+
+  const badge = document.createElement("span");
+  badge.className = "footer-offer-badge";
+  badge.textContent = t(offer.status === "current" ? "offerCurrent" : "offerSoon");
+
+  const price = document.createElement("p");
+  price.className = "footer-offer-price";
+  price.textContent = t(offer.priceLabelKey);
+
+  top.append(badge, price);
+
+  const title = document.createElement("h3");
+  title.textContent = t(offer.nameKey);
+
+  const summary = document.createElement("p");
+  summary.className = "footer-offer-summary";
+  summary.textContent = t(offer.summaryKey);
+
+  const list = document.createElement("ul");
+  offer.featureKeys.forEach((key) => {
+    const item = document.createElement("li");
+    item.textContent = t(key);
+    list.appendChild(item);
+  });
+
+  article.append(top, title, summary, list);
+  return article;
+}
+
+function renderFooterOffers(root) {
+  (root || document).querySelectorAll("[data-footer-offers]").forEach((mount) => {
+    mount.replaceChildren.apply(mount, OFFERS.map(offerCard));
+  });
+}
+
 function readI18nSettings() {
   try {
     const raw = localStorage.getItem(I18N_SETTINGS_KEY);
@@ -379,6 +498,7 @@ function applyI18n(root) {
     el.setAttribute("content", t(el.dataset.i18nContent));
   });
   document.documentElement.lang = getStoredLanguage();
+  renderFooterOffers(scope);
 }
 
 function syncLanguageToggle(root) {

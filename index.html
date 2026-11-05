@@ -366,60 +366,55 @@
 
       <footer class="site-footer">
         <div class="container">
-          <div class="row footer-main align-items-start">
-            <div class="col-12 col-lg-6 mb-3 mb-lg-0 order-0">
-              <a class="text-decoration-none footer-brand" href="#"><img src="assets/img/icons/Logo2.png" height="38" alt="FirstCode" /></a>
-              <p class="text-light footer-contact">RS: +381 1234 5678</p>
-              <p class="text-light footer-email">divica394@gmail.com</p>
-              <div class="d-flex footer-social">
-                <a href="#!"><img class="me-3" src="assets/img/gallery/linkedin-line1.svg" alt="LinkedIn" width="18" height="18" /></a>
-                <a href="#!"><img class="me-3" src="assets/img/gallery/facebook-line1.svg" alt="Facebook" width="18" height="18" /></a>
-                <a href="#!"><img class="me-3" src="assets/img/gallery/twitter-line1.svg" alt="Twitter" width="18" height="18" /></a>
-                <a href="#!"><img class="me-3" src="assets/img/gallery/instagram-line1.svg" alt="Instagram" width="18" height="18" /></a>
+          <section class="footer-offers" aria-labelledby="footerOffersTitle">
+            <div class="footer-offers-head">
+              <h2 id="footerOffersTitle" data-i18n="offer">Ponuda</h2>
+              <p data-i18n="offerNote">Asistent je trenutno besplatan. Pro i Posao stoje ovde dok ne budu spremni.</p>
+            </div>
+            <div class="footer-offer-grid" data-footer-offers></div>
+          </section>
+
+          <div class="footer-main">
+            <div class="footer-brand-col">
+              <a class="footer-brand" href="index.html"><img src="assets/img/icons/Logo2.png" height="36" alt="FirstCode" /></a>
+              <p class="footer-tagline" data-i18n="footerTagline">Nalepi poruku, izvuci adresu i odštampaj nalepnice.</p>
+              <a class="footer-email" href="mailto:divica394@gmail.com">divica394@gmail.com</a>
+              <div class="footer-social">
+                <a href="#!" aria-label="LinkedIn"><img src="assets/img/gallery/linkedin-line1.svg" alt="" width="18" height="18" /></a>
+                <a href="#!" aria-label="Facebook"><img src="assets/img/gallery/facebook-line1.svg" alt="" width="18" height="18" /></a>
+                <a href="#!" aria-label="Twitter"><img src="assets/img/gallery/twitter-line1.svg" alt="" width="18" height="18" /></a>
+                <a href="#!" aria-label="Instagram"><img src="assets/img/gallery/instagram-line1.svg" alt="" width="18" height="18" /></a>
               </div>
             </div>
-            <div class="col-6 col-sm-4 col-lg-2 mb-3 mb-lg-0 order-2 order-sm-1">
-              <h5 class="fw-bold text-light font-sans-serif footer-col-title" data-i18n="about">O nama</h5>
-              <ul class="list-unstyled text-light footer-links">
-                <li><a class="text-500 footer-link text-light" href="#!" data-i18n="news">Vesti</a></li>
-                <li><a class="text-500 footer-link text-light" href="#!" data-i18n="blog">Blog</a></li>
-                <li><a class="text-500 footer-link text-light" href="#!">FirstCode API</a></li>
-                <li><a class="text-500 footer-link text-light" href="#!" data-i18n="giftCards">Poklon kartice</a></li>
-                <li><a class="text-500 footer-link text-light" href="#!" data-i18n="careers">Karijera</a></li>
-              </ul>
-            </div>
-            <div class="col-6 col-sm-4 col-lg-2 mb-3 mb-lg-0 order-3 order-sm-2">
-              <h5 class="fw-bold text-light font-sans-serif footer-col-title" data-i18n="offer">Ponuda</h5>
-              <ul class="list-unstyled text-light footer-links">
-                <li><a class="text-500 footer-link text-light" href="#!">FirstCode Eats</a></li>
-                <li><a class="text-500 footer-link text-light" href="#!">FirstCode Business</a></li>
-                <li><a class="text-500 footer-link text-light" href="#!">FirstCode Freight</a></li>
-                <li><a class="text-500 footer-link text-light" href="#!">FirstCode Health</a></li>
-              </ul>
-            </div>
-            <div class="col-12 col-sm-4 col-lg-2 mb-0 order-4 order-sm-3">
-              <h5 class="fw-bold text-light font-sans-serif footer-col-title" data-i18n="support">Podrška</h5>
-              <ul class="list-unstyled text-light footer-links">
-                <li><a class="text-500 footer-link text-light" href="#uputstvo" data-i18n="guideKicker">Uputstvo</a></li>
-                <li><a class="text-500 footer-link text-light" href="terms.html" data-i18n="terms">Uslovi korišćenja</a></li>
-                <li><a class="text-500 footer-link text-light" href="#!" data-i18n="about">O nama</a></li>
-                <li><a class="text-500 footer-link text-light" href="#!" data-i18n="contact">Kontakt</a></li>
-                <li><a class="text-500 footer-link text-light" href="privacy.html" data-i18n="usagePolicy">Politika privatnosti</a></li>
-              </ul>
-            </div>
+            <nav class="footer-nav" data-i18n-aria="footerNav" aria-label="Stranice">
+              <div>
+                <h3 data-i18n="footerProduct">Asistent</h3>
+                <ul class="footer-links">
+                  <li><a href="index.html" data-i18n="home">Početna</a></li>
+                  <li><a href="index.html#uputstvo" data-i18n="guideKicker">Uputstvo</a></li>
+                </ul>
+              </div>
+              <div>
+                <h3 data-i18n="support">Podrška</h3>
+                <ul class="footer-links">
+                  <li><a href="terms.html" data-i18n="terms">Uslovi korišćenja</a></li>
+                  <li><a href="privacy.html" data-i18n="usagePolicy">Politika privatnosti</a></li>
+                  <li><a href="mailto:divica394@gmail.com" data-i18n="contact">Kontakt</a></li>
+                </ul>
+              </div>
+            </nav>
           </div>
 
-          <div class="row justify-content-md-between align-items-center footer-bottom">
-            <div class="col-12 col-md-6 text-center text-md-start">
-              <p class="fs--1 fw-bold text-200">&copy; 2026 FirstCode</p>
-            </div>
-            <div class="col-12 col-md-6 text-center text-md-end">
-              <p class="fs--1 text-200"> <span data-i18n="madeWith">Napravljeno sa</span>&nbsp;
-                <svg class="bi bi-suit-heart-fill" xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="#B7C6FF" viewBox="0 0 16 16">
-                  <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z"></path>
-                </svg>&nbsp;<span data-i18n="madeBy">od</span>&nbsp;<a class="fw-bold text-info text-200" href="https://firstcode.in.rs/" target="_blank">FirstCode </a>
-              </p>
-            </div>
+          <div class="footer-bottom">
+            <p>&copy; 2026 FirstCode</p>
+            <p>
+              <span data-i18n="madeWith">Napravljeno sa</span>
+              <svg class="footer-heart" xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="#B7C6FF" viewBox="0 0 16 16" aria-hidden="true">
+                <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z"></path>
+              </svg>
+              <span data-i18n="madeBy">od</span>
+              <a href="https://firstcode.in.rs/" target="_blank" rel="noopener">FirstCode</a>
+            </p>
           </div>
         </div>
       </footer>
