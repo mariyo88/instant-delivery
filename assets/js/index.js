@@ -93,9 +93,11 @@ function loadSettings() {
   try {
     const raw = localStorage.getItem(SETTINGS_KEY);
     const data = raw ? JSON.parse(raw) : {};
+    const theme = data.theme === "light" || data.theme === "dark" ? data.theme : undefined;
     return {
       format: FORMAT_VALUES.includes(data.format) ? data.format : DEFAULT_SETTINGS.format,
-      language: LANGUAGE_VALUES.includes(data.language) ? data.language : DEFAULT_SETTINGS.language
+      language: LANGUAGE_VALUES.includes(data.language) ? data.language : DEFAULT_SETTINGS.language,
+      ...(theme ? { theme } : {})
     };
   } catch (e) {
     return { ...DEFAULT_SETTINGS };
@@ -103,7 +105,8 @@ function loadSettings() {
 }
 
 function persistSettings(settings) {
-  localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+  const next = { ...loadSettings(), ...settings };
+  localStorage.setItem(SETTINGS_KEY, JSON.stringify(next));
 }
 
 function getSelectedFormat() {
@@ -125,6 +128,7 @@ function setLanguage(language) {
     });
   }
   applyI18n(document);
+  syncThemeToggle(document);
   refreshDynamicCopy();
   renderSavedList();
 }
@@ -1302,6 +1306,7 @@ function consumeInboundText() {
   if (text) submitText(text);
 }
 
+initThemeToggle();
 syncSettingsControls();
 syncSendButton();
 renderSavedList();

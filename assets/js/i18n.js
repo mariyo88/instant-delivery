@@ -1,11 +1,15 @@
 const I18N_SETTINGS_KEY = "firstcode.instantPrintSettings";
 const I18N_LANGUAGES = ["sr", "en"];
+const I18N_THEMES = ["light", "dark"];
 
 const STRINGS = {
   sr: {
     pageTitle: "FirstCode | Asistent za nalepnice",
     pageDescription: "Nalepi poruku o dostavi i FirstCode izvlači ime, adresu i telefon. Sačuvaj dostavu u listu i odštampaj nalepnice.",
     language: "Jezik",
+    themeToggle: "Tema",
+    themeToDark: "Uključi tamnu temu",
+    themeToLight: "Uključi svetlu temu",
     heroTitle: "Zdravo. Spreman da počnemo?",
     heroLead: "Nalepi poruku o dostavi, a FirstCode će izvući adresu. Sačuvaj je u listu i odštampaj nalepnice grupno.",
     promptLabel: "Nalepi poruku o dostavi",
@@ -90,7 +94,7 @@ const STRINGS = {
     privacyUpdated: "Ažurirano 12. oktobra 2026.",
     privacyIntro: "FirstCode asistent za nalepnice izvlači adresu iz poruke o dostavi i pravi nalepnice za štampu. Ovde piše šta se dešava sa podacima koje uneseš.",
     privacyLocalTitle: "Lista ostaje u pregledaču",
-    privacyLocalBody: "Ime, adresa, telefon, email, pouzeće i ostala polja koja sačuvaš u listi za štampu ostaju u tvom pregledaču, na ovom uređaju. FirstCode tu listu ne drži na serveru. Jezik i format štampe takođe ostaju u pregledaču. Ako obrišeš listu u aplikaciji, ili obrišeš podatke ovog sajta u pregledaču, lista nestaje sa tog uređaja.",
+    privacyLocalBody: "Ime, adresa, telefon, email, pouzeće i ostala polja koja sačuvaš u listi za štampu ostaju u tvom pregledaču, na ovom uređaju. FirstCode tu listu ne drži na serveru. Jezik, tema i format štampe takođe ostaju u pregledaču. Ako obrišeš listu u aplikaciji, ili obrišeš podatke ovog sajta u pregledaču, lista nestaje sa tog uređaja.",
     privacyServerTitle: "Poruka ide na server",
     privacyServerBody: "Kad zatražiš izvlačenje adrese, poruka koju si nalepio šalje se na server FirstCode-a. Server tu poruku šalje Google-u da bi iz nje izvukao adresu. FirstCode od te poruke ne pravi nalog i ne koristi je za oglase.",
     privacyPrintBody: "Kad zatražiš štampu, izabrane adrese se šalju na server FirstCode-a. Server od njih pravi PDF i vraća ga u tvoj pregledač.",
@@ -107,7 +111,7 @@ const STRINGS = {
     termsLiabilityTitle: "Odgovornost",
     termsLiabilityBody: "FirstCode ne odgovara za pogrešnu nalepnicu, za pošiljku koja ode na pogrešnu adresu, niti za štetu nastalu jer si se oslonio na izvučenu adresu. Alat se daje takav kakav jeste, bez garancije da će adresa biti tačna.",
     termsContactLead: "Pitanja o ovim uslovima:",
-    footerCredit: "Proizvod FirstCode-a",
+    footerCredit: "Sva prava zadržana.",
     editDelivery: "Izmena dostave",
     close: "Zatvori",
     fullName: "Ime i prezime",
@@ -185,6 +189,9 @@ const STRINGS = {
     pageTitle: "FirstCode | Label assistant",
     pageDescription: "Paste a delivery message and FirstCode extracts the name, address, and phone. Save the delivery to a list and print labels.",
     language: "Language",
+    themeToggle: "Theme",
+    themeToDark: "Switch to dark theme",
+    themeToLight: "Switch to light theme",
     heroTitle: "Hi. Ready to get started?",
     heroLead: "Paste a delivery message and FirstCode will extract the address. Save it to the list and print labels in a batch.",
     promptLabel: "Paste a delivery message",
@@ -269,7 +276,7 @@ const STRINGS = {
     privacyUpdated: "Updated 12 October 2026.",
     privacyIntro: "The FirstCode label assistant extracts an address from a delivery message and makes labels for printing. This page says what happens to the data you enter.",
     privacyLocalTitle: "The list stays in the browser",
-    privacyLocalBody: "The name, address, phone, email, cash-on-delivery amount, and any other fields you save in the print list stay in your browser, on this device. FirstCode does not keep that list on a server. Language and print format stay in the browser as well. If you delete the list in the app, or clear this site's data in the browser, the list is gone from that device.",
+    privacyLocalBody: "The name, address, phone, email, cash-on-delivery amount, and any other fields you save in the print list stay in your browser, on this device. FirstCode does not keep that list on a server. Language, theme, and print format stay in the browser as well. If you delete the list in the app, or clear this site's data in the browser, the list is gone from that device.",
     privacyServerTitle: "The message goes to the server",
     privacyServerBody: "When you ask to extract an address, the message you pasted is sent to FirstCode's server. The server sends that message to Google so Google can extract the address. FirstCode does not create an account from that message and does not use it for ads.",
     privacyPrintBody: "When you ask to print, the addresses you selected are sent to FirstCode's server. The server turns them into a PDF and returns it to your browser.",
@@ -286,7 +293,7 @@ const STRINGS = {
     termsLiabilityTitle: "Liability",
     termsLiabilityBody: "FirstCode is not responsible for a wrong label, for a shipment that goes to the wrong address, or for loss that comes from relying on the extracted address. The tool is provided as it is, with no guarantee that the address will be correct.",
     termsContactLead: "Questions about these terms:",
-    footerCredit: "A FirstCode product",
+    footerCredit: "All rights reserved.",
     editDelivery: "Edit delivery",
     close: "Close",
     fullName: "Full name",
@@ -463,6 +470,81 @@ function persistStoredLanguage(language) {
   return data.language;
 }
 
+function getSystemTheme() {
+  return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light";
+}
+
+function getStoredThemePreference() {
+  const theme = readI18nSettings().theme;
+  return I18N_THEMES.includes(theme) ? theme : null;
+}
+
+function resolveTheme(preference) {
+  return I18N_THEMES.includes(preference) ? preference : getSystemTheme();
+}
+
+function persistStoredTheme(theme) {
+  const data = readI18nSettings();
+  data.theme = I18N_THEMES.includes(theme) ? theme : "light";
+  localStorage.setItem(I18N_SETTINGS_KEY, JSON.stringify(data));
+  return data.theme;
+}
+
+function getActiveTheme() {
+  return document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
+}
+
+function syncThemeToggle(root) {
+  const theme = getActiveTheme();
+  const label = t(theme === "dark" ? "themeToLight" : "themeToDark");
+  (root || document).querySelectorAll(".theme-toggle").forEach((button) => {
+    button.setAttribute("aria-label", label);
+    button.setAttribute("title", label);
+    button.setAttribute("aria-pressed", theme === "dark" ? "true" : "false");
+  });
+}
+
+function applyTheme(theme) {
+  const resolved = resolveTheme(theme);
+  document.documentElement.setAttribute("data-theme", resolved);
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute("content", resolved === "dark" ? "#12101F" : "#6E46F5");
+  syncThemeToggle(document);
+  return resolved;
+}
+
+function setTheme(theme) {
+  return applyTheme(persistStoredTheme(theme));
+}
+
+function toggleTheme() {
+  return setTheme(getActiveTheme() === "dark" ? "light" : "dark");
+}
+
+function initThemeToggle() {
+  applyTheme(resolveTheme(getStoredThemePreference()));
+  document.querySelectorAll(".theme-toggle").forEach((button) => {
+    if (button.dataset.bound === "true") return;
+    button.dataset.bound = "true";
+    button.addEventListener("click", () => {
+      toggleTheme();
+    });
+  });
+
+  if (window.matchMedia && !window.__firstcodeThemeMediaBound) {
+    window.__firstcodeThemeMediaBound = true;
+    const media = window.matchMedia("(prefers-color-scheme: dark)");
+    const onChange = () => {
+      if (getStoredThemePreference()) return;
+      applyTheme(getSystemTheme());
+    };
+    if (typeof media.addEventListener === "function") media.addEventListener("change", onChange);
+    else if (typeof media.addListener === "function") media.addListener(onChange);
+  }
+}
+
 function t(key, params) {
   const table = STRINGS[getStoredLanguage()] || STRINGS.sr;
   let text = Object.prototype.hasOwnProperty.call(table, key) ? table[key] : STRINGS.sr[key];
@@ -497,6 +579,7 @@ function applyI18n(root) {
   });
   document.documentElement.lang = getStoredLanguage();
   renderFooterOffers(scope);
+  syncThemeToggle(scope);
 }
 
 function syncLanguageToggle(root) {
@@ -509,8 +592,10 @@ function syncLanguageToggle(root) {
 }
 
 function initLanguageToggle(onChange) {
+  initThemeToggle();
   applyI18n(document);
   syncLanguageToggle(document);
+  syncThemeToggle(document);
   const toggle = document.getElementById("appLanguage");
   if (!toggle || toggle.dataset.bound === "true") return;
   toggle.dataset.bound = "true";
@@ -520,6 +605,7 @@ function initLanguageToggle(onChange) {
     const language = persistStoredLanguage(button.dataset.lang);
     applyI18n(document);
     syncLanguageToggle(document);
+    syncThemeToggle(document);
     if (typeof onChange === "function") onChange(language);
   });
 }

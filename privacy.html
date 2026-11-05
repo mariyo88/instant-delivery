@@ -2,6 +2,18 @@
 <html lang="sr" dir="ltr">
 
   <head>
+    <script>
+      (function () {
+        try {
+          var raw = localStorage.getItem("firstcode.instantPrintSettings");
+          var theme = raw ? JSON.parse(raw).theme : null;
+          if (theme !== "light" && theme !== "dark") {
+            theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+          }
+          document.documentElement.setAttribute("data-theme", theme);
+        } catch (e) {}
+      })();
+    </script>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -28,9 +40,20 @@
       <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" data-navbar-on-scroll="light">
         <div class="container navbar-bar">
           <a class="navbar-brand" href="index.html"><img src="assets/img/icons/Logo.png" height="35" alt="FirstCode logo" /></a>
-          <div id="appLanguage" class="lang-toggle" role="group" data-i18n-aria="language" aria-label="Jezik">
-            <button type="button" data-lang="sr" class="is-active" aria-pressed="true">SR</button>
-            <button type="button" data-lang="en" aria-pressed="false">EN</button>
+          <div class="navbar-tools">
+            <button type="button" class="theme-toggle" aria-pressed="false" aria-label="Uključi tamnu temu" title="Uključi tamnu temu">
+              <svg class="theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path fill="currentColor" d="M21 14.3A9.1 9.1 0 0 1 9.7 3a7.4 7.4 0 1 0 11.3 11.3z"/>
+              </svg>
+              <svg class="theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="12" cy="12" r="4.2" fill="currentColor"/>
+                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.8" d="M12 2.8v1.8M12 19.4v1.8M2.8 12h1.8M19.4 12h1.8M5.1 5.1l1.3 1.3M17.6 17.6l1.3 1.3M5.1 18.9l1.3-1.3M17.6 6.4l1.3-1.3"/>
+              </svg>
+            </button>
+            <div id="appLanguage" class="lang-toggle" role="group" data-i18n-aria="language" aria-label="Jezik">
+              <button type="button" data-lang="sr" class="is-active" aria-pressed="true">SR</button>
+              <button type="button" data-lang="en" aria-pressed="false">EN</button>
+            </div>
           </div>
         </div>
       </nav>
@@ -41,7 +64,7 @@
         <p data-i18n="privacyIntro">FirstCode asistent za nalepnice izvlači adresu iz poruke o dostavi i pravi nalepnice za štampu. Ovde piše šta se dešava sa podacima koje uneseš.</p>
 
         <h2 data-i18n="privacyLocalTitle">Lista ostaje u pregledaču</h2>
-        <p data-i18n="privacyLocalBody">Ime, adresa, telefon, email, pouzeće i ostala polja koja sačuvaš u listi za štampu ostaju u tvom pregledaču, na ovom uređaju. FirstCode tu listu ne drži na serveru. Jezik i format štampe takođe ostaju u pregledaču. Ako obrišeš listu u aplikaciji, ili obrišeš podatke ovog sajta u pregledaču, lista nestaje sa tog uređaja.</p>
+        <p data-i18n="privacyLocalBody">Ime, adresa, telefon, email, pouzeće i ostala polja koja sačuvaš u listi za štampu ostaju u tvom pregledaču, na ovom uređaju. FirstCode tu listu ne drži na serveru. Jezik, tema i format štampe takođe ostaju u pregledaču. Ako obrišeš listu u aplikaciji, ili obrišeš podatke ovog sajta u pregledaču, lista nestaje sa tog uređaja.</p>
 
         <h2 data-i18n="privacyServerTitle">Poruka ide na server</h2>
         <p data-i18n="privacyServerBody">Kad zatražiš izvlačenje adrese, poruka koju si nalepio šalje se na server FirstCode-a. Server tu poruku šalje Google-u da bi iz nje izvukao adresu. FirstCode od te poruke ne pravi nalog i ne koristi je za oglase.</p>
@@ -50,11 +73,11 @@
         <h2 data-i18n="privacyContactTitle">Kontakt</h2>
         <p><span data-i18n="privacyContactLead">Za pitanja o ovim podacima piši na</span> <a href="mailto:divica394@gmail.com">divica394@gmail.com</a></p>
 
-        <p class="legal-nav">
+        <nav class="legal-nav" data-i18n-aria="footerNav" aria-label="Stranice">
           <a href="index.html" data-i18n="backHome">Nazad na početnu</a>
           <a href="guide.html" data-i18n="guideKicker">Uputstvo</a>
           <a href="terms.html" data-i18n="terms">Uslovi korišćenja</a>
-        </p>
+        </nav>
       </article>
     </main>
 
@@ -101,7 +124,7 @@
 
         <div class="footer-bottom">
           <p>&copy; 2026 FirstCode</p>
-          <p><a href="https://firstcode.in.rs/" target="_blank" rel="noopener noreferrer" data-i18n="footerCredit">Proizvod FirstCode-a</a></p>
+          <p data-i18n="footerCredit">Sva prava zadržana.</p>
         </div>
       </div>
     </footer>
