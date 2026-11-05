@@ -17,11 +17,12 @@ const STRINGS = {
     sampleCod: "Pouzeće 3500 RSD za Marka Jovića, Bulevar kralja Aleksandra 72, 11000 Beograd. Telefon +381 63 111 2222. Tip pošiljke paket, naziv pošiljke Patike Nike.",
     sampleIntl: "Pošalji za John Smith, 221B Baker Street, London NW1 6XE, United Kingdom. Telefon +44 20 7946 0958.",
     guideJump: "Kako se koristi",
+    guidePageTitle: "FirstCode | Uputstvo",
     guideKicker: "Uputstvo",
     guideTitle: "Kako se koristi",
     guideLead: "Nalepi poruku običnim rečima. FirstCode izvlači ime, adresu, telefon, pouzeće i tip pošiljke. Za tip dovoljna je i skraćenica.",
     guideStep1Title: "Nalepi poruku",
-    guideStep1Body: "U polje gore nalepi tekst o dostavi. Ime, ulica i grad su osnova. Ostalo dodaj ako ga imaš.",
+    guideStep1Body: "Na početnoj nalepi tekst o dostavi u polje. Ime, ulica i grad su osnova. Ostalo dodaj ako ga imaš.",
     guideStep2Title: "Proveri karticu",
     guideStep2Body: "FirstCode predlaže šta je pročitao. Ako nešto fali ili je pogrešno, izmeni pre štampe.",
     guideStep3Title: "Sačuvaj i odštampaj",
@@ -106,8 +107,7 @@ const STRINGS = {
     termsLiabilityTitle: "Odgovornost",
     termsLiabilityBody: "FirstCode ne odgovara za pogrešnu nalepnicu, za pošiljku koja ode na pogrešnu adresu, niti za štetu nastalu jer si se oslonio na izvučenu adresu. Alat se daje takav kakav jeste, bez garancije da će adresa biti tačna.",
     termsContactLead: "Pitanja o ovim uslovima:",
-    madeWith: "Napravljeno sa",
-    madeBy: "od",
+    footerCredit: "Proizvod FirstCode-a",
     editDelivery: "Izmena dostave",
     close: "Zatvori",
     fullName: "Ime i prezime",
@@ -179,8 +179,7 @@ const STRINGS = {
     serverErrorTitle: "FirstCode | Greška na serveru",
     serverErrorHeading: "Nešto nije u redu",
     serverErrorLead: "Došlo je do greške na našoj strani. Pokušaj ponovo za trenutak, ili se vrati na početnu.",
-    tryAgain: "Pokušaj ponovo",
-    madeByError: "Napravljeno od"
+    tryAgain: "Pokušaj ponovo"
   },
   en: {
     pageTitle: "FirstCode | Label assistant",
@@ -197,11 +196,12 @@ const STRINGS = {
     sampleCod: "Cash on delivery 3500 RSD for Marko Jović, Bulevar kralja Aleksandra 72, 11000 Belgrade. Phone +381 63 111 2222. Shipment type package, shipment name Nike sneakers.",
     sampleIntl: "Send to John Smith, 221B Baker Street, London NW1 6XE, United Kingdom. Phone +44 20 7946 0958.",
     guideJump: "How to use it",
+    guidePageTitle: "FirstCode | Guide",
     guideKicker: "Guide",
     guideTitle: "How to use it",
     guideLead: "Paste a message in plain language. FirstCode pulls out the name, address, phone, cash on delivery, and shipment type. A short code is enough for the type.",
     guideStep1Title: "Paste a message",
-    guideStep1Body: "Drop the delivery text into the field above. Name, street, and city are the base. Add the rest when you have it.",
+    guideStep1Body: "On the home page, paste the delivery text into the field. Name, street, and city are the base. Add the rest when you have it.",
     guideStep2Title: "Check the card",
     guideStep2Body: "FirstCode suggests what it read. If something is missing or wrong, edit it before you print.",
     guideStep3Title: "Save and print",
@@ -286,8 +286,7 @@ const STRINGS = {
     termsLiabilityTitle: "Liability",
     termsLiabilityBody: "FirstCode is not responsible for a wrong label, for a shipment that goes to the wrong address, or for loss that comes from relying on the extracted address. The tool is provided as it is, with no guarantee that the address will be correct.",
     termsContactLead: "Questions about these terms:",
-    madeWith: "Made with",
-    madeBy: "by",
+    footerCredit: "A FirstCode product",
     editDelivery: "Edit delivery",
     close: "Close",
     fullName: "Full name",
@@ -359,8 +358,7 @@ const STRINGS = {
     serverErrorTitle: "FirstCode | Server error",
     serverErrorHeading: "Something went wrong",
     serverErrorLead: "Something went wrong on our side. Try again in a moment, or go back home.",
-    tryAgain: "Try again",
-    madeByError: "Made by"
+    tryAgain: "Try again"
   }
 };
 
