@@ -1703,8 +1703,68 @@ body {
 .legal-nav {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.35rem 0.85rem;
+  align-items: center;
+  gap: 0.6rem;
   margin-top: 2rem;
+}
+
+.legal-nav a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.55rem;
+  padding: 0.45rem 1.05rem;
+  border: 1px solid rgba(110, 70, 245, 0.28);
+  border-radius: 999px;
+  background: #fff;
+  color: #6E46F5;
+  box-shadow: 0 0.15rem 0.55rem rgba(27, 22, 56, 0.06);
+  font: 600 0.82rem/1.2 "Poppins", sans-serif;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.legal-nav a:hover,
+.legal-nav a:focus-visible {
+  background: var(--fc-gradient);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 0.2rem 0.55rem rgba(110, 70, 245, 0.28);
+  text-decoration: none;
+}
+
+.legal-nav a:focus-visible {
+  outline: 2px solid #6E46F5;
+  outline-offset: 3px;
+}
+
+.legal-nav a:first-child {
+  background: var(--fc-gradient);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 0.2rem 0.55rem rgba(110, 70, 245, 0.28);
+}
+
+.legal-nav a:first-child:hover,
+.legal-nav a:first-child:focus-visible {
+  background: var(--fc-gradient-hover);
+}
+
+.legal-doc .legal-nav a:hover {
+  text-decoration: none;
+}
+
+@media (max-width: 640px) {
+  .legal-nav {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .legal-nav a {
+    width: 100%;
+  }
 }
 
 @media (max-width: 767.98px) {
