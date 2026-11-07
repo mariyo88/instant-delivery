@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="sr" dir="ltr">
+
+  <head>
+    <script>
+      (function () {
+        try {
+          var raw = localStorage.getItem("firstcode.instantPrintSettings");
+          var theme = raw ? JSON.parse(raw).theme : null;
+          if (theme !== "light" && theme !== "dark") {
+            theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+          }
+          document.documentElement.setAttribute("data-theme", theme);
+        } catch (e) {}
+      })();
+    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title data-i18n="settingsPageTitle">FirstCode | Podešavanja</title>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/img/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicons/favicon-16x16.png">
+    <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicons/favicon.ico">
+    <link rel="manifest" href="assets/img/favicons/site.webmanifest">
+    <meta name="msapplication-TileImage" content="assets/img/favicons/mstile-150x150.png">
+    <meta name="theme-color" content="#6E46F5">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400;500;600;700&amp;family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,300&amp;display=swap" rel="stylesheet">
+    <link href="assets/css/theme.css" rel="stylesheet" />
+    <link href="assets/css/user.css" rel="stylesheet" />
+    <link href="assets/css/index.css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <main class="main" id="top">
+      <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" data-navbar-on-scroll="light">
+        <div class="container navbar-bar">
+          <a class="navbar-brand" href="index.html"><img src="assets/img/icons/Logo.png" height="35" alt="FirstCode logo" /></a>
+          <div class="navbar-tools">
+            <a class="guide-help" href="guide.html" data-i18n-aria="guideJump" aria-label="Kako se koristi">
+              <span class="guide-help-mark" aria-hidden="true">?</span>
+              <span class="guide-help-tip" data-i18n="guideJump">Kako se koristi</span>
+            </a>
+            <a class="guide-help" href="settings.html" data-i18n-aria="settings" aria-label="Podešavanja" aria-current="page">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.8" d="M4 8h9M17 8h3M4 16h3M11 16h9"/>
+                <circle cx="15.5" cy="8" r="2.15" fill="none" stroke="currentColor" stroke-width="1.8"/>
+                <circle cx="8.5" cy="16" r="2.15" fill="none" stroke="currentColor" stroke-width="1.8"/>
+              </svg>
+              <span class="guide-help-tip" data-i18n="settings">Podešavanja</span>
+            </a>
+            <button type="button" class="theme-toggle" aria-pressed="false" aria-label="Uključi tamnu temu" title="Uključi tamnu temu">
+              <svg class="theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path fill="currentColor" d="M21 14.3A9.1 9.1 0 0 1 9.7 3a7.4 7.4 0 1 0 11.3 11.3z"/>
+              </svg>
+              <svg class="theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="12" cy="12" r="4.2" fill="currentColor"/>
+                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.8" d="M12 2.8v1.8M12 19.4v1.8M2.8 12h1.8M19.4 12h1.8M5.1 5.1l1.3 1.3M17.6 17.6l1.3 1.3M5.1 18.9l1.3-1.3M17.6 6.4l1.3-1.3"/>
+              </svg>
+            </button>
+            <div id="appLanguage" class="lang-toggle" role="group" data-i18n-aria="language" aria-label="Jezik">
+              <button type="button" data-lang="sr" class="is-active" aria-pressed="true">SR</button>
+              <button type="button" data-lang="en" aria-pressed="false">EN</button>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <article class="usage-guide" aria-labelledby="settingsTitle">
+        <div class="container">
+          <div class="usage-guide-card">
+            <p class="usage-kicker" data-i18n="settings">Podešavanja</p>
+            <h1 id="settingsTitle" data-i18n="settingsTitle">Format nalepnice</h1>
+            <p class="usage-lead" data-i18n="settingsLead">Izaberi kako se nalepnice slažu na papir. Izbor ostaje u ovom pregledaču i važi za svaku štampu.</p>
+
+            <fieldset class="settings-formats" id="printFormat">
+              <legend class="visually-hidden" data-i18n="format">Format</legend>
+              <label class="settings-format">
+                <input type="radio" name="format" value="PREMIUM_A4_2x3" checked>
+                <strong>Premium A4 (2×3)</strong>
+              </label>
+              <label class="settings-format">
+                <input type="radio" name="format" value="CLASSIC_A4_2x3">
+                <strong>Classic A4 (2×3)</strong>
+              </label>
+              <label class="settings-format">
+                <input type="radio" name="format" value="MODERN_A4_2x4">
+                <strong>Modern A4 (2×4)</strong>
+              </label>
+              <label class="settings-format">
+                <input type="radio" name="format" value="A4_4x2">
+                <strong>A4 2×3 labels</strong>
+              </label>
+              <label class="settings-format">
+                <input type="radio" name="format" value="A4_3x3">
+                <strong>A4 3×5 labels</strong>
+              </label>
+              <label class="settings-format">
+                <input type="radio" name="format" value="LABEL_100x150">
+                <strong>Label 100×150 mm</strong>
+              </label>
+            </fieldset>
+            <p class="settings-note" data-i18n="settingsNote">Promena se čuva odmah. Vrati se na početnu kad hoćeš da odštampaš.</p>
+          </div>
+          <nav class="legal-nav" data-i18n-aria="footerNav" aria-label="Stranice">
+            <a href="index.html" data-i18n="backHome">Nazad na početnu</a>
+            <a href="guide.html" data-i18n="guideKicker">Uputstvo</a>
+            <a href="terms.html" data-i18n="terms">Uslovi korišćenja</a>
+            <a href="privacy.html" data-i18n="usagePolicy">Politika privatnosti</a>
+          </nav>
+        </div>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <section class="footer-offers" aria-labelledby="footerOffersTitle">
+          <div class="footer-offers-head">
+            <h2 id="footerOffersTitle" data-i18n="offer">Ponuda</h2>
+            <p data-i18n="offerNote">Asistent je trenutno besplatan. Pro i Posao stoje ovde dok ne budu spremni.</p>
+          </div>
+          <div class="footer-offer-grid" data-footer-offers></div>
+        </section>
+
+        <div class="footer-main">
+          <div class="footer-brand-col">
+            <a class="footer-brand" href="index.html"><img src="assets/img/icons/Logo2.png" height="36" alt="FirstCode" /></a>
+            <p class="footer-tagline" data-i18n="footerTagline">Nalepi poruku, izvuci adresu i odštampaj nalepnice.</p>
+            <a class="footer-email" href="mailto:divica394@gmail.com">divica394@gmail.com</a>
+            <div class="footer-social">
+              <a href="#!" aria-label="LinkedIn"><img src="assets/img/gallery/linkedin-line1.svg" alt="" width="18" height="18" /></a>
+              <a href="#!" aria-label="Facebook"><img src="assets/img/gallery/facebook-line1.svg" alt="" width="18" height="18" /></a>
+              <a href="#!" aria-label="Twitter"><img src="assets/img/gallery/twitter-line1.svg" alt="" width="18" height="18" /></a>
+              <a href="#!" aria-label="Instagram"><img src="assets/img/gallery/instagram-line1.svg" alt="" width="18" height="18" /></a>
+            </div>
+          </div>
+          <nav class="footer-nav" data-i18n-aria="footerNav" aria-label="Stranice">
+            <div>
+              <h3 data-i18n="footerProduct">Asistent</h3>
+              <ul class="footer-links">
+                <li><a href="index.html" data-i18n="home">Početna</a></li>
+                <li><a href="guide.html" data-i18n="guideKicker">Uputstvo</a></li>
+                <li><a href="settings.html" data-i18n="settings">Podešavanja</a></li>
+              </ul>
+            </div>
+            <div>
+              <h3 data-i18n="support">Podrška</h3>
+              <ul class="footer-links">
+                <li><a href="terms.html" data-i18n="terms">Uslovi korišćenja</a></li>
+                <li><a href="privacy.html" data-i18n="usagePolicy">Politika privatnosti</a></li>
+                <li><a href="mailto:divica394@gmail.com" data-i18n="contact">Kontakt</a></li>
+              </ul>
+            </div>
+          </nav>
+        </div>
+
+        <div class="footer-bottom">
+          <p>&copy; 2026 FirstCode</p>
+          <p data-i18n="footerCredit">Sva prava zadržana.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="assets/js/i18n.js"></script>
+    <script>
+      initLanguageToggle();
+      initFormatSettings();
+    </script>
+  </body>
+
+</html>

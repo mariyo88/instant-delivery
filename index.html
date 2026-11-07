@@ -102,6 +102,7 @@
     <link href="assets/css/index.css" rel="stylesheet" />
     <script>
       if (location.hash === "#uputstvo") location.replace("guide.html");
+      if (location.hash === "#podesavanja") location.replace("settings.html");
     </script>
 
   </head>
@@ -120,6 +121,14 @@
             <a class="guide-help" href="guide.html" data-i18n-aria="guideJump" aria-label="Kako se koristi">
               <span class="guide-help-mark" aria-hidden="true">?</span>
               <span class="guide-help-tip" data-i18n="guideJump">Kako se koristi</span>
+            </a>
+            <a class="guide-help" href="settings.html" data-i18n-aria="settings" aria-label="Podešavanja">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.8" d="M4 8h9M17 8h3M4 16h3M11 16h9"/>
+                <circle cx="15.5" cy="8" r="2.15" fill="none" stroke="currentColor" stroke-width="1.8"/>
+                <circle cx="8.5" cy="16" r="2.15" fill="none" stroke="currentColor" stroke-width="1.8"/>
+              </svg>
+              <span class="guide-help-tip" data-i18n="settings">Podešavanja</span>
             </a>
             <button type="button" class="theme-toggle" aria-pressed="false" aria-label="Uključi tamnu temu" title="Uključi tamnu temu">
               <svg class="theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -179,28 +188,13 @@
 
             <div class="col-12 col-md-10 col-lg-5 agent-side">
               <div id="savedPanel" class="saved-panel" data-zanim-xs='{"delay":0.7}' data-zanim-trigger="scroll">
-                <div id="printSettings" class="print-settings">
-                  <button id="printSettingsToggle" class="print-settings-toggle" type="button" aria-expanded="false" aria-controls="printSettingsBody">
-                    <span class="print-settings-toggle-main">
-                      <i class="fas fa-sliders-h" aria-hidden="true"></i>
-                      <span data-i18n="settings">Podešavanja</span>
-                    </span>
-                    <span id="printSettingsSummary" class="print-settings-summary">Premium</span>
-                    <i class="fas fa-chevron-down print-settings-chevron" aria-hidden="true"></i>
+                <div id="savedActions" class="saved-panel-actions">
+                  <button id="printSaved" class="action-btn" type="button" disabled>
+                    <i class="fas fa-print" aria-hidden="true"></i> <span data-i18n="print">Odštampaj</span>
                   </button>
-                  <div id="printSettingsBody" class="print-settings-body">
-                    <label for="printFormat">
-                      <span data-i18n="format">Format</span>
-                      <select id="printFormat">
-                        <option value="PREMIUM_A4_2x3">Premium A4 (2×3)</option>
-                        <option value="CLASSIC_A4_2x3">Classic A4 (2×3)</option>
-                        <option value="MODERN_A4_2x4">Modern A4 (2×4)</option>
-                        <option value="A4_4x2">A4 2×3 labels</option>
-                        <option value="A4_3x3">A4 3×5 labels</option>
-                        <option value="LABEL_100x150">Label 100×150 mm</option>
-                      </select>
-                    </label>
-                  </div>
+                  <button id="clearSaved" class="action-btn" type="button" disabled>
+                    <i class="fas fa-trash" aria-hidden="true"></i> <span data-i18n="deleteAll">Obriši sve</span>
+                  </button>
                 </div>
 
                 <div class="saved-panel-header">
@@ -219,14 +213,6 @@
                       <i class="fas fa-chevron-right" aria-hidden="true"></i>
                     </button>
                   </div>
-                </div>
-                <div id="savedActions" class="saved-panel-actions is-empty">
-                  <button id="printSaved" class="action-btn" type="button" disabled>
-                    <i class="fas fa-print" aria-hidden="true"></i> <span data-i18n="print">Odštampaj</span>
-                  </button>
-                  <button id="clearSaved" class="action-btn" type="button" disabled>
-                    <i class="fas fa-trash" aria-hidden="true"></i> <span data-i18n="deleteAll">Obriši sve</span>
-                  </button>
                 </div>
               </div>
             </div>
@@ -267,6 +253,7 @@
                 <ul class="footer-links">
                   <li><a href="index.html" data-i18n="home">Početna</a></li>
                   <li><a href="guide.html" data-i18n="guideKicker">Uputstvo</a></li>
+                  <li><a href="settings.html" data-i18n="settings">Podešavanja</a></li>
                 </ul>
               </div>
               <div>
