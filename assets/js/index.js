@@ -4,14 +4,6 @@ const PRINT_URL = API_BASE + "/api/print/delivery-labels";
 const STORAGE_KEY = "firstcode.instantDeliveries";
 const SETTINGS_KEY = "firstcode.instantPrintSettings";
 const DEFAULT_SETTINGS = { format: "PREMIUM_A4_2x3", language: "sr" };
-const FORMAT_VALUES = [
-  "PREMIUM_A4_2x3",
-  "CLASSIC_A4_2x3",
-  "MODERN_A4_2x4",
-  "A4_4x2",
-  "A4_3x3",
-  "LABEL_100x150"
-];
 const LANGUAGE_VALUES = ["sr", "en"];
 
 const home = document.getElementById("home");
@@ -26,7 +18,6 @@ const savedEmpty = document.getElementById("savedEmpty");
 const savedCount = document.getElementById("savedCount");
 const printSavedBtn = document.getElementById("printSaved");
 const clearSavedBtn = document.getElementById("clearSaved");
-const savedActions = document.getElementById("savedActions");
 const selectAllSavedBtn = document.getElementById("selectAllSaved");
 const savedPagination = document.getElementById("savedPagination");
 const savedPageInfo = document.getElementById("savedPageInfo");
@@ -35,10 +26,6 @@ const savedNextPage = document.getElementById("savedNextPage");
 const selectedIds = new Set();
 const PAGE_SIZE = 6;
 let currentPage = 1;
-const printSettings = document.getElementById("printSettings");
-const printSettingsToggle = document.getElementById("printSettingsToggle");
-const printSettingsSummary = document.getElementById("printSettingsSummary");
-const printFormatSelect = document.getElementById("printFormat");
 const appLanguageToggle = document.getElementById("appLanguage");
 const editModal = document.getElementById("editModal");
 const editForm = document.getElementById("editForm");
@@ -95,7 +82,7 @@ function loadSettings() {
     const data = raw ? JSON.parse(raw) : {};
     const theme = data.theme === "light" || data.theme === "dark" ? data.theme : undefined;
     return {
-      format: FORMAT_VALUES.includes(data.format) ? data.format : DEFAULT_SETTINGS.format,
+      format: getStoredFormat(),
       language: LANGUAGE_VALUES.includes(data.language) ? data.language : DEFAULT_SETTINGS.language,
       ...(theme ? { theme } : {})
     };
@@ -110,7 +97,7 @@ function persistSettings(settings) {
 }
 
 function getSelectedFormat() {
-  return printFormatSelect.value || DEFAULT_SETTINGS.format;
+  return loadSettings().format || DEFAULT_SETTINGS.format;
 }
 
 function getSelectedLanguage() {
@@ -176,29 +163,14 @@ function refreshDynamicCopy() {
   if (confirmModal.classList.contains("is-open")) applyConfirmCopy();
 }
 
-function formatSummaryLabel(format) {
-  const option = printFormatSelect.querySelector('option[value="' + format + '"]');
-  const label = option ? option.textContent : format;
-  return label.replace(/\s*A4.*$/i, "").trim() || label;
-}
-
-function updateSettingsSummary() {
-  printSettingsSummary.textContent = formatSummaryLabel(getSelectedFormat());
-}
-
 function syncSettingsControls() {
-  const settings = loadSettings();
-  printFormatSelect.value = settings.format;
-  setLanguage(settings.language);
-  updateSettingsSummary();
+  setLanguage(loadSettings().language);
 }
 
 function saveSettingsFromControls() {
   persistSettings({
-    format: getSelectedFormat(),
     language: getSelectedLanguage()
   });
-  updateSettingsSummary();
 }
 
 function syncSendButton() {
@@ -731,7 +703,6 @@ function renderSavedList() {
 
   printSavedBtn.disabled = selectedCount === 0 || busy;
   clearSavedBtn.disabled = list.length === 0 || busy;
-  savedActions.classList.toggle("is-empty", list.length === 0);
   savedEmpty.classList.toggle("is-hidden", list.length > 0);
   updateSelectAllButton(list);
   updatePrintButtonLabel();
@@ -1194,13 +1165,6 @@ savedNextPage.addEventListener("click", () => {
   currentPage += 1;
   renderSavedList();
 });
-
-printSettingsToggle.addEventListener("click", () => {
-  const open = printSettings.classList.toggle("is-open");
-  printSettingsToggle.setAttribute("aria-expanded", open ? "true" : "false");
-});
-
-printFormatSelect.addEventListener("change", saveSettingsFromControls);
 
 appLanguageToggle.addEventListener("click", (event) => {
   const button = event.target.closest("button[data-lang]");

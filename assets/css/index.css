@@ -429,103 +429,6 @@ html[data-theme="dark"] {
   text-align: left;
 }
 
-.print-settings {
-  margin-bottom: 0.85rem;
-  padding-bottom: 0.85rem;
-  border-bottom: 1px solid var(--fc-border-faint);
-}
-
-.print-settings-toggle {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.65rem;
-  width: 100%;
-  margin: 0;
-  padding: 0.45rem 0.15rem;
-  border: 0;
-  background: transparent;
-  color: var(--fc-accent);
-  cursor: pointer;
-  text-align: left;
-}
-
-.print-settings-toggle-main {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  min-width: 0;
-  font: 600 0.8rem/1.2rem "Poppins", sans-serif;
-}
-
-.print-settings-toggle-main i {
-  font-size: 0.85rem;
-}
-
-.print-settings-summary {
-  flex: 1 1 auto;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color: var(--fc-muted);
-  font: 500 0.75rem/1.2rem "Poppins", sans-serif;
-  text-align: right;
-}
-
-.print-settings-chevron {
-  color: var(--fc-placeholder);
-  font-size: 0.7rem;
-  transition: transform 0.18s ease;
-}
-
-.print-settings.is-open .print-settings-chevron {
-  transform: rotate(180deg);
-}
-
-.print-settings-body {
-  display: none;
-  grid-template-columns: 1fr;
-  gap: 0.65rem;
-  padding-top: 0.65rem;
-}
-
-.print-settings.is-open .print-settings-body {
-  display: grid;
-}
-
-.print-settings label,
-.print-settings-field {
-  display: grid;
-  gap: 0.3rem;
-  margin: 0;
-}
-
-.print-settings label,
-.print-settings-label {
-  color: var(--fc-lang-idle);
-  font: 600 0.72rem/1rem "Poppins", sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-}
-
-.print-settings select {
-  width: 100%;
-  border: 1px solid var(--fc-border);
-  border-radius: 0.75rem;
-  background: var(--fc-surface);
-  color: var(--fc-heading);
-  padding: 0.45rem 0.65rem;
-  font: 500 0.8rem/1.2rem "Poppins", sans-serif;
-  outline: none;
-  cursor: pointer;
-}
-
-.print-settings select:focus {
-  border-color: var(--fc-accent);
-  box-shadow: 0 0 0 3px var(--fc-ring);
-}
-
 .navbar-bar {
   display: flex;
   align-items: center;
@@ -565,6 +468,17 @@ html[data-theme="dark"] {
 .guide-help-mark {
   font: 700 1rem/1 "Poppins", sans-serif;
   transform: translateY(-0.04rem);
+}
+
+.guide-help svg {
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+.guide-help[aria-current="page"] {
+  background: var(--fc-gradient);
+  color: var(--fc-on-accent);
+  border-color: transparent;
 }
 
 .guide-help:hover,
@@ -635,6 +549,20 @@ html[data-theme="dark"] {
   .guide-help:focus-visible .guide-help-tip {
     transform: translateY(0);
   }
+
+  .navbar-tools {
+    gap: 0.35rem;
+  }
+
+  .guide-help,
+  .theme-toggle {
+    width: 1.95rem;
+    height: 1.95rem;
+  }
+
+  .lang-toggle {
+    width: 4.7rem;
+  }
 }
 
 .lang-toggle {
@@ -671,18 +599,6 @@ html[data-theme="dark"] {
 .lang-toggle button:not(.is-active):hover {
   color: var(--fc-heading);
   background: var(--fc-lang-hover-bg);
-}
-
-@media (min-width: 992px) {
-  .print-settings-toggle {
-    display: none;
-  }
-
-  .print-settings-body,
-  .print-settings.is-open .print-settings-body {
-    display: grid;
-    padding-top: 0;
-  }
 }
 
 .saved-empty {
@@ -733,14 +649,24 @@ html[data-theme="dark"] {
 }
 
 .saved-panel-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-  margin-top: 0.75rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin: 0 0 0.85rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid var(--fc-border-faint);
 }
 
-.saved-panel-actions.is-empty {
-  display: none;
+.saved-panel-actions .action-btn {
+  justify-content: center;
+  width: 100%;
+  min-width: 0;
+  min-height: 2.35rem;
+}
+
+.saved-panel-actions .action-btn:disabled:hover {
+  background: var(--fc-surface);
+  color: var(--fc-accent);
 }
 
 .saved-list {
@@ -829,12 +755,6 @@ html[data-theme="dark"] {
 
   .agent-home .hero-bg {
     opacity: 0.45;
-  }
-}
-
-@media (max-width: 575.98px) {
-  .print-settings.is-open .print-settings-body {
-    grid-template-columns: 1fr;
   }
 }
 
@@ -1372,12 +1292,16 @@ body.pdf-preview-open {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 0.5rem;
+  }
+
+  .delivery-card-actions {
     margin-top: 0.75rem;
   }
 
   .saved-panel-actions {
-    padding-top: 0.75rem;
-    border-top: 1px solid var(--fc-border-faint);
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
   }
 
   .delivery-card-actions .action-btn,
@@ -2216,6 +2140,79 @@ html[data-theme="dark"] .navbar-brand img {
 @media (max-width: 380px) {
   .usage-marks {
     grid-template-columns: 1fr;
+  }
+}
+
+.settings-formats {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.55rem;
+  min-inline-size: 0;
+  margin: 1.2rem 0 0;
+  padding: 0;
+  border: 0;
+}
+
+.settings-format {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--fc-border-faint);
+  border-radius: 1rem;
+  background: var(--fc-surface);
+  color: var(--fc-heading);
+  cursor: pointer;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+
+.settings-format:hover {
+  border-color: var(--fc-accent);
+}
+
+.settings-format.is-selected {
+  border-color: var(--fc-accent);
+  background: var(--fc-surface-tint);
+  box-shadow: 0 0 0 3px var(--fc-ring);
+}
+
+.settings-format:focus-within {
+  outline: 2px solid var(--fc-accent);
+  outline-offset: 2px;
+}
+
+.settings-format input {
+  width: 1.05rem;
+  height: 1.05rem;
+  flex: 0 0 auto;
+  margin: 0;
+  appearance: none;
+  border: 2px solid var(--fc-accent);
+  border-radius: 50%;
+  background: var(--fc-surface);
+}
+
+.settings-format input:checked {
+  background:
+    radial-gradient(circle, var(--fc-accent) 0 42%, transparent 46%),
+    var(--fc-surface);
+}
+
+.settings-format strong {
+  display: block;
+  font: 600 0.92rem/1.3rem "Poppins", sans-serif;
+}
+
+.settings-note {
+  margin: 0.95rem 0 0;
+  color: var(--fc-label);
+  font: 400 0.8rem/1.45rem "Poppins", sans-serif;
+}
+
+@media (min-width: 768px) {
+  .settings-formats {
+    grid-template-columns: 1fr 1fr;
   }
 }
 
