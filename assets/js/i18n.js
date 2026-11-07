@@ -1,6 +1,15 @@
 const I18N_SETTINGS_KEY = "firstcode.instantPrintSettings";
 const I18N_LANGUAGES = ["sr", "en"];
 const I18N_THEMES = ["light", "dark"];
+const I18N_FORMATS = [
+  "PREMIUM_A4_2x3",
+  "CLASSIC_A4_2x3",
+  "MODERN_A4_2x4",
+  "A4_4x2",
+  "A4_3x3",
+  "LABEL_100x150"
+];
+const I18N_DEFAULT_FORMAT = "PREMIUM_A4_2x3";
 
 const STRINGS = {
   sr: {
@@ -47,6 +56,10 @@ const STRINGS = {
     guideAliasBecomes: "Postaje",
     guideUnknown: "Tip koji nije na listi ostaje kako si ga napisao. Naziv pošiljke je roba, ne ime primaoca.",
     settings: "Podešavanja",
+    settingsPageTitle: "FirstCode | Podešavanja",
+    settingsTitle: "Format nalepnice",
+    settingsLead: "Izaberi kako se nalepnice slažu na papir. Izbor ostaje u ovom pregledaču i važi za svaku štampu.",
+    settingsNote: "Promena se čuva odmah. Vrati se na početnu kad hoćeš da odštampaš.",
     format: "Format",
     printList: "Lista za štampu",
     selectAll: "Izaberi sve",
@@ -229,6 +242,10 @@ const STRINGS = {
     guideAliasBecomes: "Becomes",
     guideUnknown: "A type that is not on this list stays as you wrote it. The shipment name is the goods, not the recipient’s name.",
     settings: "Settings",
+    settingsPageTitle: "FirstCode | Settings",
+    settingsTitle: "Label format",
+    settingsLead: "Choose how the labels are laid out on the page. The choice stays in this browser and applies to every print.",
+    settingsNote: "The change is saved right away. Go back home when you want to print.",
     format: "Format",
     printList: "Print list",
     selectAll: "Select all",
@@ -468,6 +485,46 @@ function persistStoredLanguage(language) {
   data.language = I18N_LANGUAGES.includes(language) ? language : "sr";
   localStorage.setItem(I18N_SETTINGS_KEY, JSON.stringify(data));
   return data.language;
+}
+
+function getStoredFormat() {
+  const format = readI18nSettings().format;
+  return I18N_FORMATS.includes(format) ? format : I18N_DEFAULT_FORMAT;
+}
+
+function persistStoredFormat(format) {
+  const data = readI18nSettings();
+  data.format = I18N_FORMATS.includes(format) ? format : I18N_DEFAULT_FORMAT;
+  localStorage.setItem(I18N_SETTINGS_KEY, JSON.stringify(data));
+  return data.format;
+}
+
+function syncFormatSettings() {
+  const group = document.getElementById("printFormat");
+  if (!group) return;
+  const current = getStoredFormat();
+  group.querySelectorAll('input[name="format"]').forEach((input) => {
+    const selected = input.value === current;
+    input.checked = selected;
+    const choice = input.closest(".settings-format");
+    if (choice) choice.classList.toggle("is-selected", selected);
+  });
+}
+
+function initFormatSettings() {
+  const group = document.getElementById("printFormat");
+  if (!group || group.dataset.bound === "true") {
+    syncFormatSettings();
+    return;
+  }
+  group.dataset.bound = "true";
+  syncFormatSettings();
+  group.addEventListener("change", (event) => {
+    const input = event.target.closest('input[name="format"]');
+    if (!input) return;
+    persistStoredFormat(input.value);
+    syncFormatSettings();
+  });
 }
 
 function getSystemTheme() {
